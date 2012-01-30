@@ -1,0 +1,65 @@
+{% extends "base_2col.html" %}
+
+{% block extrajs %}
+<script src="http://127.0.0.1:8000/static/jquery.js"></script>
+<script src="http://127.0.0.1:8000/static/anytime.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $( ".AnyTime_picker" ).AnyTime_picker();
+    });
+</script>
+{% endblock %}
+{% load i18n %}
+
+{% block title %}{% trans "User registration" %}{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+
+
+
+
+{% block content %}
+<h1>Welcome {{ username}}</h1>
+{% if error %}
+ 
+{{ error }}
+ 
+{% endif %}
+<form action="../result/" method="post">
+<label for="id_barcode">{% trans "Barcode" %}</label>
+		<p>{{ form.barcode }}
+			{% if form.barcode.errors %}
+				<span class="quiet red"><br  {{ form.barcode.errors|join:"; " }}</span>
+			{% endif %}
+		</p>
+<label for="id_pages">{% trans "Pages Done" %}</label>
+		<p>{{ form.pages }}
+			{% if form.pages.errors %}
+				<span class="quiet red"><br />* {{ form.pages.errors|join:"; " }}</span>
+			{% endif %}
+		</p>
+<label for="id_task">{% trans "Task Type" %}</label>
+		<p>{{ form.task }}
+			{% if form.pages.errors %}
+				<span class="quiet red"><br />* {{ form.pages.errors|join:"; " }}</span>
+			{% endif %}
+		</p>
+<label for="id_Comments">{% trans "Comments" %}</label>
+		<p>{{ form.Comments }}
+			{% if form.Comments.errors %}
+				<span class="quiet red"><br />* {{ form.Comments.errors|join:"; " }}</span>
+			{% endif %}
+		</p>
+<label for="id_start_time">{% trans "Book Start Time" %}</label>
+		<p>
+		<input id="id_start_time" readonly="true" type="text" class="AnyTime_picker" name="start_time" />
+		</p>
+<label for="id_end_time">{% trans "Book Finish Time" %}</label>
+<p>
+		<input id="id_end_time" readonly="true" type="text" class="AnyTime_picker" name="end_time" />
+		</p>
+
+		
+		
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}
