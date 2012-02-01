@@ -1,0 +1,19 @@
+1) create a local_settings.py file and fill in the values of username and password in the Database settings
+
+DATABASES = {
+    'default': {
+        'NAME': 'Production',
+        'ENGINE': 'sqlserver_ado',
+        'HOST': 'GLS-KABIS\SQLEXPRESS',
+        'USER': '',
+        'PASSWORD': '',
+        'OPTIONS' : {
+            'provider': 'SQLOLEDB',             
+	    'use_mars': True, 
+        },
+    }
+}
+
+2) type in the url of the web service that interacts with the KILTS Database in the following variable of settings.py file
+
+	KABIS_SERVER_URL = ''

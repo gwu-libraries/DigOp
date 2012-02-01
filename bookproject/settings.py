@@ -31,6 +31,9 @@ DATABASES = {
 # system time zone.
 TIME_ZONE = 'America/Chicago'
 
+#the url of the wsdl file of the web service runing on the KABIS server
+KABIS_SERVER_URL =''
+
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -149,3 +152,9 @@ LOGGING = {
         },
     }
 }
+
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
