@@ -9,8 +9,6 @@ import urllib, urllib2
 import sys
 import suds
 from optparse import OptionParser
-from WSBarcodePages_client import *
-from ZSI.client import Binding
 from pprint import pprint
 from datetime import datetime
 from dateutil.parser import parse
@@ -21,7 +19,7 @@ from django.utils.safestring import mark_safe
 from django.template import Library
 from datetime import timedelta
 from django.contrib.auth import logout
-
+from django.http import HttpResponseRedirect
 
 import time
 use = None
@@ -37,7 +35,6 @@ register.filter('jsonify', jsonify)
 jsonify.is_safe = True   
 
 def login(request):
-    global use
     def errorHandle(error):
         form = LoginForm()
         return render_to_response('login.html', {
@@ -45,35 +42,9 @@ def login(request):
             'form' : form,
         })
     
-    if request.user.is_authenticated():
-        if request.user.is_superuser == True:
-                    #b = Book.objects.all()
-                    #u = User.objects.all()
-                    #bs = list(Book_Staff.objects.all().select_related())
-                    
-                    bs = list(User.objects.all())
-                    myList = []
-                    for item in bs:
-                        #barcode = item.book.barcode
-                        timediff =0
-                        #if item.book.end_time is not None:
-                        #    timediff = item.book.end_time - item.book.start_time
-                        #start = bs.book.start_time
-                        #end = bs.book.end_time
-                        us = item.username
-                        #if item.book.end_time is not None:
-                        #    seq = (barcode, str(item.book.end_time - item.book.start_time), item.pages, us)
-                        #else:
-                        #    seq = (barcode, None, None , item.pages , us)
-                        myList.append(us)
-                        
-                        
-                    return render_to_response('admin_login.html', {
-                        'username':us,
-                        'superuser': request.user.is_superuser,
-                        'list' : myList,
-                    })
-        
+    
+       
+              
     if request.method == 'POST': # If the form has been submitted...
         form = LoginForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
@@ -81,7 +52,6 @@ def login(request):
             password = request.POST['password']
             use = authenticate(username=username, password=password)
             request.session['user_id'] = use
-
             if use is not None:
                 # Redirect to a success page.
                 auth_login(request, use)
@@ -93,40 +63,7 @@ def login(request):
                 #rsp = port.getPages(msg)
                 #url='http://128.164.212.164:8080/BarcodeService/WSBarcodePages?wsdl'
                 #client = suds.client.Client(url)
-                us = use.username
-                if use.is_superuser == True:
-                    #b = Book.objects.all()
-                    #u = User.objects.all()
-                    #bs = list(Book_Staff.objects.all().select_related())
-                    
-                    bs = list(User.objects.all())
-                    myList = []
-                    for item in bs:
-                        #barcode = item.book.barcode
-                        timediff =0
-                        #if item.book.end_time is not None:
-                        #    timediff = item.book.end_time - item.book.start_time
-                        #start = bs.book.start_time
-                        #end = bs.book.end_time
-                        us = item.username
-                        #if item.book.end_time is not None:
-                        #    seq = (barcode, str(item.book.end_time - item.book.start_time), item.pages, us)
-                        #else:
-                        #    seq = (barcode, None, None , item.pages , us)
-                        myList.append(us)
-                        
-                        
-                    return render_to_response('admin_login.html', {
-                        'username':us,
-                        'superuser': use.is_superuser,
-                        'list' : myList,
-                    })
-                else:
-                    return render_to_response('logged_in.html', {
-                        'username': us,
-                        'superuser': use.is_superuser,
-                        'form' : BookForm(),
-                    })
+                return HttpResponseRedirect('/index/')
             else: # Return a 'disabled account' error message 
                 error = 'account disabled' 
                 return errorHandle(error)
@@ -140,8 +77,48 @@ def login(request):
             'form': form,
         })    
 
+def indexPage(request):
+    if request.user.is_authenticated():
+        if request.user.is_superuser == True:
+            #b = Book.objects.all()
+            #u = User.objects.all()
+            #bs = list(Book_Staff.objects.all().select_related())
+                    
+            bs = list(User.objects.all())
+            myList = []
+            for item in bs:
+                #barcode = item.book.barcode
+                timediff =0
+                #if item.book.end_time is not None:
+                #    timediff = item.book.end_time - item.book.start_time
+                #start = bs.book.start_time
+                #end = bs.book.end_time
+                us = item.username
+                #if item.book.end_time is not None:
+                #    seq = (barcode, str(item.book.end_time - item.book.start_time), item.pages, us)
+                #else:
+                #    seq = (barcode, None, None , item.pages , us)
+                myList.append(us)
+                        
+                        
+            return render_to_response('admin_login.html', {
+                        'username':us,
+                        'superuser': request.user.is_superuser,
+                        'list' : myList,
+            })
+        else:
+			return render_to_response('logged_in.html', {
+                        'username': request.user.username,
+                        'superuser': request.user.is_superuser,
+                        'form' : BookForm(),
+			})
+
+
+
+
+
 def processForm(request):
-    global use
+    use=request.user
     def errorHandle(error):
         form = BookForm()
         return render_to_response('logged_in.html', {

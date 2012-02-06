@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^result/$', 'books.views.processForm'),
     url(r'^logout/$', 'books.views.logoutUser'),
     url(r'^user/$', 'books.views.produceData'),
+	url(r'^index/$', 'books.views.indexPage'),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     

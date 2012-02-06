@@ -13,8 +13,8 @@ DATABASES = {
         'NAME': 'Production',
         'ENGINE': 'sqlserver_ado',
         'HOST': 'GLS-KABIS\SQLEXPRESS',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'administrator',
+        'PASSWORD': 'server034techs**',
         'OPTIONS' : {
             'provider': 'SQLOLEDB',             
 	    'use_mars': True, 
@@ -108,7 +108,7 @@ MIDDLEWARE_CLASSES = (
     
 )
 
-ROOT_URLCONF = 'project.urls'
+ROOT_URLCONF = 'bookproject.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
