@@ -25,11 +25,11 @@ class Book(models.Model):
 class ProcessingSession(models.Model):
     book = models.ForeignKey(Book)
     user = models.ForeignKey(User)
-    pagesDone = models.IntegerField(null=True, blank=True)
-    comments = models.CharField(max_length=100,null=True, blank=True)
-    task = models.CharField(max_length =4, null=False, blank= False, choices = TYPES)
-    startTime = models.DateTimeField('Time started book',null=True, blank=True)
-    endTime = models.DateTimeField('Time finished book',null=True, blank=True)
+    pagesDone = models.IntegerField()
+    comments = models.TextField()
+    task = models.CharField(max_length =4, choices = TYPES)
+    startTime = models.DateTimeField('Time started book')
+    endTime = models.DateTimeField('Time finished book')
 
 
 class LoginForm(forms.Form):
