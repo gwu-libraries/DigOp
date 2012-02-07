@@ -14,24 +14,24 @@ TYPES = (
     )
 
 
-    
+
 class Book(models.Model):
     barcode = models.CharField(max_length=50)
-    pages = models.IntegerField()
-    Comments = models.CharField(max_length=100,null=True, blank=True)
-    task = models.CharField(max_length =4, null=False, blank= False, choices = TYPES)
-    start_time = models.DateTimeField('Time started book',null=True, blank=True)
-    end_time = models.DateTimeField('Time finished book',null=True, blank=True)
+    totalPages = models.IntegerField()
+    bookComplete = models.NullBooleanField()
     def __unicode__(self):
         return self.barcode
 
-class Book_Staff(models.Model):
+class ProcessingSession(models.Model):
     book = models.ForeignKey(Book)
     user = models.ForeignKey(User)
-    pages = models.IntegerField(null=True, blank=True)
-    book_complete = models.BooleanField()
-    
-    
+    pagesDone = models.IntegerField(null=True, blank=True)
+    comments = models.CharField(max_length=100,null=True, blank=True)
+    task = models.CharField(max_length =4, null=False, blank= False, choices = TYPES)
+    startTime = models.DateTimeField('Time started book',null=True, blank=True)
+    endTime = models.DateTimeField('Time finished book',null=True, blank=True)
+
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=100)
     password = forms.CharField(widget=forms.PasswordInput(render_value=False),max_length=100)
@@ -45,17 +45,20 @@ def make_custom_datefield(f,**kwargs):
         formfield.widget.format = '%Y-%m-%d %H:%M:%S'
         formfield.widget.attrs.update({'class':'AnyTime_picker', 'readonly':'true'})
     return formfield
-    
-class BookForm(ModelForm):
+
+class ProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
+    
+    
     class Meta:
-        model = Book
+        model = ProcessingSession
     #barcode = forms.CharField(max_length=20)
     #pages = forms.CharField(max_length=20)
     #comments = forms.CharField(max_length=100,required=False)
-    #openingDate = forms.DateTimeField(label='Start Time',initial=datetime.now() ) 
+    #openingDate = forms.DateTimeField(label='Start Time',initial=datetime.now() )
     #closingDate = forms.DateTimeField(label='End Time',initial=datetime.now())
-    
-    
-   
-    
+
+
+class BookForm(forms.Form):
+    barcode = forms.CharField(max_length=50)
+

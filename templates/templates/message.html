@@ -18,17 +18,8 @@
 
 
 {% block content %}
-<h1>Welcome {{ username}}</h1>
-{% if error %}
- 
-{{ error }}
- 
-{% endif %}
-<form action="../bookresult/" method="post">
+<H1> {{msg}} </h1>
 
-{{ form.as_p }}
-		
-		
-<input type="submit" value="Submit" />
-</form>
+<A HREF="../bookresult/"> Add Another Record </A> <br>
+<A HREF="../logout">Logout</A>
 {% endblock %}

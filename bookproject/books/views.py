@@ -2,8 +2,9 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.shortcuts import render_to_response
 from books.models import LoginForm
 from books.models import BookForm
+from books.models import ProcessingForm
 from books.models import Book
-from books.models import Book_Staff
+from books.models import ProcessingSession
 from django.contrib.auth.models import User, UserManager
 import urllib, urllib2
 import sys
@@ -20,19 +21,14 @@ from django.template import Library
 from datetime import timedelta
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response, get_object_or_404
 
 import time
 use = None
 register = Library()
 
 
-def jsonify(object):
-    if isinstance(object, QuerySet):
-        return mark_safe(serialize('json', object))
-    return mark_safe(simplejson.dumps(object))
 
-register.filter('jsonify', jsonify)
-jsonify.is_safe = True   
 
 def login(request):
     def errorHandle(error):
@@ -53,16 +49,7 @@ def login(request):
             use = authenticate(username=username, password=password)
             request.session['user_id'] = use
             if use is not None:
-                # Redirect to a success page.
                 auth_login(request, use)
-                #bar = request.POST['barcode']
-                #loc = WSBarcodePagesLocator()
-                #port = loc.getWSBarcodePagesPort(url='http://128.164.212.164:8080/BarcodeService/WSBarcodePages',tracefile = sys.stdout)
-                #msg = getPages()
-                #msg.Value=bar
-                #rsp = port.getPages(msg)
-                #url='http://128.164.212.164:8080/BarcodeService/WSBarcodePages?wsdl'
-                #client = suds.client.Client(url)
                 return HttpResponseRedirect('/index/')
             else: # Return a 'disabled account' error message 
                 error = 'account disabled' 
@@ -78,46 +65,32 @@ def login(request):
         })    
 
 def indexPage(request):
+    form = BookForm()
     if request.user.is_authenticated():
-        if request.user.is_superuser == True:
-            #b = Book.objects.all()
-            #u = User.objects.all()
-            #bs = list(Book_Staff.objects.all().select_related())
-                    
+        if request.user.is_superuser == True:        
             bs = list(User.objects.all())
             myList = []
             for item in bs:
-                #barcode = item.book.barcode
-                timediff =0
-                #if item.book.end_time is not None:
-                #    timediff = item.book.end_time - item.book.start_time
-                #start = bs.book.start_time
-                #end = bs.book.end_time
                 us = item.username
-                #if item.book.end_time is not None:
-                #    seq = (barcode, str(item.book.end_time - item.book.start_time), item.pages, us)
-                #else:
-                #    seq = (barcode, None, None , item.pages , us)
                 myList.append(us)
-                        
-                        
+                
             return render_to_response('admin_login.html', {
                         'username':us,
                         'superuser': request.user.is_superuser,
                         'list' : myList,
             })
         else:
-			return render_to_response('logged_in.html', {
+            return render_to_response('logged_in.html', {
                         'username': request.user.username,
                         'superuser': request.user.is_superuser,
-                        'form' : BookForm(),
-			})
+                        'form' : form,
+            })
 
 
 
 
 
-def processForm(request):
+def processBookForm(request):
     use=request.user
     def errorHandle(error):
         form = BookForm()
@@ -126,37 +99,65 @@ def processForm(request):
             'form' : form,
         })
     if request.method == 'POST': # If the form has been submitted...
+        book = None
+        b =None
         form = BookForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-            barcode = request.POST['barcode']
-            pages = request.POST['pages']
+            bar = request.POST['barcode']
+            '''pages = request.POST['pages']
             comments = request.POST['Comments']
             openingDate = request.POST['start_time']
             closingDate = request.POST['end_time']
-            tasktype = request.POST['task']
-            url='http://128.164.212.164:8080/BarcodeService/WSBarcodePages?wsdl'
-            client = suds.client.Client(url)
+            tasktype = request.POST['task']'''
+            try:
+                book = Book.objects.get(barcode=bar)
+            except Book.DoesNotExist:
+                book = None
+            if book is None:
+                url='http://128.164.212.164:8080/BarcodeService/WSBarcodePages?wsdl'
+                client = suds.client.Client(url)
             #t = Time.objects.create(start_time=parse(openingDate,yearfirst=True),end_time=parse(closingDate,yearfirst=True))
             #t = Time.objects.create(start_time=datetime.strptime(openingDate,'%Y-%m-%d %H:%M:%S'),end_time=datetime.strptime(closingDate,'%Y-%m-%d %H:%M:%S'),item.book.task)
-            totalPages = client.service.getPages(barcode)
-            b = Book.objects.create(barcode=barcode, pages=totalPages,Comments=comments,start_time=openingDate,end_time=closingDate,task=tasktype)
-            bst = None
-            if(int(pages) == int(totalPages)):
-                bst = Book_Staff(book=b,user=use,pages=totalPages,book_complete=True)
-            else:
-                bst = Book_Staff(book=b,user=use,pages=pages,book_complete=False)
-        
-            b.save()
-            bst.save()
-            return render_to_response('pages.html', {
-                        'totalPages': totalPages,
-                        'pages' : pages,
-                        'barcode' : barcode,
-                        'comments' : comments,
-                        'openingDate' : openingDate,
-                        'closingDate' : closingDate,
-                 })
-            
+                pages = client.service.getPages(bar)
+                b = Book.objects.create(barcode=bar, totalPages=pages)
+                b.save()
+                msg = 'Book object with barcode '+ bar + ' created successfully'
+                return render_to_response('processingForm.html', {
+                        'username': request.user.username,
+                        'msg': msg,
+                        'barcode': bar,
+                        'superuser': request.user.is_superuser,
+                        'form' : ProcessingForm(initial={'book': b,
+                                                        'user': request.user}),
+                })
+                
+            elif book is not None and book.bookComplete == True: 
+                msg = 'Book with barcode ' + bar + 'is already done'
+                return render_to_response('message.html', {
+                        'username': request.user.username,
+                        'msg': msg,
+                        'barcode': bar,
+                })
+            elif book is not None and book.bookComplete == False:
+                msg = 'Book with barcode ' + bar + 'was partially done'
+                return render_to_response('processingForm.html', {
+                        'username': request.user.username,
+                        'msg': msg,
+                        'barcode': bar,
+                        'superuser': request.user.is_superuser,
+                        'form' : ProcessingForm(initial={'book': book,
+                                                        'user': request.user}),
+                })
+            elif book is not None and book.bookComplete is None:
+                msg = 'Book with barcode ' + bar + 'is not done'
+                return render_to_response('processingForm.html', {
+                        'username': request.user.username,
+                        'msg': msg,
+                        'barcode': bar,
+                        'superuser': request.user.is_superuser,
+                        'form' : ProcessingForm(initial={'book': book,
+                                                        'user': request.user}),
+                })
             
         else: 
             error = 'form is invalid' 
@@ -167,15 +168,77 @@ def processForm(request):
             'form': form,
         })        
 
-    
+def processProcessingForm(request):
+    use=request.user
+    def errorHandle(error):
+        form = ProcessingForm()
+        return render_to_response('logged_in.html', {
+            'error' : error,
+            'form' : form,
+        })
+    if request.method == 'POST': # If the form has been submitted...
+        form = ProcessingForm(request.POST) # A form bound to the POST data
+        if form.is_valid(): # All validation rules pass
+            #barcode = request.POST['barcode']
+            bookid = request.POST['book']
+            book = Book.objects.get(id = bookid)
+            list = ProcessingSession.objects.filter(book=book)
+            pagecount = 0
+            for item in list:
+                pagecount = pagecount + item.pagesDone
+            pagecount = pagecount + int(request.POST['pagesDone'])
+            if pagecount == book.totalPages:
+                book.bookComplete = True
+                book.save()
+            else:
+                book.bookComplete = False
+                book.save()
+            pages = request.POST['pagesDone']
+            comm = request.POST['comments']
+            openingDate = request.POST['startTime']
+            closingDate = request.POST['endTime']
+            tasktype = request.POST['task']
+            #url='http://128.164.212.164:8080/BarcodeService/WSBarcodePages?wsdl'
+            #client = suds.client.Client(url)
+            #t = Time.objects.create(start_time=parse(openingDate,yearfirst=True),end_time=parse(closingDate,yearfirst=True))
+            #t = Time.objects.create(start_time=datetime.strptime(openingDate,'%Y-%m-%d %H:%M:%S'),end_time=datetime.strptime(closingDate,'%Y-%m-%d %H:%M:%S'),item.book.task)
+            #totalPages = client.service.getPages(barcode)
+            #b = Book.objects.create(barcode=barcode, pages=totalPages,Comments=comments,start_time=openingDate,end_time=closingDate,task=tasktype)
+            bst = None
+            '''if(int(pages) == int(totalPages)):
+                bst = Book_Staff(book=b,user=use,pages=totalPages,book_complete=True)
+            else:
+                bst = Book_Staff(book=b,user=use,pages=pages,book_complete=False)'''
+        
+            #b.save()
+            bst = ProcessingSession(book=Book.objects.get(id =request.POST['book']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,startTime=openingDate,endTime=closingDate,task=tasktype)
+            bst.save()
+            return render_to_response('pages.html', {
+                        'pages' : pages,
+                        'comments' : comm,
+                        'openingDate' : openingDate,
+                        'closingDate' : closingDate,
+                 })
+            
+            
+        else: 
+            error = 'form is invalid' 
+            return errorHandle(error)
+    else:
+        form = ProcessingForm() # An unbound form
+        return render_to_response('logged_in.html', {
+            'form': form,
+        })        
+
+        
 def produceData(request):
     name = request.GET.get('user')
     start = request.GET.get('start')
     end = request.GET.get('end')
     myList = []
     if name != 'all':
-        a = Book_Staff.objects.filter(user__username=name).filter(book__start_time__gte = start) 
-        c = Book_Staff.objects.filter(user__username=name).filter(book__start_time__lte = end)
+        a = ProcessingSession.objects.filter(user__username=name).filter(book__start_time__gte = start) 
+        c = ProcessingSession.objects.filter(user__username=name).filter(book__start_time__lte = end)
         b = a & c
         seq = None
     
@@ -198,7 +261,7 @@ def produceData(request):
                 seq = (item.book.barcode, None , item.pages , us, item.book_complete,int(int(item.pages)/(float(d1_ts-d2_ts)/(60*60))),item.book.task,item.book.start_time)
             myList.append(seq)
     else:
-        b = Book_Staff.objects.all();
+        b = ProcessingSession.objects.all();
         seq = None
         for item in b:
             #barcode = item.book.barcode
