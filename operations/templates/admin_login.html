@@ -21,8 +21,8 @@
 User:
 <select name=user>
 <p>
-{%for item in list%}
-	 <option value={{item}}> {{item}}</option>
+{%for item in users%}
+	 <option value={{item.username}}> {{item.username}}</option>
 {%endfor%}
 <option value ='all' > all users </option>
 </select>

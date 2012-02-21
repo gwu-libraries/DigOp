@@ -83,14 +83,9 @@ def adminSessionData(request):
                         'form' : form,
             },context_instance=RequestContext(request))
 
-def showUsers(request):
-    users = list(User.objects.all())
-    myList = []
-    for item in users:
-        us = item.username
-        myList.append(us)
+def showUsers(request):    
     return render_to_response('admin_login.html', {
-            'list':myList,
+            'users':User.objects.all(),
             },context_instance=RequestContext(request))
 
 def processBookForm(request):
@@ -232,14 +227,14 @@ def produceData(request):
         for item in b:
             us = item.user.username
             fmt = '%Y-%m-%d %H:%M:%S'
-            d1 = datetime.strptime(str(item.book.end_time),fmt)
-            d2 = datetime.strptime(str(item.book.start_time),fmt)
+            d1 = datetime.strptime(str(item.endTime),fmt)
+            d2 = datetime.strptime(str(item.startTime),fmt)
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
-            if item.book.end_time is not None:
-                seq = (item.book.barcode, str(item.book.end_time - item.book.start_time), item.pages, us, item.book_complete,int(int(item.pages)/(float(d1_ts-d2_ts)/(60*60))),item.book.task )
+            if item.endTime is not None:
+                seq = (item.book.barcode, str(item.endTime - item.startTime), item.pagesDone, us, item.book.bookComplete,int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),item.task )
             else:
-                seq = (item.book.barcode, None , item.pages , us, item.book_complete,int(int(item.pages)/(float(d1_ts-d2_ts)/(60*60))),item.book.task)
+                seq = (item.book.barcode, None , item.pages , us, item.book.bookComplete,int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),item.task)
             myList.append(seq)
 
     return render_to_response('data.html', {
