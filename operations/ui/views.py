@@ -69,7 +69,6 @@ def login(request):
 @login_required        
 def indexPage(request):
     form = BookForm()
-    #if request.user.is_authenticated():
     if request.user.is_superuser == True:
         return render_to_response('admin_page.html', {
         },context_instance=RequestContext(request))
