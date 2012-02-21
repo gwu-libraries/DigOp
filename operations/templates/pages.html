@@ -4,8 +4,12 @@
 {% endblock %}
 {% block content %} 
 <h1>Record added successfully</h1>
-
+{%if user.is_superuser%}
+	<A HREF="../index/"> Home </A> <br>
+	<A HREF="../logout">Logout</A>
+{%else%}
 <A HREF="../bookresult/"> Add Another Record </A> <br>
 <A HREF="../logout">Logout</A>
+{%endif%}
 {% endblock %}
 	

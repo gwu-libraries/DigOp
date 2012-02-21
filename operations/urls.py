@@ -14,6 +14,8 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'ui.views.logoutUser'),
     url(r'^user/$', 'ui.views.produceData'),
 	url(r'^index/$', 'ui.views.indexPage'),
+	url(r'^showusers/$', 'ui.views.showUsers'),
+	url(r'^inputsession/$', 'ui.views.adminSessionData'),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     
