@@ -11,14 +11,14 @@
 {% endblock %}
 {% load i18n %}
 
-{% block title %}{% trans "User registration" %}{% endblock %}
+{% block title %}{% trans "Processing Sesssion Form" %}{% endblock %}
 {% block robots %}noindex,nofollow{% endblock %}
 
 
 
 
 {% block content %}
-<h1>Welcome {{ username}}</h1>
+<h1>Welcome {{ user.username}}</h1>
 {% if error %}
  
 {{ error }}

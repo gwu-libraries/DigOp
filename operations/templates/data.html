@@ -22,8 +22,18 @@
 </tr>
 
 
-{%for item in list%}
-	<tr> <td>{{item.0}}</td> <td>{{item.3}}</td> <td>{{item.1}}</td> <td>{{item.2}}</td> <td>{{item.4}}</td> <td> {{item.5}}</td> <td> {{item.6}}</td><td>{{item.7}}</td></tr>
+{% for item in list %}
+	<tr>
+	
+	<td>{{item.barcode}} </td>
+	<td>{{item.user}} </td>
+	<td>{{item.duration}} </td>
+	<td>{{item.objects}} </td>
+	<td>{{item.isFinished}} </td>
+	<td>{{item.rate}} </td>
+	<td>{{item.task}} </td>
+	<td>{{item.startTime}} </td>
+	</tr>
 {% endfor %}
 <div class="span-8 last">
 				<ul class="hmenu large three">

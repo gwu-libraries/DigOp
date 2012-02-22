@@ -98,7 +98,6 @@ def processBookForm(request):
         })
     if request.method == 'POST': # If the form has been submitted...
         book = None
-        b =None
         form = BookForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             bar = request.POST['barcode']
@@ -110,13 +109,13 @@ def processBookForm(request):
                 url='http://128.164.212.164:8080/BarcodeService/WSBarcodePages?wsdl'
                 client = suds.client.Client(url)
                 pages = client.service.getPages(bar)
-                b = Book.objects.create(barcode=bar, totalPages=pages)
-                b.save()
+                book = Book.objects.create(barcode=bar, totalPages=pages)
+                book.save()
                 msg = 'Book object with barcode '+ bar + ' created successfully'
                 return render_to_response('processingForm.html', {
                         'msg': msg,
-                        'form' : ProcessingForm(initial={'book': b,
-                                                        'user': request.user}),
+                        'form' : ProcessingForm(initial={'book': book,
+                                                        'user':request.user}),
                 },context_instance=RequestContext(request))
 
             elif book is not None and book.bookComplete == True:
@@ -129,14 +128,14 @@ def processBookForm(request):
                 return render_to_response('processingForm.html', {
                         'msg': msg,
                         'form' : ProcessingForm(initial={'book': book,
-                                                        'user': request.user}),
+                                                        'user':request.user}),
                 },context_instance=RequestContext(request))
             elif book is not None and book.bookComplete is None:
                 msg = 'Book with barcode ' + bar + 'is not done'
                 return render_to_response('processingForm.html', {
                         'msg': msg,
                         'form' : ProcessingForm(initial={'book': book,
-                                                        'user': request.user}),
+                                                       'user':request.user}),
                 },context_instance=RequestContext(request))
 
         else:
@@ -208,7 +207,7 @@ def produceData(request):
         a = ProcessingSession.objects.filter(user__username=name).filter(startTime__gte = start)
         c = ProcessingSession.objects.filter(user__username=name).filter(startTime__lte = end)
         b = a & c
-        seq = None
+        dict = None
 
         for item in b:
             fmt = '%Y-%m-%d %H:%M:%S'
@@ -217,13 +216,13 @@ def produceData(request):
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
             if item.endTime is not None:
-                seq = (item.book.barcode, str(item.endTime - item.startTime), item.pagesDone, name, item.book.bookComplete,int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),item.task,item.startTime )
+                dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             else:
-                seq = (item.book.barcode, None , item.pagesDone , name, item.book.bookComplete,int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),item.task,item.startTime)
-            myList.append(seq)
+                dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+            myList.append(dict)
     else:
         b = ProcessingSession.objects.all();
-        seq = None
+        dict = None
         for item in b:
             us = item.user.username
             fmt = '%Y-%m-%d %H:%M:%S'
@@ -232,10 +231,10 @@ def produceData(request):
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
             if item.endTime is not None:
-                seq = (item.book.barcode, str(item.endTime - item.startTime), item.pagesDone, us, item.book.bookComplete,int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),item.task )
+                dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             else:
-                seq = (item.book.barcode, None , item.pages , us, item.book.bookComplete,int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),item.task)
-            myList.append(seq)
+                dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+            myList.append(dict)
 
     return render_to_response('data.html', {
                         'list': myList,
