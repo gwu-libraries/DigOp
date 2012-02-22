@@ -18,9 +18,28 @@ TYPES = (
 class Book(models.Model):
     barcode = models.CharField(max_length=50)
     totalPages = models.IntegerField()
-    bookComplete = models.NullBooleanField()
     def __unicode__(self):
         return self.barcode
+
+class OperationScan(models.Model):
+	book = models.ForeignKey(Book)
+	complete = models.NullBooleanField()
+    
+
+class OperationQc(models.Model):
+	book = models.ForeignKey(Book)
+	complete = models.NullBooleanField()
+	
+
+class OperationQa(models.Model):
+	book = models.ForeignKey(Book)
+	complete = models.NullBooleanField()
+	
+
+class OperationOcr(models.Model):
+	book = models.ForeignKey(Book)
+	complete = models.NullBooleanField()
+	
 
 class ProcessingSession(models.Model):
     book = models.ForeignKey(Book)
@@ -48,8 +67,8 @@ def make_custom_datefield(f,**kwargs):
 
 class ProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
-    
-    
+
+
     class Meta:
         model = ProcessingSession
     #barcode = forms.CharField(max_length=20)

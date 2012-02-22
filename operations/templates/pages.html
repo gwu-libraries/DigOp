@@ -3,7 +3,7 @@
 {% block extrajs %}
 {% endblock %}
 {% block content %} 
-<h1>Record added successfully</h1>
+<h1>{{msg}}</h1>
 {%if user.is_superuser%}
 	<A HREF="../index/"> Home </A> <br>
 	<A HREF="../logout">Logout</A>

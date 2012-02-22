@@ -5,6 +5,7 @@ from ui.models import BookForm
 from ui.models import ProcessingForm
 from ui.models import Book
 from ui.models import ProcessingSession
+from ui.models import OperationQc,OperationScan,OperationQa,OperationOcr
 from django.contrib.auth.models import User, UserManager
 import urllib, urllib2
 import sys
@@ -66,7 +67,7 @@ def login(request):
             'form': form,
         })
 
-@login_required        
+@login_required
 def indexPage(request):
     form = BookForm()
     if request.user.is_superuser == True:
@@ -83,7 +84,7 @@ def adminSessionData(request):
                         'form' : form,
             },context_instance=RequestContext(request))
 
-def showUsers(request):    
+def showUsers(request):
     return render_to_response('admin_login.html', {
             'users':User.objects.all(),
             },context_instance=RequestContext(request))
@@ -115,29 +116,15 @@ def processBookForm(request):
                 return render_to_response('processingForm.html', {
                         'msg': msg,
                         'form' : ProcessingForm(initial={'book': book,
-                                                        'user':request.user}),
-                },context_instance=RequestContext(request))
-
-            elif book is not None and book.bookComplete == True:
-                msg = 'Book with barcode ' + bar + 'is already done'
-                return render_to_response('message.html', {
-                        'msg': msg,
-                },context_instance=RequestContext(request))
-            elif book is not None and book.bookComplete == False:
-                msg = 'Book with barcode ' + bar + 'was partially done'
-                return render_to_response('processingForm.html', {
+                                                        'user':request.user,}),
+						},context_instance=RequestContext(request))
+            else:
+				msg = 'Book object with barcode '+ bar + ' exists'
+				return render_to_response('processingForm.html', {
                         'msg': msg,
                         'form' : ProcessingForm(initial={'book': book,
-                                                        'user':request.user}),
-                },context_instance=RequestContext(request))
-            elif book is not None and book.bookComplete is None:
-                msg = 'Book with barcode ' + bar + 'is not done'
-                return render_to_response('processingForm.html', {
-                        'msg': msg,
-                        'form' : ProcessingForm(initial={'book': book,
-                                                       'user':request.user}),
-                },context_instance=RequestContext(request))
-
+                                                        'user':request.user,}),
+						},context_instance=RequestContext(request))
         else:
             error = 'form is invalid'
             return errorHandle(error)
@@ -159,18 +146,59 @@ def processProcessingForm(request):
         form = ProcessingForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
             bookid = request.POST['book']
-            book = Book.objects.get(id = bookid)
-            list = ProcessingSession.objects.filter(book=book)
+            bookObject = Book.objects.get(id = bookid)
+            processingSessionList = ProcessingSession.objects.filter(book=bookObject).filter(task=request.POST['task'])
+            operation = None
+            if request.POST['task']=='Scan':
+				try:
+					operation = OperationScan.objects.get(book = bookObject)
+				except Exception:
+					operation = None
+            elif request.POST['task']=='QC':
+				try:
+					operation = OperationQc.objects.get(book = bookObject)
+				except Exception:
+					operation = None
+            elif request.POST['task']=='QA':
+				try:
+					operation = OperationQa.objects.get(book = bookObject)
+				except Exception:
+						operation = None
+            elif request.POST['task']=='OCR':
+				try:
+					operation = OperationOcr.objects.get(book = bookObject)
+				except Exception:
+						operation = None
+            if operation == None:
+				if(request.POST['task'] == 'Scan'):
+					operation = OperationScan.objects.create( book = bookObject, complete = False)
+					operation.save()
+				elif(request.POST['task'] == 'QC'):
+					operation = OperationQc.objects.create( book = bookObject, complete = False)
+					operation.save()
+				elif(request.POST['task'] == 'QA'):
+					operation = OperationQa.objects.create( book = bookObject, complete = False)
+					operation.save()
+				elif(request.POST['task'] == 'OCR'):
+					operation = OperationOcr.objects.create( book = bookObject, complete = False)
+					operation.save()
+            if operation is not None:
+				if operation.complete == True:
+					msg = 'The requested operation is already done for the object'
+					return render_to_response('pages.html',{
+						'msg':msg,
+						},context_instance=RequestContext(request)
+						)
             pagecount = 0
-            for item in list:
+            for item in processingSessionList:
                 pagecount = pagecount + item.pagesDone
             pagecount = pagecount + int(request.POST['pagesDone'])
-            if pagecount == book.totalPages:
-                book.bookComplete = True
-                book.save()
+            if pagecount == bookObject.totalPages:
+                operation.complete = True
+                operation.save()
             else:
-                book.bookComplete = False
-                book.save()
+                operation.complete = False #redundant as initial value of operation obkect for complete is false
+                operation.save()
             pages = request.POST['pagesDone']
             comm = request.POST['comments']
             openingDate = request.POST['startTime']
@@ -179,11 +207,9 @@ def processProcessingForm(request):
             bst = None
             bst = ProcessingSession(book=Book.objects.get(id =request.POST['book']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
+            msg = 'record added successfully'
             return render_to_response('pages.html', {
-                        'pages' : pages,
-                        'comments' : comm,
-                        'openingDate' : openingDate,
-                        'closingDate' : closingDate,
+                    'msg' :msg,
                  },context_instance=RequestContext(request)
                  )
 
@@ -216,9 +242,25 @@ def produceData(request):
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
             if item.endTime is not None:
-                dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				if item.task == 'Scan':
+					obj = OperationScan.objects.get(book = item.book)
+				elif item.task == 'QC':
+					obj = OperationQc.objects.get(book = item.book)
+				elif item.task == 'QA':
+					obj = OperationQa.objects.get(book = item.book)
+				elif item.task == 'OCR':
+					obj = OperationOcr.objects.get(book = item.book)
+				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             else:
-                dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				if item.task == 'Scan':
+					obj = OperationScan.objects.get(book = item.book)
+				elif item.task == 'QC':
+					obj = OperationQc.objects.get(book = item.book)
+				elif item.task == 'QA':
+					obj = OperationQa.objects.get(book = item.book)
+				elif item.task == 'OCR':
+					obj = OperationOcr.objects.get(book = item.book)
+				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             myList.append(dict)
     else:
         b = ProcessingSession.objects.all();
@@ -231,9 +273,25 @@ def produceData(request):
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
             if item.endTime is not None:
-                dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				if item.task == 'Scan':
+					obj = OperationScan.objects.get(book = item.book)
+				elif item.task == 'QC':
+					obj = OperationQc.objects.get(book = item.book)
+				elif item.task == 'QA':
+					obj = OperationQa.objects.get(book = item.book)
+				elif item.task == 'OCR':
+					obj = OperationOcr.objects.get(book = item.book)
+				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             else:
-                dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.book.bookComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				if item.task == 'Scan':
+					obj = OperationScan.objects.get(book = item.book)
+				elif item.task == 'QC':
+					obj = OperationQc.objects.get(book = item.book)
+				elif item.task == 'QA':
+					obj = OperationQa.objects.get(book = item.book)
+				elif item.task == 'OCR':
+					obj = OperationOcr.objects.get(book = item.book)
+				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             myList.append(dict)
 
     return render_to_response('data.html', {
