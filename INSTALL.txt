@@ -1,4 +1,9 @@
-1) create a local_settings.py file and fill in the values of username and password in the Database settings
+1) DigOp app uses python version 2.7 and Django version 3.1
+
+2) DigOp relies on a SOAP based web service (named Barcode_getpages_webservice repository in GitHub) to find out the number of pages for a given Barcode. 
+That web service needs to be deployed and run on a system that can talk to the server that hosts the KIRTAS KILTS Database.  
+
+3) Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
 
 DATABASES = {
     'default': {
@@ -14,6 +19,17 @@ DATABASES = {
     }
 }
 
-2) type in the url of the web service that interacts with the KILTS Database in the following variable of settings.py file
+4) Update the Path to the Templates folder in the following variable in settings.py. 
+	TEMPLATE_DIRS = (
+    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+    # Always use forward slashes, even on Windows.
+    # Don't forget to use absolute paths, not relative paths.
+    "C:/templates"
+)
+
+
+5) Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
 	KABIS_SERVER_URL = ''
+	
+6) Deploy the DigOp application on a web server.
