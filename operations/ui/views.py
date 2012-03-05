@@ -5,7 +5,6 @@ from ui.models import BookForm
 from ui.models import ProcessingForm
 from ui.models import Book
 from ui.models import ProcessingSession
-from ui.models import OperationQc,OperationScan,OperationQa,OperationOcr
 from django.contrib.auth.models import User, UserManager
 import urllib, urllib2
 import sys
@@ -27,7 +26,6 @@ from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
 from dateutil.relativedelta import relativedelta
 from django.db.models import Sum, Avg
-from googlecharts import time_series
 
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
@@ -146,65 +144,14 @@ def processProcessingForm(request):
         if form.is_valid(): # All validation rules pass
             bookid = request.POST['book']
             bookObject = Book.objects.get(id = bookid)
-            processingSessionList = ProcessingSession.objects.filter(book=bookObject).filter(task=request.POST['task'])
-            operation = None
-            if request.POST['task']=='Scan':
-				try:
-					operation = OperationScan.objects.get(book = bookObject)
-				except Exception:
-					operation = None
-            elif request.POST['task']=='QC':
-				try:
-					operation = OperationQc.objects.get(book = bookObject)
-				except Exception:
-					operation = None
-            elif request.POST['task']=='QA':
-				try:
-					operation = OperationQa.objects.get(book = bookObject)
-				except Exception:
-						operation = None
-            elif request.POST['task']=='OCR':
-				try:
-					operation = OperationOcr.objects.get(book = bookObject)
-				except Exception:
-						operation = None
-            if operation == None:
-				if(request.POST['task'] == 'Scan'):
-					operation = OperationScan.objects.create( book = bookObject, complete = False)
-					operation.save()
-				elif(request.POST['task'] == 'QC'):
-					operation = OperationQc.objects.create( book = bookObject, complete = False)
-					operation.save()
-				elif(request.POST['task'] == 'QA'):
-					operation = OperationQa.objects.create( book = bookObject, complete = False)
-					operation.save()
-				elif(request.POST['task'] == 'OCR'):
-					operation = OperationOcr.objects.create( book = bookObject, complete = False)
-					operation.save()
-            if operation is not None:
-				if operation.complete == True:
-					msg = 'The requested operation is already done for the object'
-					return render_to_response('pages.html',{
-						'msg':msg,
-						},context_instance=RequestContext(request)
-						)
-            pagecount = 0
-            for item in processingSessionList:
-                pagecount = pagecount + item.pagesDone
-            pagecount = pagecount + int(request.POST['pagesDone'])
-            if pagecount == bookObject.totalPages:
-                operation.complete = True
-                operation.save()
-            else:
-                operation.complete = False #redundant as initial value of operation obkect for complete is false
-                operation.save()
             pages = request.POST['pagesDone']
             comm = request.POST['comments']
+            complete = request.POST['operationComplete'] 
             openingDate = request.POST['startTime']
             closingDate = request.POST['endTime']
             tasktype = request.POST['task']
             bst = None
-            bst = ProcessingSession(book=Book.objects.get(id =request.POST['book']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,startTime=openingDate,endTime=closingDate,task=tasktype)
+            bst = ProcessingSession(book=Book.objects.get(id =request.POST['book']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete=complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
             msg = 'record added successfully'
             return render_to_response('pages.html', {
@@ -241,25 +188,9 @@ def produceData(request):
             d1_ts = time.mktime(d1.timetuple())
             d2_ts = time.mktime(d2.timetuple())
             if item.endTime is not None:
-				if item.task == 'Scan':
-					obj = OperationScan.objects.get(book = item.book)
-				elif item.task == 'QC':
-					obj = OperationQc.objects.get(book = item.book)
-				elif item.task == 'QA':
-					obj = OperationQa.objects.get(book = item.book)
-				elif item.task == 'OCR':
-					obj = OperationOcr.objects.get(book = item.book)
-				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             else:
-				if item.task == 'Scan':
-					obj = OperationScan.objects.get(book = item.book)
-				elif item.task == 'QC':
-					obj = OperationQc.objects.get(book = item.book)
-				elif item.task == 'QA':
-					obj = OperationQa.objects.get(book = item.book)
-				elif item.task == 'OCR':
-					obj = OperationOcr.objects.get(book = item.book)
-				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
             myList.append(dict)
     else:
         b = ProcessingSession.objects.all();
@@ -299,7 +230,6 @@ def produceData(request):
                  })
 def workGraph(request):
     stats = {'name': [], 'rate': []}
-    queryset = #TO_DO	
     return render_to_response('data.html', {
                         'list': myList,
                         'user': name,

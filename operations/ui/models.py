@@ -10,7 +10,6 @@ TYPES = (
     ('Scan','Scan'),
     ('QC','QC'),
     ('QA','QA'),
-    ('OCR','OCR')
     )
 
 
@@ -21,25 +20,7 @@ class Book(models.Model):
     def __unicode__(self):
         return self.barcode
 
-class OperationScan(models.Model):
-	book = models.ForeignKey(Book)
-	complete = models.NullBooleanField()
-    
 
-class OperationQc(models.Model):
-	book = models.ForeignKey(Book)
-	complete = models.NullBooleanField()
-	
-
-class OperationQa(models.Model):
-	book = models.ForeignKey(Book)
-	complete = models.NullBooleanField()
-	
-
-class OperationOcr(models.Model):
-	book = models.ForeignKey(Book)
-	complete = models.NullBooleanField()
-	
 
 class ProcessingSession(models.Model):
     book = models.ForeignKey(Book)
@@ -47,6 +28,7 @@ class ProcessingSession(models.Model):
     pagesDone = models.IntegerField()
     comments = models.TextField()
     task = models.CharField(max_length =4, choices = TYPES)
+    operationComplete = models.BooleanField()
     startTime = models.DateTimeField('Time started book')
     endTime = models.DateTimeField('Time finished book')
 
