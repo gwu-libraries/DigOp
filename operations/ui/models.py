@@ -3,7 +3,8 @@ from django.contrib.auth.models import User, UserManager
 from django import forms
 from django.forms import ModelForm
 from datetime import datetime
-
+from datetime import timedelta
+import time
 # Create your models here.
 
 TYPES = (
@@ -31,6 +32,14 @@ class ProcessingSession(models.Model):
     operationComplete = models.NullBooleanField()
     startTime = models.DateTimeField('Time started book')
     endTime = models.DateTimeField('Time finished book')
+
+    def duration(self):
+        fmt = '%Y-%m-%d %H:%M:%S'
+        d1 = datetime.strptime(str(self.endTime),fmt)
+        d2 = datetime.strptime(str(self.startTime),fmt)
+        d1_ts = time.mktime(d1.timetuple())
+        d2_ts = time.mktime(d2.timetuple())
+        return (float(d1_ts-d2_ts))
 
 
 class LoginForm(forms.Form):

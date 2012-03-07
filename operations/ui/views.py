@@ -108,12 +108,7 @@ def barcodeReport(request):
 			},context_instance=RequestContext(request))
 		result = ProcessingSession.objects.filter(book=book)
 		for item in result:
-			fmt = '%Y-%m-%d %H:%M:%S'
-			d1 = datetime.strptime(str(item.endTime),fmt)
-			d2 = datetime.strptime(str(item.startTime),fmt)
-			d1_ts = time.mktime(d1.timetuple())
-			d2_ts = time.mktime(d2.timetuple())
-			dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime}
+			dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime}
 			list.append(dict)
 		messages.add_message(request, messages.SUCCESS, 'Results of Barcode '+ bar + ' are as follows: ')
 		return render_to_response('barcoderesult.html', {
@@ -219,46 +214,20 @@ def produceData(request):
         dict = None
 
         for item in b:
-            fmt = '%Y-%m-%d %H:%M:%S'
-            d1 = datetime.strptime(str(item.endTime),fmt)
-            d2 = datetime.strptime(str(item.startTime),fmt)
-            d1_ts = time.mktime(d1.timetuple())
-            d2_ts = time.mktime(d2.timetuple())
             if item.endTime is not None:
-				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime }
             else:
-				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime }
             myList.append(dict)
     else:
         b = ProcessingSession.objects.all();
         dict = None
         for item in b:
             us = item.user.username
-            fmt = '%Y-%m-%d %H:%M:%S'
-            d1 = datetime.strptime(str(item.endTime),fmt)
-            d2 = datetime.strptime(str(item.startTime),fmt)
-            d1_ts = time.mktime(d1.timetuple())
-            d2_ts = time.mktime(d2.timetuple())
             if item.endTime is not None:
-				if item.task == 'Scan':
-					obj = OperationScan.objects.get(book = item.book)
-				elif item.task == 'QC':
-					obj = OperationQc.objects.get(book = item.book)
-				elif item.task == 'QA':
-					obj = OperationQa.objects.get(book = item.book)
-				elif item.task == 'OCR':
-					obj = OperationOcr.objects.get(book = item.book)
-				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime }
             else:
-				if item.task == 'Scan':
-					obj = OperationScan.objects.get(book = item.book)
-				elif item.task == 'QC':
-					obj = OperationQc.objects.get(book = item.book)
-				elif item.task == 'QA':
-					obj = OperationQa.objects.get(book = item.book)
-				elif item.task == 'OCR':
-					obj = OperationOcr.objects.get(book = item.book)
-				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':obj.complete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime }
+				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime }
             myList.append(dict)
 
     return render_to_response('data.html', {
