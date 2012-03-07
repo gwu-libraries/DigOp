@@ -3,7 +3,13 @@
 {% block extrajs %}
 {% endblock %}
 {% block content %} 
-<h1>{{msg}}</h1>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li> <h2>{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h2></li>
+    {% endfor %}
+</ul>
+{% endif %}
 {%if user.is_superuser%}
 	<A HREF="../index/"> Home </A> <br>
 	<A HREF="../logout">Logout</A>

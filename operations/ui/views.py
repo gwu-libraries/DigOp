@@ -27,6 +27,8 @@ from django.contrib.auth.decorators import login_required
 from dateutil.relativedelta import relativedelta
 from django.db.models import Sum, Avg
 from django.template import Library, Node
+from django.contrib.messages import constants as messages
+from django.contrib import messages
 
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
@@ -87,11 +89,11 @@ def showUsers(request):
             'users':User.objects.all(),
             },context_instance=RequestContext(request))
 
-def barcodePage(request):			
+def barcodePage(request):
 	return render_to_response('getbarcode.html', {
-            
+
             },context_instance=RequestContext(request))
-			
+
 def barcodeReport(request):
 	if request.method == 'POST': # If the form has been submitted...
 		bar = request.POST['barcode']
@@ -100,9 +102,8 @@ def barcodeReport(request):
 		try:
 			book = Book.objects.get(barcode=bar)
 		except Book.DoesNotExist:
-			msg = 'Barcode does not exist'
+			messages.add_message(request, messages.ERROR, 'Barcode does not exist ')
 			return render_to_response('barcoderesult.html', {
-				'msg' : msg,
 				'list' : list,
 			},context_instance=RequestContext(request))
 		result = ProcessingSession.objects.filter(book=book)
@@ -114,16 +115,15 @@ def barcodeReport(request):
 			d2_ts = time.mktime(d2.timetuple())
 			dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime}
 			list.append(dict)
-		msg = 'Results of Barcode '+ bar + ' are as follows: ' 
+		messages.add_message(request, messages.SUCCESS, 'Results of Barcode '+ bar + ' are as follows: ')
 		return render_to_response('barcoderesult.html', {
-				'msg' : msg,
 				'list' : list,
         },context_instance=RequestContext(request))
-			
+
 
 def reportMenu(request):
     return render_to_response('reportmenu.html', {
-            
+
             },context_instance=RequestContext(request))
 
 def processBookForm(request):
@@ -149,16 +149,14 @@ def processBookForm(request):
                 pages = client.service.getPages(bar)
                 book = Book.objects.create(barcode=bar, totalPages=pages)
                 book.save()
-                msg = 'Book object with barcode '+ bar + ' created successfully'
+                messages.add_message(request, messages.SUCCESS, 'Book object with barcode '+ bar + ' created successfully')
                 return render_to_response('processingForm.html', {
-                        'msg': msg,
                         'form' : ProcessingForm(initial={'book': book,
                                                         'user':request.user,}),
 						},context_instance=RequestContext(request))
             else:
-				msg = 'Book object with barcode '+ bar + ' exists'
+				messages.add_message(request, messages.ERROR, 'Book object with barcode '+ bar + ' exists')
 				return render_to_response('processingForm.html', {
-                        'msg': msg,
                         'form' : ProcessingForm(initial={'book': book,
                                                         'user':request.user,}),
 						},context_instance=RequestContext(request))
@@ -186,16 +184,15 @@ def processProcessingForm(request):
             bookObject = Book.objects.get(id = bookid)
             pages = request.POST['pagesDone']
             comm = request.POST['comments']
-            complete = request.POST['operationComplete'] 
+            complete = request.POST['operationComplete']
             openingDate = request.POST['startTime']
             closingDate = request.POST['endTime']
             tasktype = request.POST['task']
             bst = None
             bst = ProcessingSession(book=Book.objects.get(id =request.POST['book']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete=complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
-            msg = 'record added successfully'
+            messages.add_message(request, messages.SUCCESS, 'record added successfully')
             return render_to_response('pages.html', {
-                    'msg' :msg,
                  },context_instance=RequestContext(request)
                  )
 
