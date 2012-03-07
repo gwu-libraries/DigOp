@@ -26,6 +26,7 @@ from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
 from dateutil.relativedelta import relativedelta
 from django.db.models import Sum, Avg
+from django.template import Library, Node
 
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
@@ -84,6 +85,45 @@ def adminSessionData(request):
 def showUsers(request):
     return render_to_response('admin_login.html', {
             'users':User.objects.all(),
+            },context_instance=RequestContext(request))
+
+def barcodePage(request):			
+	return render_to_response('getbarcode.html', {
+            
+            },context_instance=RequestContext(request))
+			
+def barcodeReport(request):
+	if request.method == 'POST': # If the form has been submitted...
+		bar = request.POST['barcode']
+		dict = None
+		list = []
+		try:
+			book = Book.objects.get(barcode=bar)
+		except Book.DoesNotExist:
+			msg = 'Barcode does not exist'
+			return render_to_response('barcoderesult.html', {
+				'msg' : msg,
+				'list' : list,
+			},context_instance=RequestContext(request))
+		result = ProcessingSession.objects.filter(book=book)
+		for item in result:
+			fmt = '%Y-%m-%d %H:%M:%S'
+			d1 = datetime.strptime(str(item.endTime),fmt)
+			d2 = datetime.strptime(str(item.startTime),fmt)
+			d1_ts = time.mktime(d1.timetuple())
+			d2_ts = time.mktime(d2.timetuple())
+			dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(float(d1_ts-d2_ts)/(60*60))),'task':item.task,'startTime':item.startTime}
+			list.append(dict)
+		msg = 'Results of Barcode '+ bar + ' are as follows: ' 
+		return render_to_response('barcoderesult.html', {
+				'msg' : msg,
+				'list' : list,
+        },context_instance=RequestContext(request))
+			
+
+def reportMenu(request):
+    return render_to_response('reportmenu.html', {
+            
             },context_instance=RequestContext(request))
 
 def processBookForm(request):

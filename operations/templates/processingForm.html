@@ -49,6 +49,12 @@
 				<span class="quiet red"><br />* {{ form.task.errors|join:"; " }}</span>
 			{% endif %}
 		</p>
+<label for="id_operationComplete">{% trans "Task Complete" %}</label>
+		<p>{{ form.operationComplete }}
+			{% if form.operationComplete.errors %}
+				<span class="quiet red"><br />* {{ form.operationComplete.errors|join:"; " }}</span>
+			{% endif %}
+		</p>
 <label for="id_comments">{% trans "Comments" %}</label>
 		<p>{{ form.comments }}
 			{% if form.comments.errors %}

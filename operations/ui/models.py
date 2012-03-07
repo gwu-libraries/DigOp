@@ -28,7 +28,7 @@ class ProcessingSession(models.Model):
     pagesDone = models.IntegerField()
     comments = models.TextField()
     task = models.CharField(max_length =4, choices = TYPES)
-    operationComplete = models.BooleanField()
+    operationComplete = models.NullBooleanField()
     startTime = models.DateTimeField('Time started book')
     endTime = models.DateTimeField('Time finished book')
 
