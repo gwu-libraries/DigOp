@@ -13,8 +13,8 @@ DATABASES = {
         'NAME': 'Production',
         'ENGINE': 'sqlserver_ado',
         'HOST': 'GLS-KABIS\SQLEXPRESS',
-        'USER': '',
-        'PASSWORD': '',
+        'USER': 'administrator',
+        'PASSWORD': 'server034techs**',
         'OPTIONS' : {
             'provider': 'SQLOLEDB',             
 	    'use_mars': True, 
