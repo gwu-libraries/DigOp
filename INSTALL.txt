@@ -1,9 +1,53 @@
-1) DigOp app uses python version 2.7 and Django version 3.1
+1) DigOp app uses python version 2.7 and Django version 1.4
 
-2) DigOp relies on a SOAP based web service (named Barcode_getpages_webservice repository in GitHub) to find out the number of pages for a given Barcode. 
-That web service needs to be deployed and run on a system that can talk to the server that hosts the KIRTAS KILTS Database.  
+2) Clone the git repository using following command 
 
-3) Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
+	git clone git@github.com:gwu-libraries/DigOp.git
+
+
+3) create virtualenv using following command 
+
+	virtualenv --no-site-packages ENV
+
+
+4) Install the dependencies using the following command
+
+	sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb
+
+5) Install python suds library using following commands 
+
+	wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
+
+	tar -zxvf python-suds-0.3.7.tar.gz
+
+	cd python-suds-0.3.7
+
+	sudo python setup.py install
+	
+	cd ..
+
+	rm -rf python-suds-0.3.7
+
+	rm -r python-suds-0.3.7.tar.gz
+
+
+6) install the additional required packages 
+
+	pip install -r requirements.txt
+
+10) Login to mysql create the Database, Database user and assign the privileges to user. Change the username and password.
+
+	mysql -u root -p
+
+	create Database Production
+
+	CREATE USER 'user1'@'localhost' IDENTIFIED BY 'pass1';
+
+	GRANT ALTER,CREATE,SELECT,INSERT,UPDATE,DELETE ON Production.* TO 'user1'@'localhost';
+
+	FLUSH PRIVILEGES;
+
+11) Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
 
 DATABASES = {
     'default': {
@@ -19,7 +63,7 @@ DATABASES = {
     }
 }
 
-4) Update the Path to the Templates folder in the following variable in settings.py. 
+12) Update the Path to the Templates folder in the following variable in settings.py. 
 	TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
@@ -28,8 +72,8 @@ DATABASES = {
 )
 
 
-5) Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
+13) Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
 	KABIS_SERVER_URL = ''
 	
-6) Deploy the DigOp application on a web server.
+
