@@ -1,0 +1,52 @@
+{% extends "base_2col.html" %}
+{% load i18n %}
+
+
+{% block extrajs %}
+
+
+<script src="{{ STATIC_URL}}jquery.js"></script>
+<script src="{{STATIC_URL}}anytime.js"></script>
+ <script>
+ $(function() {
+		$( ".Any" ).AnyTime_picker();
+	});
+
+
+
+</script>
+{% endblock %}
+
+{% block content %}
+{%load bootstrap%}
+{%bootstrap_css%}
+
+<h2>Please fill out the following form to downlowd the corrsponding Datasheet </h2>
+
+<form action="../user/" method="get"> {% csrf_token %}
+
+User:
+<select name=user>
+<p>
+{%for item in users%}
+	 <option value={{item.username}}> {{item.username}}</option>
+{%endfor%}
+<option value ='all' > all users </option>
+</select>
+</P>
+<br><br>
+
+<P>	
+	Start Date: <input name="start" type=text class="Any" id="one">
+</P>
+
+<br><br>
+<P>	
+	End Date: <input name="end" type=text class="Any" id="two">
+</P>
+<br><br>
+<P>
+	<input type=submit value="Submit">
+</P>	
+</form>
+{% endblock %}

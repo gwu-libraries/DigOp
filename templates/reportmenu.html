@@ -1,0 +1,22 @@
+{% extends "base_2col.html" %}
+
+
+{% load i18n %}
+
+
+
+{% block title %}{% trans "Report Generation Menu" %}{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+
+{% block content %}
+{%load bootstrap%}
+{%bootstrap_css%}
+
+<h1>Welcome {{ user.username}}</h1>
+
+<A HREF="../barcodereport/"> generate report for a barcode </A> <br>
+<A HREF="../showusers"> generate report for users </A><br>
+<A HREF ="../logout"> logout</A><br>
+{% endblock %}
+
+

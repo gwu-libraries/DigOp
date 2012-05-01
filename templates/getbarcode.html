@@ -1,0 +1,54 @@
+{% extends "base_2col.html" %}
+
+
+{% load i18n %}
+{% load barcode_tags %}
+
+
+{% block extrajs %}
+
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script>
+var data= new Array();
+{%get_all_barcodes%}
+{%for barcode in barcodes%}
+
+data.push( "{{barcode}}");
+
+{%endfor%}
+
+	
+
+$(document).ready(function() {
+
+$("input#autocomplete").autocomplete({
+	source: data
+});
+	});
+</script>
+{%endblock%}
+{% block title %}{% trans "Search Barcode" %}{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+
+{% block content %}
+
+{%load bootstrap%}
+{%bootstrap_css%}
+
+
+
+<h1>Welcome {{ user.username}}</h1>
+
+<form action="../getbarcode/" method="post"> {% csrf_token %}
+
+<label id="toLabel">Enter Barcode:</label>  
+             
+                <input name="barcode" id="autocomplete" >  
+				<input type="submit" value="Submit" />
+             
+</form>			
+
+{% endblock %}

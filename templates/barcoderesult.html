@@ -1,0 +1,55 @@
+{% extends "base_2col.html" %}
+
+
+{% load i18n %}
+
+{%bootstrap_css%}
+
+{% block content %}
+
+{%load bootstrap%}
+{%bootstrap_css%}
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}><h2>{{ message }}</h2></li>
+    {% endfor %}
+</ul>
+{% endif %}
+<Table >
+
+<tr>
+<th> Barcode </th>
+<th> User </th>
+<th> Duration </th>
+<th> Pages </th>
+<th> Book Complete </th>
+<th> Pages per Hour </th>
+<th> Comments </th>
+<th> Task Type</th>
+<th> Start Date </th>
+</tr>
+
+{% for item in list %}
+	<tr>
+	
+	<td>{{item.barcode}} </td>
+	<td>{{item.user}} </td>
+	<td>{{item.duration}} </td>
+	<td>{{item.objects}} </td>
+	<td>{{item.isFinished}} </td>
+	<td>{{item.rate}} </td>
+	<td>{{item.comments}}
+	<td>{{item.task}} </td>
+	<td>{{item.startTime}} </td>
+	</tr>
+{% endfor %}
+<div class="span-8 last">
+				<ul class="hmenu large three">
+				<li><a href="../logout">{% trans "Logout" %}</a></li>
+				<li><a Href="../index">{% trans "Home" %}</a></li>
+				</ul>
+			</div>
+{% endblock %}
