@@ -12,7 +12,7 @@
 
 4) Install the dependencies using the following command
 
-	sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb
+	sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb python-dateutil
 
 5) Install python suds library using following commands 
 
