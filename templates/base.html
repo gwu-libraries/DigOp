@@ -1,0 +1,54 @@
+{% load i18n %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>{% block title %}{% endblock %}</title>
+   
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/print.css" type="text/css" media="print" />
+		<link rel="stylesheet" href="{{STATIC_URL}}css/blueprint/plugins/fancy-type/screen.css" type="text/css" media="screen, projection" />
+  	<!--[if IE]><link rel="stylesheet" href="http://127.0.0.1:8000/static/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+		<link rel="stylesheet" href="{{STATIC_URL}}css/django-profile.css" type="text/css" media="screen, projection" />
+    {% block extracss %}{% endblock %}
+    
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="{{STATIC_URL}}anytime.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}anytime.css" />
+    {% block extrajs %}{% endblock %}
+		<meta name="robots" content="{% block robots %}index,follow{% endblock %}" />
+</head>
+
+<body>
+	<div class="container">
+		<div id="header">
+			<div class="span-16">
+			
+			
+				<h1><strong>{% trans "Digitization Project" %}</strong></h1>
+				<p>{% trans "App to record Digitization processing rate" %}</p>
+			</div>
+			<div class="span-8 last">
+				<ul class="hmenu large three">
+					
+					
+				</ul>
+			</div>
+		</div>
+		<hr />
+
+		{% block nav-main %}{% endblock %}
+		<!-- END navigation -->
+
+		<div id="columnwrap">
+			{% block columnwrap %}
+				<div id="content-main" class="span-22 prepend-1 append-1">
+				{% block content %}{% endblock %}
+				</div><!-- END content-main -->
+			{% endblock %}
+		</div><!-- END content -->
+	</div>
+</body>
+</html>
