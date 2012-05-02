@@ -213,17 +213,25 @@ def produceData(request):
     start = request.GET.get('start')
     end = request.GET.get('end')
     myList = []
+    totalHours = 0
+    totalPages = 0
+
     if name != 'all':
         a = ProcessingSession.objects.filter(user__username=name).filter(startTime__gte = start)
         c = ProcessingSession.objects.filter(user__username=name).filter(endTime__lte = end)
         b = a & c
         dict = None
+	
 
         for item in b:
             if item.endTime is not None:
 				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
+				totalHours = totalHours + item.endTime + item.startTime
+				totalPages = totalPages + item.pagesDone
             else:
 				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+				totalHours = totalHours + item.endTime + item.startTime
+                                totalPages = totalPages + item.pagesDone
             myList.append(dict)
     else:
         b = ProcessingSession.objects.all();
@@ -232,13 +240,19 @@ def produceData(request):
             us = item.user.username
             if item.endTime is not None:
 				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+				totalHours = totalHours + item.endTime + item.startTime
+                                totalPages = totalPages + item.pagesDone
             else:
 				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+				totalHours = totalHours + item.endTime + item.startTime
+                                totalPages = totalPages + item.pagesDone
             myList.append(dict)
 
     return render_to_response('data.html', {
                         'list': myList,
                         'user': name,
+			'totalHours':totalHours,
+			'totalPages':totalPages,
                  })
 def workGraph(request):
     stats = {'name': [], 'rate': []}
