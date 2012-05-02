@@ -27,7 +27,7 @@ class ProcessingSession(models.Model):
     book = models.ForeignKey(Book)
     user = models.ForeignKey(User)
     pagesDone = models.IntegerField()
-    comments = models.TextField()
+    comments = models.TextField(null = True, blank = True)
     task = models.CharField(max_length =4, choices = TYPES)
     operationComplete = models.NullBooleanField()
     startTime = models.DateTimeField('Time started book')
