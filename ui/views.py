@@ -213,8 +213,9 @@ def produceData(request):
     start = request.GET.get('start')
     end = request.GET.get('end')
     myList = []
-    totalHours = 0
     totalPages = 0
+    totalHours = 0
+    
 
     if name != 'all':
         a = ProcessingSession.objects.filter(user__username=name).filter(startTime__gte = start)
