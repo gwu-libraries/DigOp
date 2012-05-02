@@ -30,6 +30,7 @@ from django.template import Library, Node
 from django.contrib.messages import constants as messages
 from django.contrib import messages
 from django.core.context_processors import csrf
+from datetime import timedelta
 
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
@@ -227,11 +228,13 @@ def produceData(request):
         for item in b:
             if item.endTime is not None:
 				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
-				totalHours = totalHours + item.endTime + item.startTime
+				delta = item.endTime - item.startTime
+				totalHours = totalHours + ( (delta.days * 86400 + delta.seconds) / 3600.0 )
 				totalPages = totalPages + item.pagesDone
             else:
 				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
-				totalHours = totalHours + item.endTime + item.startTime
+				delta = item.endTime - item.startTime
+				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0)
                                 totalPages = totalPages + item.pagesDone
             myList.append(dict)
     else:
@@ -241,11 +244,13 @@ def produceData(request):
             us = item.user.username
             if item.endTime is not None:
 				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
-				totalHours = totalHours + item.endTime + item.startTime
+				delta = item.endTime - item.startTime
+				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
                                 totalPages = totalPages + item.pagesDone
             else:
 				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
-				totalHours = totalHours + item.endTime + item.startTime
+				delta = item.endTime - item.startTime
+				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
                                 totalPages = totalPages + item.pagesDone
             myList.append(dict)
 
