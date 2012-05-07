@@ -31,6 +31,7 @@ from django.contrib.messages import constants as messages
 from django.contrib import messages
 from django.core.context_processors import csrf
 from datetime import timedelta
+from django.conf import settings
 
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
@@ -144,7 +145,7 @@ def processBookForm(request):
             except Book.DoesNotExist:
                 book = None
             if book is None:
-                url='http://128.164.212.45:8080/BarcodeService/WSBarcodePages?wsdl'
+                url=settings.SERVER_URL
                 client = suds.client.Client(url)
                 pages = client.service.getPages(bar)
 		if pages is None:

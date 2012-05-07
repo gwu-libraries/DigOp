@@ -20,6 +20,9 @@ DATABASES = {
     }
 }
 
+#the url of the wsdl file of the web service
+SERVER_URL = 'http://128.164.212.45:8080/BarcodeService/WSBarcodePages?wsdl'
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
