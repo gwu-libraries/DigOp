@@ -145,8 +145,8 @@ def processBookForm(request):
             except Book.DoesNotExist:
                 book = None
             if book is None:
-                url=settings.SERVER_URL
-                client = suds.client.Client(url)
+
+                client = suds.client.Client(settings.SERVER_URL)
                 pages = client.service.getPages(bar)
 		if pages is None:
 		    pages=0
