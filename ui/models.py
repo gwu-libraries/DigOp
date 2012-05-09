@@ -62,11 +62,6 @@ class ProcessingForm(ModelForm):
 
     class Meta:
         model = ProcessingSession
-    #barcode = forms.CharField(max_length=20)
-    #pages = forms.CharField(max_length=20)
-    #comments = forms.CharField(max_length=100,required=False)
-    #openingDate = forms.DateTimeField(label='Start Time',initial=datetime.now() )
-    #closingDate = forms.DateTimeField(label='End Time',initial=datetime.now())
 
 
 class BookForm(forms.Form):
