@@ -16,11 +16,11 @@
 </ul>
 {% endif %}
 {%if user.is_superuser%}
-	<A HREF="../index/"> Home </A> <br>
-	<A HREF="../logout">Logout</A>
+	<A HREF="../indexPage/"> Home </A> <br>
+	<A HREF="../logoutUser">Logout</A>
 {%else%}
-<A HREF="../bookresult/"> Add Another Record </A> <br>
-<A HREF="../logout">Logout</A>
+<A HREF="../processBookForm/"> Add Another Record </A> <br>
+<A HREF="../logoutUser">Logout</A>
 {%endif%}
 {% endblock %}
 	

@@ -36,7 +36,7 @@
 {{ error }}
  
 {% endif %}
-<form action="../result/" method="post"> {% csrf_token %}
+<form action="../processProcessingForm/" method="post"> {% csrf_token %}
 <label for="id_book">{% trans "Book" %}</label>
 		<p>{{ form.book }}
 			{% if form.book.errors %}
