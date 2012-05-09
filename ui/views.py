@@ -104,22 +104,22 @@ def barcodePage(request):
 def barcodeReport(request):
 	if request.method == 'POST': # If the form has been submitted...
 		bar = request.POST['barcode']
-		dict = None
-		list = []
+		dictionary = None
+		values = []
 		try:
 			book = Book.objects.get(barcode=bar)
 		except Book.DoesNotExist:
 			messages.add_message(request, messages.ERROR, 'Barcode does not exist ')
 			return render_to_response('barcoderesult.html', {
-				'list' : list,
+				'list' : values,
 			},context_instance=RequestContext(request))
 		result = ProcessingSession.objects.filter(book=book)
 		for item in result:
-			dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime}
-			list.append(dict)
+			dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime}
+			values.append(dictionary)
 		messages.add_message(request, messages.SUCCESS, 'Results of Barcode '+ bar + ' are as follows: ')
 		return render_to_response('barcoderesult.html', {
-				'list' : list,
+				'list' : values,
         },context_instance=RequestContext(request))
 
 
@@ -224,37 +224,37 @@ def produceData(request):
         a = ProcessingSession.objects.filter(user__username=name).filter(startTime__gte = start)
         c = ProcessingSession.objects.filter(user__username=name).filter(endTime__lte = end)
         b = a & c
-        dict = None
+        dictionary = None
 	
 
         for item in b:
             if item.endTime is not None:
-				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
+				dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
 				delta = item.endTime - item.startTime
 				totalHours = totalHours + ( (delta.days * 86400 + delta.seconds) / 3600.0 )
 				totalPages = totalPages + item.pagesDone
             else:
-				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+				dictiionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
 				delta = item.endTime - item.startTime
 				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0)
                                 totalPages = totalPages + item.pagesDone
-            myList.append(dict)
+            myList.append(dictionary)
     else:
         b = ProcessingSession.objects.all();
-        dict = None
+        dictionary = None
         for item in b:
             us = item.user.username
             if item.endTime is not None:
-				dict = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+				dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
 				delta = item.endTime - item.startTime
 				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
                                 totalPages = totalPages + item.pagesDone
             else:
-				dict = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+				dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
 				delta = item.endTime - item.startTime
 				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
                                 totalPages = totalPages + item.pagesDone
-            myList.append(dict)
+            myList.append(dictionary)
 
     return render_to_response('data.html', {
                         'list': myList,
