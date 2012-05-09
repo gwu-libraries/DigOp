@@ -76,17 +76,18 @@ def login(request):
 @login_required
 def indexPage(request):
     form = BookForm()
+    
     if request.user.is_superuser == True:
         return render_to_response('admin_page.html', {
         },context_instance=RequestContext(request))
     else:
-        return render_to_response('logged_in.html', {
+        return render_to_response('getbarcode.html', {
                         'form' : form,
         },context_instance=RequestContext(request))
 
 def adminSessionData(request):
     form = BookForm()
-    return render_to_response('admin_session.html', {
+    return render_to_response('getbarcode.html', {
                         'form' : form,
             },context_instance=RequestContext(request))
 
