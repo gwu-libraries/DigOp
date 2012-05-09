@@ -58,7 +58,7 @@ def login(request):
             request.session['user_id'] = use
             if use is not None:
                 auth_login(request, use)
-                return HttpResponseRedirect('/index/')
+                return HttpResponseRedirect('/indexPage/')
             else: # Return a 'disabled account' error message
                 error = 'account disabled'
                 return errorHandle(error)
@@ -76,7 +76,7 @@ def login(request):
 @login_required
 def indexPage(request):
     form = BookForm()
-    
+
     if request.user.is_superuser == True:
         return render_to_response('admin_page.html', {
         },context_instance=RequestContext(request))
@@ -97,7 +97,7 @@ def showUsers(request):
             },context_instance=RequestContext(request))
 
 def barcodePage(request):
-	return render_to_response('getbarcode.html', {
+	return render_to_response('barcodereportform.html', {
 
             },context_instance=RequestContext(request))
 
@@ -218,14 +218,14 @@ def produceData(request):
     myList = []
     totalPages = 0
     totalHours = 0
-    
+
 
     if name != 'all':
         a = ProcessingSession.objects.filter(user__username=name).filter(startTime__gte = start)
         c = ProcessingSession.objects.filter(user__username=name).filter(endTime__lte = end)
         b = a & c
         dictionary = None
-	
+
 
         for item in b:
             if item.endTime is not None:
@@ -234,7 +234,7 @@ def produceData(request):
 				totalHours = totalHours + ( (delta.days * 86400 + delta.seconds) / 3600.0 )
 				totalPages = totalPages + item.pagesDone
             else:
-				dictiionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+				dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
 				delta = item.endTime - item.startTime
 				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0)
                                 totalPages = totalPages + item.pagesDone
