@@ -1,4 +1,4 @@
 django
 MySQL-python
 django-bootstrapped
-
+python-dateutil
