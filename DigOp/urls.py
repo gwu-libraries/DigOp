@@ -9,7 +9,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'project.views.home', name='home'),
     # url(r'^project/', include('project.foo.urls')),
-    url(r'^ui/$', 'ui.views.login'),
+    url(r'^$', 'ui.views.login'),
     url(r'^result/$', 'ui.views.processProcessingForm'),
     url(r'^bookresult/$', 'ui.views.processBookForm'),
     url(r'^showgraph/$', 'ui.views.workGraph'),
