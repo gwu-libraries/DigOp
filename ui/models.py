@@ -1,10 +1,12 @@
+from datetime import datetime
+from datetime import timedelta
+import time
+
 from django.db import models
 from django.contrib.auth.models import User, UserManager
 from django import forms
 from django.forms import ModelForm
-from datetime import datetime
-from datetime import timedelta
-import time
+
 # Create your models here.
 
 TYPES = (

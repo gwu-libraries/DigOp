@@ -1,37 +1,38 @@
-from django.contrib.auth import authenticate, login as auth_login
-from django.shortcuts import render_to_response
-from ui.models import LoginForm
-from ui.models import BookForm
-from ui.models import ProcessingForm
-from ui.models import Book
-from ui.models import ProcessingSession
-from django.contrib.auth.models import User, UserManager
 import urllib, urllib2
 import sys
-import suds
 from optparse import OptionParser
 from pprint import pprint
 from datetime import datetime
 from dateutil.parser import parse
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
+
+from django.contrib.auth import authenticate, login as auth_login
+from django.shortcuts import render_to_response
+from django.contrib.auth.models import User, UserManager
 from django.core.serializers import serialize
 from django.db.models.query import QuerySet
 from django.utils import simplejson
 from django.utils.safestring import mark_safe
 from django.template import Library
-from datetime import timedelta
 from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader
 from django.contrib.auth.decorators import login_required
-from dateutil.relativedelta import relativedelta
 from django.db.models import Sum, Avg
 from django.template import Library, Node
 from django.contrib.messages import constants as messages
 from django.contrib import messages
 from django.core.context_processors import csrf
-from datetime import timedelta
 from django.conf import settings
+import suds
+
+from ui.models import LoginForm
+from ui.models import BookForm
+from ui.models import ProcessingForm
+from ui.models import Book
+from ui.models import ProcessingSession
 
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
