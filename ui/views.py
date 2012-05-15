@@ -185,11 +185,17 @@ def processProcessingForm(request):
     if request.method == 'POST': # If the form has been submitted...
         form = ProcessingForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
+	    complete = False
             bookid = request.POST['book']
             bookObject = Book.objects.get(id = bookid)
             pages = request.POST['pagesDone']
             comm = request.POST['comments']
-            complete = request.POST['operationComplete']
+            if request.POST['operationComplete'] == '2':
+		complete = True
+            elif request.POST['operationComplete'] == '3':		
+		complete = False
+	    elif request.POST['operationComplete'] == '1':
+		complete = None
             openingDate = request.POST['startTime']
             closingDate = request.POST['endTime']
             tasktype = request.POST['task']
