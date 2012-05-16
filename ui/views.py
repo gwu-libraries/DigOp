@@ -97,6 +97,27 @@ def showUsers(request):
             'users':User.objects.all(),
             },context_instance=RequestContext(request))
 
+def showGraph(request):
+    userObjects = User.objects.all()
+    users = []
+    entryList = []
+    for u in userObjects:
+	users.append(u.username)
+	userrows = ProcessingSession.objects.filter(user=u)
+	pages = 0
+	for row in userrows: 
+	    pages = pages + row.pagesDone
+	while pages % 10 > 10:
+	    pages = pages % 10
+	entryList.append(pages)
+    #entryList.sort()
+
+    return render_to_response('showGraph.html', {
+            'users':users,
+	    'entries' : entryList,
+            },context_instance=RequestContext(request))
+
+
 def barcodePage(request):
 	return render_to_response('barcodereportform.html', {
 

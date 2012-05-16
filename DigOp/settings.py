@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'ui',
     'bootstrapped',
+    'GChartWrapper.charts',
 )
 
 # A sample logging configuration. The only tangible logging
