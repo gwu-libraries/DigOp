@@ -1,0 +1,31 @@
+{% extends "base_2col.html" %}
+{% load i18n %}
+
+
+{% block title %}{% trans "Home" %}{% endblock %}
+{% block content %}
+{%load bootstrap%}
+{%bootstrap_css%}
+
+
+
+<h1>Welcome {{ user.username}}</h1>
+
+
+{% load charts %}
+
+{% chart Pie3D entries  %}
+    {% title 'Work Done by each User' 00cc00 20 %}
+    {% label  users %}
+    {% color 00cc00 %}
+{% endchart %}
+<div class="span-8 last">
+				
+                                <ul class="hmenu large three">
+                                <li><a href="../logoutUser">{% trans "Logout" %}</a></li>
+                                <li><a Href="../indexPage">{% trans "Home" %}</a></li>
+                                </ul>
+                        </div>
+
+{% endblock %}
+ 
