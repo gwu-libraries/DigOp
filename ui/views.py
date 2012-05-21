@@ -127,7 +127,7 @@ def showGraph(request):
 	    'values':valuesList,
 	    'testValues':values,
 	    'entries' : entryList,
-	    'colorsList':colors[:len(valuesList)],
+	    'colors':colors[:len(valuesList)],
             },context_instance=RequestContext(request))
 
 
