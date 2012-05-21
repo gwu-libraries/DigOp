@@ -13,19 +13,19 @@
 
 
 {% load charts %}	
-{% chart VerticalBarGroup entries  encoding=text %}
+{% chart VerticalBarGroup entries encoding=text  %}
     {% title 'Work Done by each User' 110000 24 %}
     {%scale low high %}
-    {%color 'Blue' 'Red' 'Green' 'Black' 'Brown' 'Pink' 'Beige' 'Coral'%}
-    {%legend values%}
-    {% bar 50%}
+    {%color colorsList%}
+    {%legend values %}
     {% fill 'c' 'lg' 45 'cccccc' 0 'black' 1 %}
     {% fill 'bg' 's' 'cccccc' %}
-    {%label users %}
     {%size 600 500 %}
+    {% bar 50%}
+    {%label users%}
 {% endchart %}
 <div class="span-8 last">
-								
+				{{colorsList}}								
                                 <ul class="hmenu large three">
                                 <li><a href="../logoutUser">{% trans "Logout" %}</a></li>
                                 <li><a Href="../indexPage">{% trans "Home" %}</a></li>
@@ -33,4 +33,4 @@
                         </div>
 
 {% endblock %}
- 
+st 

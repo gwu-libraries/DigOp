@@ -100,7 +100,7 @@ def showUsers(request):
 def showGraph(request):
     userObjects = User.objects.all()
     users = []
-    colors= ['Blue','Red','Green','Black','Brown','Pink','Beige','Coral','Chocolate','Grey','Cyan','DarkRed','Violet','Gold','Magneta','Khaki','Ivory','Lavender','Lime','Yellow','GoldenRed','Navy','Olive','Orchid','Linen','Orange','Peru','Purple','Plum','RoyalBlue','SandyBrown','Salmon','Silver','Tan','Teal','Thistle','Tomato','Violet','Wheat','Turquoise','Sienna','PaleGreen','PaleVioletRed','OliveDrab','MintCream','MediumPurple','RosyBrown','SeaGreen','skyBlue','IndianRed','HotPink','GreenYellow','ForestGreen','DarkViolet','Aqua'] 
+    colors= ['Blue','Red','Green','Black','Brown','Pink','Beige','Coral','Chocolate','Grey','Cyan','DarkRed','Violet','Gold','Magneta','Khaki','Ivory','Lavender','Lime','Yellow',    'GoldenRed','Navy','Olive','orchid','Linen','Orange','Peru','Purple','Plum','RoyalBlue','SandyBrown','Salmon','Silver','Tan','Teal','Thistle','Tomato','Violet','Wheat','Turqu    oise','Sienna','PaleGreen','PaleVioletRed','OliveDrab','MintCream','MediumPurple','RosyBrown','SeaGreen','skyBlue','IndianRed','HotPink','GreenYellow','ForestGreen','DarkViol    et','Aqua'] 
     low = 100
     high = 0
     values = []
@@ -113,8 +113,6 @@ def showGraph(request):
 	pages = 0
 	for row in userrows: 
 	    pages = pages + row.pagesDone
-	#while pages % 10 > 10:
-	    #pages = pages % 10
 	if pages < low:
 	    low = pages
 	if pages > high:
@@ -122,8 +120,6 @@ def showGraph(request):
 	valuesList.append(u.username+'('+str(pages)+')')
 	entryList.append(pages)
     values.append(entryList)
-    #entryList.sort()
-    
     return render_to_response('showGraph.html', {
             'users':users,
 	    'low':low,
@@ -131,34 +127,33 @@ def showGraph(request):
 	    'values':valuesList,
 	    'testValues':values,
 	    'entries' : entryList,
-	    'colors':colors[:len(valuesList)],
+	    'colorsList':colors[:len(valuesList)],
             },context_instance=RequestContext(request))
 
 
 def barcodePage(request):
-	return render_to_response('barcodereportform.html', {
-
-            },context_instance=RequestContext(request))
+    return render_to_response('barcodereportform.html', {
+    },context_instance=RequestContext(request))
 
 def barcodeReport(request):
-	if request.method == 'POST': # If the form has been submitted...
-		bar = request.POST['barcode']
-		dictionary = None
-		values = []
-		try:
-			book = Book.objects.get(barcode=bar)
-		except Book.DoesNotExist:
-			messages.add_message(request, messages.ERROR, 'Barcode does not exist ')
-			return render_to_response('barcoderesult.html', {
-				'list' : values,
-			},context_instance=RequestContext(request))
-		result = ProcessingSession.objects.filter(book=book)
-		for item in result:
-			dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime}
-			values.append(dictionary)
-		messages.add_message(request, messages.SUCCESS, 'Results of Barcode '+ bar + ' are as follows: ')
-		return render_to_response('barcoderesult.html', {
-				'list' : values,
+    if request.method == 'POST': # If the form has been submitted...
+	bar = request.POST['barcode']
+	dictionary = None
+	values = []
+	try:
+	    book = Book.objects.get(barcode=bar)
+	except Book.DoesNotExist:
+	    messages.add_message(request, messages.ERROR, 'Barcode does not exist ')
+	    return render_to_response('barcoderesult.html', {
+	    'list' : values,
+	    },context_instance=RequestContext(request))
+	result = ProcessingSession.objects.filter(book=book)
+	for item in result:
+	    dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationCompl            ete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime}
+	    values.append(dictionary)
+	messages.add_message(request, messages.SUCCESS, 'Results of Barcode '+ bar + ' are as follows: ')
+	return render_to_response('barcoderesult.html', {
+	'list' : values,
         },context_instance=RequestContext(request))
 
 
@@ -198,11 +193,11 @@ def processBookForm(request):
                                                         'user':request.user,}),
 						},context_instance=RequestContext(request))
             else:
-				messages.add_message(request, messages.ERROR, 'Book object with barcode '+ bar + ' exists')
-				return render_to_response('processingForm.html', {
+		messages.add_message(request, messages.ERROR, 'Book object with barcode '+ bar + ' exists')
+		return render_to_response('processingForm.html', {
                         'form' : ProcessingForm(initial={'book': book,
                                                         'user':request.user,}),
-						},context_instance=RequestContext(request))
+			},context_instance=RequestContext(request))
         else:
             error = 'form is invalid'
             return errorHandle(error)
@@ -238,7 +233,7 @@ def processProcessingForm(request):
             closingDate = request.POST['endTime']
             tasktype = request.POST['task']
             bst = None
-            bst = ProcessingSession(book=Book.objects.get(id =request.POST['book']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete=complete,startTime=openingDate,endTime=closingDate,task=tasktype)
+            bst = ProcessingSession(book=Book.objects.get(id =request.POST['book']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete            =complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
             messages.add_message(request, messages.SUCCESS, 'record added successfully')
             return render_to_response('pages.html', {
@@ -274,15 +269,15 @@ def produceData(request):
 
         for item in b:
             if item.endTime is not None:
-				dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
-				delta = item.endTime - item.startTime
-				totalHours = totalHours + ( (delta.days * 86400 + delta.seconds) / 3600.0 )
-				totalPages = totalPages + item.pagesDone
+		dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComple		  te,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
+		delta = item.endTime - item.startTime
+		totalHours = totalHours + ( (delta.days * 86400 + delta.seconds) / 3600.0 )
+		totalPages = totalPages + item.pagesDone
             else:
-				dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
-				delta = item.endTime - item.startTime
-				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0)
-                                totalPages = totalPages + item.pagesDone
+		dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDo		  ne)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+		delta = item.endTime - item.startTime
+		totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0)
+                totalPages = totalPages + item.pagesDone
             myList.append(dictionary)
     else:
         b = ProcessingSession.objects.all();
@@ -290,15 +285,15 @@ def produceData(request):
         for item in b:
             us = item.user.username
             if item.endTime is not None:
-				dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
-				delta = item.endTime - item.startTime
-				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
-                                totalPages = totalPages + item.pagesDone
+		dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete		  ,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+		delta = item.endTime - item.startTime
+		totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
+                totalPages = totalPages + item.pagesDone
             else:
-				dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
-				delta = item.endTime - item.startTime
-				totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
-                                totalPages = totalPages + item.pagesDone
+		dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone		  )/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+		delta = item.endTime - item.startTime
+		totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
+                totalPages = totalPages + item.pagesDone
             myList.append(dictionary)
 
     return render_to_response('data.html', {
