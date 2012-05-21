@@ -149,7 +149,7 @@ def barcodeReport(request):
 	    },context_instance=RequestContext(request))
 	result = ProcessingSession.objects.filter(book=book)
 	for item in result:
-	    dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationCompl            ete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime}
+	    dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':item.user, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime}
 	    values.append(dictionary)
 	messages.add_message(request, messages.SUCCESS, 'Results of Barcode '+ bar + ' are as follows: ')
 	return render_to_response('barcoderesult.html', {
@@ -269,12 +269,12 @@ def produceData(request):
 
         for item in b:
             if item.endTime is not None:
-		dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComple		  te,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
+		dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
 		delta = item.endTime - item.startTime
 		totalHours = totalHours + ( (delta.days * 86400 + delta.seconds) / 3600.0 )
 		totalPages = totalPages + item.pagesDone
             else:
-		dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDo		  ne)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+		dictionary = {'barcode':item.book.barcode, 'duration':None, 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
 		delta = item.endTime - item.startTime
 		totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0)
                 totalPages = totalPages + item.pagesDone
