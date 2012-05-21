@@ -12,20 +12,23 @@
 <h1>Welcome {{ user.username}}</h1>
 
 
-{% load charts %}	
+{% load charts %}
 {% chart VerticalBarGroup entries encoding=text  %}
-    {% title 'Work Done by each User' 110000 24 %}
+    {%color colors%}
+    {% title 'Work Done by each User' 110000 24 %}    
     {%scale low high %}
-    {%color colorsList%}
     {%legend values %}
     {% fill 'c' 'lg' 45 'cccccc' 0 'black' 1 %}
     {% fill 'bg' 's' 'cccccc' %}
     {%size 600 500 %}
     {% bar 50%}
     {%label users%}
+
+	
+
 {% endchart %}
 <div class="span-8 last">
-				{{colorsList}}								
+													
                                 <ul class="hmenu large three">
                                 <li><a href="../logoutUser">{% trans "Logout" %}</a></li>
                                 <li><a Href="../indexPage">{% trans "Home" %}</a></li>
