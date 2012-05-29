@@ -2,3 +2,5 @@ django
 MySQL-python
 django-bootstrapped
 python-dateutil
+GChartWrapper
+south
