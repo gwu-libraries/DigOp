@@ -1,12 +1,12 @@
 from django.template import Library, Node
-from ui.models import Book
+from ui.models import Item
 from ui.models import ProcessingSession
 
 register = Library()
 
 class Barcodes(Node):
     def render(self, context):
-		books = Book.objects.all()
+		books = Item.objects.all()
 		barcodes = []
 		for book in books:
 			barcodes.append(book.barcode)

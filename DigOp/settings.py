@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'ui',
     'bootstrapped',
     'GChartWrapper.charts',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging

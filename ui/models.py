@@ -15,19 +15,25 @@ TYPES = (
     ('QA','QA'),
     )
 
+ITEMS = (
+    ('Book','Book'),
+    ('Map','Map'),
+    ('Microfilm','Microfilm'),
+    )
 
-
-class Book(models.Model):
+class Item(models.Model):
     barcode = models.CharField(max_length=50)
-    totalPages = models.IntegerField()
+    totalPages = models.IntegerField(blank = True )
+    itemType = models.CharField(max_length = 10, choices = ITEMS)
     def __unicode__(self):
         return self.barcode
 
 
 
 class ProcessingSession(models.Model):
-    book = models.ForeignKey(Book)
+    item = models.ForeignKey(Item)
     user = models.ForeignKey(User)
+    identifier = models.TextField(blank = True, default = "")
     pagesDone = models.IntegerField()
     comments = models.TextField(blank = True, default ="")
     task = models.CharField(max_length =4, choices = TYPES)
@@ -60,12 +66,17 @@ def make_custom_datefield(f,**kwargs):
 
 class ProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
+    class Meta:
+        model = ProcessingSession
+        excludes = ('identifier')
 
-
+class ItemProcessingForm(ModelForm):
+    formfield_callback = make_custom_datefield
     class Meta:
         model = ProcessingSession
 
-
-class BookForm(forms.Form):
-    barcode = forms.CharField(max_length=50)
+class BookForm(ModelForm):
+    class Meta:
+        model = Item
+        excludes = ('totalPages')
 

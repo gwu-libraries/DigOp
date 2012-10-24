@@ -36,7 +36,7 @@
 {{ error }}
  
 {% endif %}
-<form action="../processProcessingForm/" method="post"> {% csrf_token %}
+<form action="../itemProcessingForm/" method="post"> {% csrf_token %}
 <label for="id_item">{% trans "Item" %}</label>
 		<p>{{ form.item }}
 			{% if form.item.errors %}
@@ -47,6 +47,12 @@
 		<p>{{ form.user }}
 			{% if form.user.errors %}
 				<span class="quiet red"><br />* {{ form.user.errors|join:"; " }}</span>
+			{% endif %}
+		</p>
+<label for="id_identifier">{% trans "Identifier" %}</label>
+		<p>{{ form.identifier }}
+			{% if form.identifier.errors %}
+				<span class="quiet red"><br />* {{ form.identifier.errors|join:"; " }}</span>
 			{% endif %}
 		</p>
 <label for="id_pagesDone">{% trans "Images Done" %}</label>
