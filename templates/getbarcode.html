@@ -46,8 +46,17 @@ $("input#autocomplete").autocomplete({
 
 <label id="toLabel">Enter Barcode:</label>  
              
-                <input name="barcode" id="autocomplete" >  
-				<input type="submit" value="Submit" />
+                <p><input name="barcode" id="autocomplete" > </p> 
+       
+
+<label for="id_itemType">{% trans "ItemType" %}</label>
+                <p>{{ form.itemType }}
+                        {% if form.item.errors %}
+                                <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
+                        {% endif %}
+                </p>
+		<input type="submit" value="Submit" />
+
              
 </form>			
 
