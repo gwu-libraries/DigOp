@@ -1,3 +1,6 @@
 *.swp
 *.pyc
+migrations
 ENV
+
+*local_settings.py
