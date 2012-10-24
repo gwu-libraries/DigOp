@@ -12,16 +12,15 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'Production',                      # Or path to database file if using sqlite3.
-        'USER': 'user1',                      # Not used with sqlite3.
-        'PASSWORD': 'pass1',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
 
 #the url of the wsdl file of the web service
-SERVER_URL = 'http://128.164.212.45:8080/BarcodeService/WSBarcodePages?wsdl'
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -30,7 +29,7 @@ SERVER_URL = 'http://128.164.212.45:8080/BarcodeService/WSBarcodePages?wsdl'
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'America/New York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -168,3 +167,10 @@ LOGGING = {
         },
     }
 }
+
+# Be sure to create your own 'local_settings.py' file as described in README
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
