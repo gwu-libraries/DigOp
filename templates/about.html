@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+{% block title %}About GW findit{% endblock title %}
+
+{% block content %}
+
+<h1>About GW DigOps - this site</h1>
+
+<p>
+
+GW DigOps service provides a better answer to that all-important bottom line question: where does all the time go? DigOps is a time tracking application designed, engineered and customized for Digitization projects that needs to track, manage and reports the progress made in digitization of materials. By eliminating wasteful paper timesheets and replacing them with web-based, supervisor, project in-charge can see an the progress of any digital item 24x7. It drastically reduces tedious labor and endless headaches in keeping track of hours spent on a digital operation. 
+
+</p>
+
+<p>
+If you're interested in some of the technical details, have a look at
+the <a href="{% url 'api' %}">API</a> to this system.
+</p>
+
+{% endblock %}
