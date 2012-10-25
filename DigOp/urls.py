@@ -1,11 +1,8 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-<<<<<<< HEAD
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 
-=======
->>>>>>> 29f2542ccdc64227f36567084eb363df5b1b1dbe
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
