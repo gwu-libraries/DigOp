@@ -37,6 +37,7 @@ $("input#autocomplete").autocomplete({
 
 {%load bootstrap%}
 {%bootstrap_css%}
+<div>
 <div id="leftcolumn">
 {% if request.user.is_superuser %}
     {%include "navigation.html"%}
@@ -50,10 +51,13 @@ $("input#autocomplete").autocomplete({
 
 <form action="../processBookForm/" method="post"> {% csrf_token %}
 
-<label id="toLabel">Enter Barcode:</label>  
-             
-                <p><input name="barcode" id="autocomplete" > </p> 
-       
+<label id="id_taskType"> Task </label>
+<p>
+<select name="tasktype">
+<option value="QC">QC</option>
+<option value="QA">QA</option>
+</select>
+</p>
 
 <label for="id_itemType">{% trans "ItemType" %}</label>
                 <p>{{ form.itemType }}
@@ -61,10 +65,16 @@ $("input#autocomplete").autocomplete({
                                 <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
                         {% endif %}
                 </p>
+
+<label id="toLabel">Enter Barcode:</label>  
+             
+                <p><input name="barcode" id="autocomplete" > </p> 
+       
 		<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
 
              
 </form>		
+</div>
 </div>	
 
 {% endblock %}

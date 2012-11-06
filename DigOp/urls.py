@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^barcodePage/$', 'ui.views.barcodePage', name="barcodePage"),
     url(r'^barcodeReport/$', 'ui.views.barcodeReport', name="barcodeReport"),
     url(r'^adminSessionData/$', 'ui.views.adminSessionData', name="adminSessionData"),
+    url(r'^displayItemProcessingForm/$', 'ui.views.displayItemProcessingForm', name="displayItemProcessingForm"),
     url(r'^about/', TemplateView.as_view(template_name='about.html'), name="about"),
     url(r'^api/', TemplateView.as_view(template_name='api.html'), name="api"),
     # Uncomment the admin/doc line below to enable admin documentation:

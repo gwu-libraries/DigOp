@@ -94,6 +94,12 @@ def adminSessionData(request):
                         'form' : form,
             },context_instance=RequestContext(request))
 
+def displayItemProcessingForm(request):
+    form = BookForm()
+    return render(request,'process_item_form.html',{
+                        'form' : form,
+            })
+
 def showUsers(request):
     return render_to_response('admin_login.html', {
             'users':User.objects.all(),
