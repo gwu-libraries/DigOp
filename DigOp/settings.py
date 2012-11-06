@@ -29,11 +29,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-<<<<<<< HEAD
 TIME_ZONE = 'America/Chicago'
-=======
-TIME_ZONE = 'America/New York'
->>>>>>> 29f2542ccdc64227f36567084eb363df5b1b1dbe
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html

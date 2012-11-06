@@ -26,6 +26,7 @@ from django.contrib.messages import constants as messages
 from django.contrib import messages
 from django.core.context_processors import csrf
 from django.conf import settings
+from django.shortcuts import render
 import suds
 
 from ui.models import LoginForm
@@ -83,7 +84,7 @@ def indexPage(request):
         return render_to_response('admin_page.html', {
         },context_instance=RequestContext(request))
     else:
-        return render_to_response('getbarcode.html', {
+        return render_to_response('user_page.html', {
                         'form' : form,
         },context_instance=RequestContext(request))
 
@@ -384,6 +385,4 @@ def workGraph(request):
                  })
 def logoutUser(request):
     logout(request)
-    return render_to_response('logout.html', {
-
-                 })
+    return render(request,'logout.html')

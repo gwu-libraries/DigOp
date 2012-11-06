@@ -37,9 +37,15 @@ $("input#autocomplete").autocomplete({
 
 {%load bootstrap%}
 {%bootstrap_css%}
+<div id="leftcolumn">
+{% if request.user.is_superuser %}
+    {%include "navigation.html"%}
+{%else%}
+    {%include "user_navigation.html"%}
+{%endif%}
+</div>
 
-
-
+<div id="contentcolumn">
 <h1>Welcome {{ user.username}}</h1>
 
 <form action="../processBookForm/" method="post"> {% csrf_token %}
@@ -55,9 +61,10 @@ $("input#autocomplete").autocomplete({
                                 <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
                         {% endif %}
                 </p>
-		<input type="submit" value="Submit" />
+		<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
 
              
-</form>			
+</form>		
+</div>	
 
 {% endblock %}

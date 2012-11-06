@@ -105,9 +105,9 @@ input[type=submit], button {
 #libheader a:visited {color:#fff;}
 #libheader a:hover {color:#fff; text-decoration:underline;} 
 
-.libheader-link { font-size:.9em; padding-top:.6em; margin-left:1em;}
-.libheader-liblink { font-size: 1.1em; padding-top:.3em; margin-right:2em; margin-left:.5em;}
-.libheader-libbutton {float:right;padding-top:.3em; margin-right:3em; margin-left:1em;}
+.libheader-link {float:left; font-size:.9em; padding-top:.6em; margin-left:1em;}
+.libheader-liblink {float:left; font-size: 1.1em; padding-top:.3em; margin-right:3em; margin-left:.5em;}
+.libheader-libbutton { }
 .libheader-logo {float:right; overflow:hidden; height:2em; margin-right:.5em;}
 .libfooter-text {margin: 0 .5em; font-size:.7em; padding-top:.75em; overflow:hidden;}
 

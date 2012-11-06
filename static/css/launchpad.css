@@ -111,3 +111,63 @@ td {
 footer {
     margin-top: 3em;
 }
+
+#navigation {
+    font-size:0.75em; width:210px;
+}
+
+#navigation ul {
+    margin:0px; padding:0px;
+}
+
+ul.top-level {
+   background: #fff;
+   border: solid;
+   border-width: 1px;
+   border-color: ##03314b;
+   width: 198px;
+}
+
+ul.top-level li {
+    border-bottom: #fff solid;
+    border-top: #fff solid;
+    border-width: 1px;
+    list-style-type: none;
+}
+
+#navigation a {
+    color: #00f;
+    cursor: pointer;
+    display:block;
+    height:25px;
+    line-height: 25px;
+    text-indent: 10px;
+    text-decoration:none;
+    font-size: medium;
+    width:100%;
+}
+
+#navigation a:hover{
+    text-decoration:underline;
+}
+
+#navigation li:hover {
+    background: #fff;
+    position: relative;
+}
+
+#contentwrapper{
+   float: left;
+   width: 100%;
+
+}
+
+#contentcolumn{
+   margin-left: 200px; /*Set left margin to LeftColumnWidth*/
+}
+
+#leftcolumn{
+   float: left;
+   width: 200px; /*Width of left column*/
+   background-color: #03314b;
+}
