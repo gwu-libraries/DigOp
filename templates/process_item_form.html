@@ -47,13 +47,13 @@ $("input#autocomplete").autocomplete({
 </div>
 
 <div id="contentcolumn">
-<h1> Scan New Item </h1>
+<h1> Process an Item </h1>
 
-<form action="../processBookForm/" method="post"> {% csrf_token %}
+<form action="../processItemForm/" method="post"> {% csrf_token %}
 
 <label id="id_taskType"> Task </label>
 <p>
-<select name="tasktype">
+<select name="taskType">
 <option value="QC">QC</option>
 <option value="QA">QA</option>
 </select>

@@ -1,7 +1,7 @@
 {% extends "base_2col.html" %}
 
 
-{% block extrajs %}
+{% block javascript_extra %}
 
 
 <script src="{{STATIC_URL}}jquery.js"></script>
@@ -11,7 +11,7 @@
         $( ".AnyTime_picker" ).AnyTime_picker();
     });
 </script>
-{% endblock %}
+{% endblock javascript_extra%}
 {% load i18n %}
 
 {% block title %}{% trans "Processing Sesssion Form" %}{% endblock %}
@@ -49,6 +49,37 @@
 				<span class="quiet red"><br />* {{ form.user.errors|join:"; " }}</span>
 			{% endif %}
 		</p>
+<label for="id_itemtype">{% trans "Item Type" %}</label>
+
+    {%if itemType == "Book"%}  
+        <p><select name= "itemType">
+           <option value="Book" selected="selected">Book</option>
+           <option value="Map" disabled="disabled">Map</option>
+           <option value="MicroFilm" disabled="disabled">Microfilm</option>
+           </select>
+        </p>
+    {%elif itemType == "Map"%}
+        <p><select name= "itemType">
+           <option value="Book" disabled="disabled">Book</option>
+           <option value="Map" selected="selected">Map</option>
+           <option value="MicroFilm" disabled="disabled">Microfilm</option>
+           </select>
+        </p>
+    {%else%}
+        <p><select name= "itemType">
+           <option value="Book" disabled="disabled">Book</option>
+           <option value="Map" disabled="disabled">Map</option>
+           <option value="Microfilm" selected="selected">Microfilm</option>
+           </select>
+        </p>
+    {%endif%}
+
+<label for="id_task">{% trans "Task Type" %}</label>
+		<p>{{ form.task }}
+			{% if form.task.errors %}
+				<span class="quiet red"><br />* {{ form.task.errors|join:"; " }}</span>
+			{% endif %}
+		</p>
 <label for="id_identifier">{% trans "Identifier" %}</label>
 		<p>{{ form.identifier }}
 			{% if form.identifier.errors %}
@@ -59,12 +90,6 @@
 		<p>{{ form.pagesDone }}
 			{% if form.pagesDone.errors %}
 				<span class="quiet red"><br />* {{ form.pagesDone.errors|join:"; " }}</span>
-			{% endif %}
-		</p>
-<label for="id_task">{% trans "Task Type" %}</label>
-		<p>{{ form.task }}
-			{% if form.task.errors %}
-				<span class="quiet red"><br />* {{ form.task.errors|join:"; " }}</span>
 			{% endif %}
 		</p>
 <label for="id_operationComplete">{% trans "Task Complete" %}</label>

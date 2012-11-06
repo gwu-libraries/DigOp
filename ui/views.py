@@ -170,6 +170,93 @@ def reportMenu(request):
 
             },context_instance=RequestContext(request))
 
+def processItemForm(request):
+    use=request.user
+    def errorHandle(error):
+        form = BookForm()
+        return render_to_response('getbarcode.html', {
+            'error' : error,
+            'form' : form,
+        },context_instance=RequestContext(request))
+    if request.method == 'POST': # If the form has been submitted...
+        if request.POST['itemType'] in ['Book','Map']:
+            book = None
+            form = BookForm(request.POST) # A form bound to the POST data
+            if form.is_valid(): # All validation rules pass
+                bar = request.POST['barcode']
+                try:
+                    book = Item.objects.get(barcode=bar)
+                except Item.DoesNotExist:
+                    book = None
+                if book is None:
+                    client = suds.client.Client(settings.SERVER_URL)
+                    pages = client.service.getPages(bar)
+		    if pages is None:
+		        pages=0
+                    book = Item.objects.create(barcode=bar, totalPages=pages, itemType= request.POST['itemType'])
+                    book.save()
+                    messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')
+                    return render_to_response('processingForm.html', {
+                        'form' : ProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        'task':request.POST['taskType'], 
+                                                        }),
+                                 'itemType': request.POST['itemType'],
+						},context_instance=RequestContext(request))
+                else:
+		    messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
+		    return render_to_response('processingForm.html', {
+                        'form' : ProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        'task':request.POST['taskType'], 
+                                                        }),
+                                 'itemType': request.POST['itemType'],
+			},context_instance=RequestContext(request))
+            else:
+                error = 'form is invalid'
+                return errorHandle(error)
+        else:
+            book = None
+            form = BookForm(request.POST) # A form bound to the POST data
+            if form.is_valid(): # All validation rules pass
+                bar = request.POST['barcode']
+                try:
+                    book = Item.objects.get(barcode=bar)
+                except Item.DoesNotExist:
+                    book = None
+                if book is None:
+                    client = suds.client.Client(settings.SERVER_URL)
+                    pages = client.service.getPages(bar)
+                    if pages is None:
+                        pages=0
+                    book = Item.objects.create(barcode=bar, totalPages=pages, itemType=request.POST['itemType'])
+                    book.save()
+                    messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')
+                    return render_to_response('itemProcessingForm.html', {
+                        'form' : ItemProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        'task':request.POST['taskType'],
+                                                        }),
+                                 'itemType': request.POST['itemType'],
+                                                },context_instance=RequestContext(request))
+                else:
+                    messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
+                    return render_to_response('itemProcessingForm.html', {
+                        'form' : ItemProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        'task':request.POST['taskType'],
+                                                        }),
+                                 'itemType': request.POST['itemType'],
+                        },context_instance=RequestContext(request))
+            else:
+                error = 'form is invalid'
+                return errorHandle(error)
+    else:
+        form = BookForm() # An unbound form
+        return render_to_response('getbarcode.html', {
+            'form': form,
+        },context_instance=RequestContext(request))
+
 def processBookForm(request):
     use=request.user
     def errorHandle(error):
@@ -193,18 +280,22 @@ def processBookForm(request):
                     pages = client.service.getPages(bar)
 		    if pages is None:
 		        pages=0
-                    book = Item.objects.create(barcode=bar, totalPages=pages)
+                    book = Item.objects.create(barcode=bar, totalPages=pages, itemType= request.POST['itemType'])
                     book.save()
                     messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')
                     return render_to_response('processingForm.html', {
-                        'form' : ProcessingForm(initial={'book': book,
-                                                        'user':request.user,}),
+                        'form' : ProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        'task':'Scan', 
+                                                        }),
+                                 'itemType': request.POST['itemType'],
 						},context_instance=RequestContext(request))
                 else:
 		    messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
 		    return render_to_response('processingForm.html', {
-                        'form' : ProcessingForm(initial={'book': book,
-                                                        'user':request.user,}),
+                        'form' : ProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        }),
 			},context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
@@ -223,18 +314,22 @@ def processBookForm(request):
                     pages = client.service.getPages(bar)
                     if pages is None:
                         pages=0
-                    book = Item.objects.create(barcode=bar, totalPages=pages)
+                    book = Item.objects.create(barcode=bar, totalPages=pages, itemType=request.POST['itemType'])
                     book.save()
                     messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')
                     return render_to_response('itemProcessingForm.html', {
-                        'form' : ItemProcessingForm(initial={'book': book,
-                                                        'user':request.user,}),
+                        'form' : ItemProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        'task':'Scan',
+                                                        }),
+                                 'itemType': request.POST['itemType'],
                                                 },context_instance=RequestContext(request))
                 else:
                     messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
                     return render_to_response('itemProcessingForm.html', {
-                        'form' : ItemProcessingForm(initial={'book': book,
-                                                        'user':request.user,}),
+                        'form' : ItemProcessingForm(initial={'item': book,
+                                                        'user':request.user,
+                                                        }),
                         },context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
