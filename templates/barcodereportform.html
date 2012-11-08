@@ -38,9 +38,11 @@ $("input#autocomplete").autocomplete({
 {%load bootstrap%}
 {%bootstrap_css%}
 
-
-
-<h1>Welcome {{ user.username}}</h1>
+<div id="leftcolumn">
+{%include "navigation.html"%}
+</div>
+<div id="contentcolumn">
+<div id="contentcolumn">
 
 <form action="../barcodeReport/" method="post"> {% csrf_token %}
 
@@ -50,5 +52,6 @@ $("input#autocomplete").autocomplete({
 				<input type="submit" value="Submit" />
              
 </form>			
-
+</div>
+</div>
 {% endblock %}

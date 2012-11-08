@@ -164,6 +164,7 @@ ul.top-level li {
 
 #contentcolumn{
    margin-left: 200px; /*Set left margin to LeftColumnWidth*/
+   min-height: 200px;
 }
 
 #leftcolumn{
