@@ -368,12 +368,17 @@ def processProcessingForm(request):
             bst = None
             bst = ProcessingSession(item=Item.objects.get(id =request.POST['item']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete            =complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
-            messages.add_message(request, messages.SUCCESS, 'record added successfully')
-            return render_to_response('pages.html', {
-                 },context_instance=RequestContext(request)
-                 )
-
-
+            if tasktype == 'QC' or tasktype == 'QA':
+                form = BookForm()
+                return render_to_response('process_item_form.html', {
+                    'form': form,
+                },context_instance=RequestContext(request))
+            else:
+                form = BookForm()
+                messages.add_message(request, messages.SUCCESS, 'record added successfully')
+                return render_to_response('getbarcode.html', {
+                    'form': form,
+                },context_instance=RequestContext(request))
         else:
             error = 'form is invalid'
             return errorHandle(error)

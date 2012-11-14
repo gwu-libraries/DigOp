@@ -21,18 +21,21 @@
 {%load bootstrap%}
 {%bootstrap_css%}
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}><h2>{{ message }}</h2></li>
-    {% endfor %}
-</ul>
-{% endif %}
 {% if error %}
  
 {{ error }}
  
 {% endif %}
+<div id="leftcolumn">
+{% if request.user.is_superuser %}
+    {%include "navigation.html"%}
+{%else%}
+    {%include "user_navigation.html"%}
+{%endif%}
+</div>
+
+<div id="contentcolumn">
+
 <form action="../processProcessingForm/" method="post"> {% csrf_token %}
 <label for="id_item">{% trans "Item" %}</label>
 		<p>{{ form.item }}
@@ -111,4 +114,5 @@
 		
 <input type="submit" value="Submit" />
 </form>
+</div>
 {% endblock %}
