@@ -467,7 +467,7 @@ def produceData(request):
 
         for item in b:
             if item.endTime is not None:
-		dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
+		dictionary = {'barcode':item.item.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':name, 'isFinished':item.operationComplete,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments }
 		delta = item.endTime - item.startTime
 		totalHours = totalHours + ( (delta.days * 86400 + delta.seconds) / 3600.0 )
 		totalPages = totalPages + item.pagesDone
@@ -483,7 +483,7 @@ def produceData(request):
         for item in b:
             us = item.user.username
             if item.endTime is not None:
-		dictionary = {'barcode':item.book.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete		  ,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
+		dictionary = {'barcode':item.item.barcode, 'duration':str(item.endTime - item.startTime), 'objects':item.pagesDone, 'user':us, 'isFinished':item.operationComplete		  ,'rate':int(int(item.pagesDone)/(item.duration()/(60*60))),'task':item.task,'startTime':item.startTime,'comments':item.comments  }
 		delta = item.endTime - item.startTime
 		totalHours = totalHours + ( ( delta.days * 86400 + delta.seconds ) / 3600.0 )
                 totalPages = totalPages + item.pagesDone
@@ -496,10 +496,11 @@ def produceData(request):
 
     return render_to_response('data.html', {
                         'list': myList,
-                        'user': name,
+                        'username': name,
 			'totalHours':totalHours,
 			'totalPages':totalPages,
-                 })
+                 },context_instance=RequestContext(request))
+
 
 @login_required
 def workGraph(request):
@@ -507,7 +508,7 @@ def workGraph(request):
     return render_to_response('data.html', {
                         'list': myList,
                         'user': name,
-                 })
+                 },context_instance=RequestContext(request))
 
 def logoutUser(request):
     logout(request)

@@ -9,8 +9,17 @@
 {%load bootstrap%}
 {%bootstrap_css%}
 
+ <div id="leftcolumn">
+    {% if request.user.is_superuser %}
+        {%include "navigation.html"%}
+    {%else%}
+        {%include "user_navigation.html"%}
+    {%endif%}
+  </div>
 
-<h2>printing results for user {{user}}</h2>
+  <div id="contentcolumn">
+
+<h2>printing results for user {{username}}</h2>
 
 <Table >
 
@@ -48,12 +57,9 @@
 	<td>{{totalHours}} Hours		</td>
 	<td>{{totalPages}}		</td>
 	</tr>
-<div class="span-8 last">
-				<ul class="hmenu large three">
-				<li><a href="../logoutUser">{% trans "Logout" %}</a></li>
-				<li><a Href="../indexPage">{% trans "Home" %}</a></li>
-				</ul>
-			</div>
+</table>
+
+</div>
 {% endblock %}
 
 
