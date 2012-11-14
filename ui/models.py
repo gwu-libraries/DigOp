@@ -33,7 +33,7 @@ class Item(models.Model):
 class ProcessingSession(models.Model):
     item = models.ForeignKey(Item)
     user = models.ForeignKey(User)
-    identifier = models.TextField(blank = True, default = "")
+    identifier = models.CharField(max_length=30, blank = True, default = "")
     pagesDone = models.IntegerField()
     comments = models.TextField(blank = True, default ="")
     task = models.CharField(max_length =4, choices = TYPES)

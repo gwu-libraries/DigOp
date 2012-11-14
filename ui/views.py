@@ -424,10 +424,19 @@ def itemProcessingForm(request):
             bst = None
             bst = ProcessingSession(item=Item.objects.get(id =request.POST['item']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete            =complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
-            messages.add_message(request, messages.SUCCESS, 'record added successfully')
-            return render_to_response('pages.html', {
+            if tasktype == 'Scan':
+                form = BookForm()
+                messages.add_message(request, messages.SUCCESS, 'record added successfully')
+                return render_to_response('getbarcode.html', {
+                    'form': form,
                  },context_instance=RequestContext(request)
                  )
+            else:
+                form = BookForm()
+                return render_to_response('process_item_form.html', {
+                    'form': form,
+                },context_instance=RequestContext(request))
+
 
 
         else:
