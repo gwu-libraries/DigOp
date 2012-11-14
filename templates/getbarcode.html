@@ -37,35 +37,34 @@ $("input#autocomplete").autocomplete({
 
 {%load bootstrap%}
 {%bootstrap_css%}
-<div id="leftcolumn">
-{% if request.user.is_superuser %}
-    {%include "navigation.html"%}
-{%else%}
-    {%include "user_navigation.html"%}
-{%endif%}
-</div>
+  <div id="leftcolumn">
+    {% if request.user.is_superuser %}
+        {%include "navigation.html"%}
+    {%else%}
+        {%include "user_navigation.html"%}
+    {%endif%}
+  </div>
 
-<div id="contentcolumn">
+  <div id="contentcolumn">
 
-<h1> Scan New Item </h1>
+    <h1> Scan New Item </h1>
 
-<form action="../processBookForm/" method="post"> {% csrf_token %}
+    <form action="../processBookForm/" method="post"> {% csrf_token %}
 
-<label id="toLabel">Enter Barcode:</label>  
+      <label id="toLabel">Enter Barcode:</label>  
              
-                <p><input name="barcode" id="autocomplete" > </p> 
+      <p><input name="barcode" id="autocomplete" > </p> 
        
-
-<label for="id_itemType">{% trans "ItemType" %}</label>
-                <p>{{ form.itemType }}
-                        {% if form.item.errors %}
-                                <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
-                        {% endif %}
-                </p>
-		<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
+      <label for="id_itemType">{% trans "ItemType" %}</label>
+      <p>{{ form.itemType }}
+    {% if form.item.errors %}
+      <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
+    {% endif %}
+      </p>
+      <input type="submit" value="Submit" style="position:relative;left: 30%;"/>
 
              
-</form>		
-</div>	
+    </form>		
+  </div>	
 
 {% endblock %}

@@ -79,32 +79,35 @@ def login(request):
 @login_required
 def indexPage(request):
     form = BookForm()
-
     if request.user.is_superuser == True:
         return render_to_response('admin_page.html', {
         },context_instance=RequestContext(request))
     else:
         return render_to_response('user_page.html', {
-                        'form' : form,
+                    'form' : form,
         },context_instance=RequestContext(request))
 
+@login_required
 def adminSessionData(request):
     form = BookForm()
     return render_to_response('getbarcode.html', {
                         'form' : form,
             },context_instance=RequestContext(request))
 
+@login_required
 def displayItemProcessingForm(request):
     form = BookForm()
     return render(request,'process_item_form.html',{
                         'form' : form,
             })
 
+@login_required
 def showUsers(request):
     return render_to_response('admin_login.html', {
             'users':User.objects.all(),
             },context_instance=RequestContext(request))
 
+@login_required
 def showGraph(request):
     userObjects = User.objects.all()
     users = []
@@ -138,11 +141,12 @@ def showGraph(request):
 	    'colors':colors[:len(valuesList)],
             },context_instance=RequestContext(request))
 
-
+@login_required
 def barcodePage(request):
     return render_to_response('barcodereportform.html', {
     },context_instance=RequestContext(request))
 
+@login_required
 def barcodeReport(request):
     if request.method == 'POST': # If the form has been submitted...
 	bar = request.POST['barcode']
@@ -164,12 +168,13 @@ def barcodeReport(request):
 	'list' : values,
         },context_instance=RequestContext(request))
 
-
+@login_required
 def reportMenu(request):
     return render_to_response('reportmenu.html', {
 
             },context_instance=RequestContext(request))
 
+@login_required
 def processItemForm(request):
     use=request.user
     def errorHandle(error):
@@ -257,6 +262,7 @@ def processItemForm(request):
             'form': form,
         },context_instance=RequestContext(request))
 
+@login_required
 def processBookForm(request):
     use=request.user
     def errorHandle(error):
@@ -340,6 +346,7 @@ def processBookForm(request):
             'form': form,
         },context_instance=RequestContext(request))
 
+@login_required
 def processProcessingForm(request):
     use=request.user
     def errorHandle(error):
@@ -388,6 +395,7 @@ def processProcessingForm(request):
             'form': form,
         },context_instance=RequestContext(request))
 
+@login_required
 def itemProcessingForm(request):
     use=request.user
     def errorHandle(error):
@@ -431,7 +439,7 @@ def itemProcessingForm(request):
             'form' : form,
         },context_instance=RequestContext(request))
 
-
+@login_required
 def produceData(request):
     name = request.GET.get('user')
     start = request.GET.get('start')
@@ -483,12 +491,15 @@ def produceData(request):
 			'totalHours':totalHours,
 			'totalPages':totalPages,
                  })
+
+@login_required
 def workGraph(request):
     stats = {'name': [], 'rate': []}
     return render_to_response('data.html', {
                         'list': myList,
                         'user': name,
                  })
+
 def logoutUser(request):
     logout(request)
     return render(request,'logout.html')

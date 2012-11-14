@@ -1,7 +1,8 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls.defaults import *
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
+from django.conf.urls.defaults import *
 
 
 # Uncomment the next two lines to enable the admin:
@@ -13,6 +14,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'project.views.home', name='home'),
     # url(r'^project/', include('project.foo.urls')),
     url(r'^$', 'ui.views.login', name="login"),
+    url(r'^login/$', 'ui.views.login', name="login"),
     url(r'^processProcessingForm/$', 'ui.views.processProcessingForm', name="processProcessingForm"),
     url(r'^itemProcessingForm/$', 'ui.views.itemProcessingForm', name="itemProcessingForm"),
     url(r'^processBookForm/$', 'ui.views.processBookForm', name="processBookForm"),
@@ -31,8 +33,6 @@ urlpatterns = patterns('',
     url(r'^api/', TemplateView.as_view(template_name='api.html'), name="api"),
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    
-
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )
