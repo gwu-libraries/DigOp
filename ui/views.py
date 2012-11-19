@@ -84,7 +84,6 @@ def indexPage(request):
         },context_instance=RequestContext(request))
     else:
         return render_to_response('user_page.html', {
-                    'form' : form,
         },context_instance=RequestContext(request))
 
 @login_required
@@ -266,7 +265,7 @@ def processItemForm(request):
 def processBookForm(request):
     use=request.user
     def errorHandle(error):
-        form = BookForm()
+        form = BookForm(request.POST)
         return render_to_response('getbarcode.html', {
             'error' : error,
             'form' : form,
@@ -350,7 +349,7 @@ def processBookForm(request):
 def processProcessingForm(request):
     use=request.user
     def errorHandle(error):
-        form = ProcessingForm()
+        form = ProcessingForm(request.POST)
         return render_to_response('processingForm.html', {
             'error' : error,
             'form' : form,
@@ -399,7 +398,7 @@ def processProcessingForm(request):
 def itemProcessingForm(request):
     use=request.user
     def errorHandle(error):
-        form = ItemProcessingForm()
+        form = ItemProcessingForm(request.POST)
         return render_to_response('itemProcessingForm.html', {
             'error' : error,
             'form' : form,

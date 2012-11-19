@@ -3,9 +3,10 @@ from datetime import timedelta
 import time
 
 from django.db import models
-from django.contrib.auth.models import User, UserManager
 from django import forms
+from django.contrib.auth.models import User, UserManager
 from django.forms import ModelForm
+
 
 # Create your models here.
 
@@ -58,25 +59,32 @@ class LoginForm(forms.Form):
         js = ("static/jquery.js")
 
 def make_custom_datefield(f,**kwargs):
-    formfield = f.formfield()
+    formfield = f.formfield(**kwargs)
     if isinstance(f, models.DateTimeField):
         formfield.widget.format = '%Y-%m-%d %H:%M:%S'
         formfield.widget.attrs.update({'class':'AnyTime_picker', 'readonly':'true'})
+    return formfield
+
+def make_custom_charfield(f,**kwargs):
+    formfield = f.formfield(**kwargs)
+    if isinstance(f, models.CharField):
+        formfield.widget.attrs.update({'id':'autocomplete'})
     return formfield
 
 class ProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
     class Meta:
         model = ProcessingSession
-        excludes = ('identifier')
+        exclude = ('identifier',)
 
 class ItemProcessingForm(ModelForm):
-    formfield_callback = make_custom_datefield
+    #formfield_callback = make_custom_datefield
     class Meta:
         model = ProcessingSession
 
 class BookForm(ModelForm):
+    formfield_callback = make_custom_charfield
     class Meta:
         model = Item
-        excludes = ('totalPages')
+        exclude = ('totalPages',)
 

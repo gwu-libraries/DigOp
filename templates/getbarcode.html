@@ -3,9 +3,9 @@
 
 {% load i18n %}
 {% load barcode_tags %}
+{% load live_validation%}
 
-
-{% block extrajs %}
+{% block javascript_extra %}
 
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
@@ -29,7 +29,7 @@ $("input#autocomplete").autocomplete({
 });
 	});
 </script>
-{%endblock%}
+{%endblock javascript_extra%}
 {% block title %}{% trans "Search Barcode" %}{% endblock %}
 {% block robots %}noindex,nofollow{% endblock %}
 
@@ -48,23 +48,10 @@ $("input#autocomplete").autocomplete({
   <div id="contentcolumn">
 
     <h1> Scan New Item </h1>
-
-    <form action="../processBookForm/" method="post"> {% csrf_token %}
-
-      <label id="toLabel">Enter Barcode:</label>  
-             
-      <p><input name="barcode" id="autocomplete" > </p> 
-       
-      <label for="id_itemType">{% trans "ItemType" %}</label>
-      <p>{{ form.itemType }}
-    {% if form.item.errors %}
-      <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
-    {% endif %}
-      </p>
-      <input type="submit" value="Submit" style="position:relative;left: 30%;"/>
-
-             
-    </form>		
+<form action="../processBookForm/" method="post"> {% csrf_token %}
+ {{ form.as_p }}
+<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
+</form>
   </div>	
 
 {% endblock %}

@@ -37,18 +37,6 @@
 <div id="contentcolumn">
 
 <form action="../processProcessingForm/" method="post"> {% csrf_token %}
-<label for="id_item">{% trans "Item" %}</label>
-		<p>{{ form.item }}
-			{% if form.item.errors %}
-				<span class="quiet red"><br />* {{ form.item.errors|join:"; " }}</span>
-			{% endif %}
-		</p>
-<label for="id_user">{% trans "User" %}</label>
-		<p>{{ form.user }}
-			{% if form.user.errors %}
-				<span class="quiet red"><br />* {{ form.user.errors|join:"; " }}</span>
-			{% endif %}
-		</p>
 <label for="id_itemtype">{% trans "Item Type" %}</label>
 
     {%if itemType == "Book"%}  
@@ -73,43 +61,7 @@
            </select>
         </p>
     {%endif%}
-
-
-
-<label for="id_task">{% trans "Task Type" %}</label>
-		<p>{{ form.task }}
-			{% if form.task.errors %}
-				<span class="quiet red"><br />* {{ form.task.errors|join:"; " }}</span>
-			{% endif %}
-		</p>
-
-<label for="id_pagesDone">{% trans "Images Done" %}</label>
-		<p>{{ form.pagesDone }}
-			{% if form.pagesDone.errors %}
-				<span class="quiet red"><br />* {{ form.pagesDone.errors|join:"; " }}</span>
-			{% endif %}
-		</p>
-<label for="id_operationComplete">{% trans "Task Complete" %}</label>
-		<p>{{ form.operationComplete }}
-			{% if form.operationComplete.errors %}
-				<span class="quiet red"><br />* {{ form.operationComplete.errors|join:"; " }}</span>
-			{% endif %}
-		</p>
-<label for="id_comments">{% trans "Comments" %}</label>
-		<p>{{ form.comments }}
-			{% if form.comments.errors %}
-				<span class="quiet red"><br />* {{ form.comments.errors|join:"; " }}</span>
-			{% endif %}
-		</p>
-<label for="id_startTime">{% trans "Book Start Time" %}</label>
-		<p>
-		<input id="id_startTime" readonly="true" type="text" class="AnyTime_picker" name="startTime" />
-		</p>
-<label for="id_endTime">{% trans "Book Finish Time" %}</label>
-<p>
-		<input id="id_endTime" readonly="true" type="text" class="AnyTime_picker" name="endTime" />
-		</p>
-
+{{form.as_p}}
 		
 		
 <input type="submit" value="Submit" />
