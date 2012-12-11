@@ -206,6 +206,7 @@ def processItemForm(request):
                                                         'task':request.POST['taskType'], 
                                                         }),
                                  'itemType': request.POST['itemType'],
+                                 'task': request.POST['taskType'],
 						},context_instance=RequestContext(request))
                 else:
 		    messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
@@ -215,6 +216,7 @@ def processItemForm(request):
                                                         'task':request.POST['taskType'], 
                                                         }),
                                  'itemType': request.POST['itemType'],
+                                 'task': request.POST['taskType'],
 			},context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
@@ -242,6 +244,7 @@ def processItemForm(request):
                                                         'task':request.POST['taskType'],
                                                         }),
                                  'itemType': request.POST['itemType'],
+                                 'task': request.POST['taskType'],
                                                 },context_instance=RequestContext(request))
                 else:
                     messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
@@ -251,6 +254,7 @@ def processItemForm(request):
                                                         'task':request.POST['taskType'],
                                                         }),
                                  'itemType': request.POST['itemType'],
+                                 'task': request.POST['taskType'],
                         },context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
@@ -294,6 +298,7 @@ def processBookForm(request):
                                                         'task':'Scan', 
                                                         }),
                                  'itemType': request.POST['itemType'],
+                                 'task': 'Scan',
 						},context_instance=RequestContext(request))
                 else:
 		    messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
@@ -301,6 +306,7 @@ def processBookForm(request):
                         'form' : ProcessingForm(initial={'item': book,
                                                         'user':request.user,
                                                         }),
+                        'task': 'QC/QA',
 			},context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
@@ -328,6 +334,7 @@ def processBookForm(request):
                                                         'task':'Scan',
                                                         }),
                                  'itemType': request.POST['itemType'],
+                                 'task': 'Scan',
                                                 },context_instance=RequestContext(request))
                 else:
                     messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
@@ -335,6 +342,7 @@ def processBookForm(request):
                         'form' : ItemProcessingForm(initial={'item': book,
                                                         'user':request.user,
                                                         }),
+                        'task': 'QC/QA',
                         },context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
