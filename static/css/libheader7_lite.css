@@ -80,7 +80,7 @@ input[type=submit], button {
 #libheader-container {
 	width: 100%; 
 	margin-bottom: 1em; 
-	height: 2em; 
+	height: 6em; 
 	padding: 0 0 .3em;
 	background-color: #03314b;
 	background-image: url(/static/img/bg-local-nav-bottom.png);
@@ -94,7 +94,7 @@ input[type=submit], button {
 	max-width: 940px; 
 	min-width: 320px; /* change to 720px if removing responsive or the IE stylesheet */
 	margin: 0 auto 0; 
-	height: 2em; 
+	height: 6em; 
 	color: #fff; 
 	padding: 0; 
 	white-space: nowrap; 
@@ -108,7 +108,7 @@ input[type=submit], button {
 .libheader-link { font-size:.9em; padding-top:.6em; margin-left:1em;}
 .libheader-liblink { font-size: 1.1em; padding-top:.3em; margin-right:2em; margin-left:.5em;}
 .libheader-libbutton {float:right;padding-top:.3em; margin-right:3em; margin-left:1em;}
-.libheader-logo {float:right; overflow:hidden; height:2em; margin-right:.5em;}
+.libheader-logo {float:right; overflow:hidden; height:3em; margin-right:.5em;}
 .libfooter-text {margin: 0 .5em; font-size:.7em; padding-top:.75em; overflow:hidden;}
 
 #libfooter-container {

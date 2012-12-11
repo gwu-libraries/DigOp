@@ -5,7 +5,7 @@
 {% load barcode_tags %}
 
 
-{% block extrajs %}
+{% block javascript_extra %}
 
 
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
@@ -29,7 +29,7 @@ $("input#autocomplete").autocomplete({
 });
 	});
 </script>
-{%endblock%}
+{%endblock javascript_extra%}
 {% block title %}{% trans "Search Barcode" %}{% endblock %}
 {% block robots %}noindex,nofollow{% endblock %}
 
@@ -38,10 +38,6 @@ $("input#autocomplete").autocomplete({
 {%load bootstrap%}
 {%bootstrap_css%}
 
-<div id="leftcolumn">
-{%include "navigation.html"%}
-</div>
-<div id="contentcolumn">
 <div id="contentcolumn">
 
 <form action="../barcodeReport/" method="post"> {% csrf_token %}
@@ -52,6 +48,5 @@ $("input#autocomplete").autocomplete({
 				<input type="submit" value="Submit" />
              
 </form>			
-</div>
 </div>
 {% endblock %}

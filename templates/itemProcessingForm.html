@@ -30,13 +30,6 @@
 {{ error }}
  
 {% endif %}
-<div id="leftcolumn">
-{% if request.user.is_superuser %}
-    {%include "navigation.html"%}
-{%else%}
-    {%include "user_navigation.html"%}
-{%endif%}
-</div>
 
 <div id="contentcolumn">
 

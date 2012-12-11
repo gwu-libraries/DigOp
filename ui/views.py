@@ -193,10 +193,10 @@ def processItemForm(request):
                 except Item.DoesNotExist:
                     book = None
                 if book is None:
-                    client = suds.client.Client(settings.SERVER_URL)
-                    pages = client.service.getPages(bar)
-		    if pages is None:
-		        pages=0
+                    #client = suds.client.Client(settings.SERVER_URL)
+                    #pages = client.service.getPages(bar)
+		    #if pages is None:
+		    pages=0
                     book = Item.objects.create(barcode=bar, totalPages=pages, itemType= request.POST['itemType'])
                     book.save()
                     messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')
@@ -229,10 +229,10 @@ def processItemForm(request):
                 except Item.DoesNotExist:
                     book = None
                 if book is None:
-                    client = suds.client.Client(settings.SERVER_URL)
-                    pages = client.service.getPages(bar)
-                    if pages is None:
-                        pages=0
+                    #client = suds.client.Client(settings.SERVER_URL)
+                    #pages = client.service.getPages(bar)
+                    #if pages is None:
+                    pages=0
                     book = Item.objects.create(barcode=bar, totalPages=pages, itemType=request.POST['itemType'])
                     book.save()
                     messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')
@@ -281,10 +281,10 @@ def processBookForm(request):
                 except Item.DoesNotExist:
                     book = None
                 if book is None:
-                    client = suds.client.Client(settings.SERVER_URL)
-                    pages = client.service.getPages(bar)
-		    if pages is None:
-		        pages=0
+                    #client = suds.client.Client(settings.SERVER_URL)
+                    #pages = client.service.getPages(bar)
+		    #if pages is None:
+		    pages=0
                     book = Item.objects.create(barcode=bar, totalPages=pages, itemType= request.POST['itemType'])
                     book.save()
                     messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')
@@ -315,10 +315,10 @@ def processBookForm(request):
                 except Item.DoesNotExist:
                     book = None
                 if book is None:
-                    client = suds.client.Client(settings.SERVER_URL)
-                    pages = client.service.getPages(bar)
-                    if pages is None:
-                        pages=0
+                    #client = suds.client.Client(settings.SERVER_URL)
+                    #pages = client.service.getPages(bar)
+                    #if pages is None:
+                    pages=0
                     book = Item.objects.create(barcode=bar, totalPages=pages, itemType=request.POST['itemType'])
                     book.save()
                     messages.add_message(request, messages.SUCCESS, 'Item object with barcode '+ bar + ' created successfully')

@@ -6,6 +6,11 @@
             <div class="libheader-libbutton"><input type="button" value="logout" onclick="location.href='../logoutUser';" style="background-color:white;"></div>
             <div class="libheader-logo hide-lo"><a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}images/gwheaderlogo.png" width='309' height='32' alt="logo: The George Washington University" /></a></div>
             <div class="libheader-liblink"><a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a></div>
+            {% if request.user.is_superuser %}
+                {%include "navigation.html"%}
+            {%else%}
+                {%include "user_navigation.html"%}
+{%endif%}
         </div>
     </div>
 </header>

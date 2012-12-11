@@ -1,6 +1,6 @@
 # Django settings for DigOps project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -140,6 +140,7 @@ INSTALLED_APPS = (
     'bootstrapped',
     'GChartWrapper.charts',
     'south',
+    'registration',
 )
 
 # A sample logging configuration. The only tangible logging
