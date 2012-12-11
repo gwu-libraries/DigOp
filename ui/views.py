@@ -357,11 +357,18 @@ def processBookForm(request):
 def processProcessingForm(request):
     use=request.user
     def errorHandle(error):
-        form = ProcessingForm(request.POST)
-        return render_to_response('processingForm.html', {
-            'error' : error,
-            'form' : form,
-        },context_instance=RequestContext(request))
+        if request.POST['itemType'] in ['Book','Map']:
+            form = ProcessingForm(request.POST)
+            return render_to_response('processingForm.html', {
+                'error' : error,
+                'form' : form,
+            },context_instance=RequestContext(request))
+        else:
+            form = ItemProcessingForm(request.POST)
+            return render_to_response('itemProcessingForm.html', {
+                'error' : error,
+                'form' : form,
+            },context_instance=RequestContext(request))
     if request.method == 'POST': # If the form has been submitted...
         form = ProcessingForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass

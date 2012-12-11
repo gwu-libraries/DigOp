@@ -78,7 +78,7 @@ class ProcessingForm(ModelForm):
         exclude = ('identifier',)
 
 class ItemProcessingForm(ModelForm):
-    #formfield_callback = make_custom_datefield
+    formfield_callback = make_custom_datefield
     class Meta:
         model = ProcessingSession
 
