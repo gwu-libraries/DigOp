@@ -169,12 +169,12 @@ ul.top-level {
 }
 
 #contentcolumn{
-   margin-left: 200px; /*Set left margin to LeftColumnWidth*/
+   margin-left: 20px; /*Set left margin to LeftColumnWidth*/
    min-height: 200px;
 }
 
 #leftcolumn{
-   float: left;
+   float: clear;
    width: 200px; /*Width of left column*/
    background-color: #03314b;
 }
