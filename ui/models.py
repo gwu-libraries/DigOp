@@ -75,12 +75,13 @@ class ProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
     class Meta:
         model = ProcessingSession
-        exclude = ('identifier',)
+        exclude = ('identifier','user',)
 
 class ItemProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
     class Meta:
         model = ProcessingSession
+        exclude = ('user')
 
 class BookForm(ModelForm):
     formfield_callback = make_custom_charfield

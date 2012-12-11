@@ -372,7 +372,7 @@ def processProcessingForm(request):
     if request.method == 'POST': # If the form has been submitted...
         form = ProcessingForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-	    complete = False
+            complete = False
             bookid = request.POST['item']
             bookObject = Item.objects.get(id = bookid)
             pages = request.POST['pagesDone']
@@ -387,7 +387,7 @@ def processProcessingForm(request):
             closingDate = request.POST['endTime']
             tasktype = request.POST['task']
             bst = None
-            bst = ProcessingSession(item=Item.objects.get(id =request.POST['item']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete            =complete,startTime=openingDate,endTime=closingDate,task=tasktype)
+            bst = ProcessingSession(item=Item.objects.get(id =request.POST['item']),user=request.user,pagesDone=pages,comments=comm,operationComplete=complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
             if tasktype == 'QC' or tasktype == 'QA':
                 form = BookForm()
@@ -436,7 +436,7 @@ def itemProcessingForm(request):
             closingDate = request.POST['endTime']
             tasktype = request.POST['task']
             bst = None
-            bst = ProcessingSession(item=Item.objects.get(id =request.POST['item']),user=User.objects.get(id=request.POST['user']),pagesDone=pages,comments=comm,operationComplete            =complete,startTime=openingDate,endTime=closingDate,task=tasktype)
+            bst = ProcessingSession(item=Item.objects.get(id =request.POST['item']),user=request.user,pagesDone=pages,comments=comm,operationComplete=complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
             if tasktype == 'Scan':
                 form = BookForm()
