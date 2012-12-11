@@ -39,8 +39,8 @@ class ProcessingSession(models.Model):
     comments = models.TextField(blank = True, default ="")
     task = models.CharField(max_length =4, choices = TYPES)
     operationComplete = models.NullBooleanField()
-    startTime = models.DateTimeField('Time started book')
-    endTime = models.DateTimeField('Time finished book')
+    startTime = models.DateTimeField('Time started item', default=datetime.now())
+    endTime = models.DateTimeField('Time finished item')
 
     def duration(self):
         fmt = '%Y-%m-%d %H:%M:%S'

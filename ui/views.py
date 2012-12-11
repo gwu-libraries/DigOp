@@ -305,8 +305,9 @@ def processBookForm(request):
 		    return render_to_response('processingForm.html', {
                         'form' : ProcessingForm(initial={'item': book,
                                                         'user':request.user,
+                                                        'task':'Scan',
                                                         }),
-                        'task': 'QC/QA',
+                        'task': 'Scan',
 			},context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
@@ -341,8 +342,9 @@ def processBookForm(request):
                     return render_to_response('itemProcessingForm.html', {
                         'form' : ItemProcessingForm(initial={'item': book,
                                                         'user':request.user,
+                                                        'task':'Scan'
                                                         }),
-                        'task': 'QC/QA',
+                        'task': 'Scan',
                         },context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
