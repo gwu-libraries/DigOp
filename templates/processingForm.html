@@ -33,29 +33,17 @@
 <label for="id_itemtype">{% trans "Item Type" %}</label>
 
     {%if itemType == "Book"%}  
-        <p><select name= "itemType">
-           <option value="Book" selected="selected">Book</option>
-           <option value="Map" disabled="disabled">Map</option>
-           <option value="MicroFilm" disabled="disabled">Microfilm</option>
-           </select>
+        <p>
+           <input name="itemType" type="text" value="Book" readonly="readonly" />
         </p>
     {%elif itemType == "Map"%}
-        <p><select name= "itemType">
-           <option value="Book" disabled="disabled">Book</option>
-           <option value="Map" selected="selected">Map</option>
-           <option value="MicroFilm" disabled="disabled">Microfilm</option>
-           </select>
+        <p><input name="itemType" type="text" value="Map" readonly="readonly" />
         </p>
     {%else%}
-        <p><select name= "itemType">
-           <option value="Book" disabled="disabled">Book</option>
-           <option value="Map" disabled="disabled">Map</option>
-           <option value="Microfilm" selected="selected">Microfilm</option>
-           </select>
+        <p><input name="itemType" type="text" value="Microfilm" readonly="readonly" />
         </p>
     {%endif%}
-{{form.as_p}}
-		
+{{form.as_p}}		
 		
 <input type="submit" value="Submit" />
 </form>

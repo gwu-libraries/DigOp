@@ -299,6 +299,7 @@ def processBookForm(request):
                                                         }),
                                  'itemType': request.POST['itemType'],
                                  'task': 'Scan',
+                                 'item': book,
 						},context_instance=RequestContext(request))
                 else:
 		    messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
@@ -308,6 +309,7 @@ def processBookForm(request):
                                                         'task':'Scan',
                                                         }),
                         'task': 'Scan',
+                        'item': book,
 			},context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
@@ -336,6 +338,7 @@ def processBookForm(request):
                                                         }),
                                  'itemType': request.POST['itemType'],
                                  'task': 'Scan',
+                                 'item': book,
                                                 },context_instance=RequestContext(request))
                 else:
                     messages.add_message(request, messages.ERROR, 'Item object with barcode '+ bar + ' exists')
@@ -345,6 +348,7 @@ def processBookForm(request):
                                                         'task':'Scan'
                                                         }),
                         'task': 'Scan',
+                        'item': book,
                         },context_instance=RequestContext(request))
             else:
                 error = 'form is invalid'
@@ -376,7 +380,7 @@ def processProcessingForm(request):
         if form.is_valid(): # All validation rules pass
             complete = False
             bookid = request.POST['item']
-            bookObject = Item.objects.get(id = bookid)
+            bookObject = Item.objects.get(barcode__exact = bookid)
             pages = request.POST['pagesDone']
             comm = request.POST['comments']
             if request.POST['operationComplete'] == '2':
@@ -389,7 +393,7 @@ def processProcessingForm(request):
             closingDate = request.POST['endTime']
             tasktype = request.POST['task']
             bst = None
-            bst = ProcessingSession(item=Item.objects.get(id =request.POST['item']),user=request.user,pagesDone=pages,comments=comm,operationComplete=complete,startTime=openingDate,endTime=closingDate,task=tasktype)
+            bst = ProcessingSession(item=bookObject,user=request.user,pagesDone=pages,comments=comm,operationComplete=complete,startTime=openingDate,endTime=closingDate,task=tasktype)
             bst.save()
             if tasktype == 'QC' or tasktype == 'QA':
                 form = BookForm()

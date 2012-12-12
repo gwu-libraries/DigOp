@@ -73,15 +73,27 @@ def make_custom_charfield(f,**kwargs):
 
 class ProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
+    item = forms.CharField(max_length=100)
+    def save(self):
+        item_name = self.cleaned_data['item']
+        item = Item.objects.get_or_create(name=item_name)[0]
+        self.instance.item = item
     class Meta:
         model = ProcessingSession
-        exclude = ('identifier','user',)
+        exclude = ('identifier','user','item',)
+        fields = ('item', 'pagesDone', 'comments', 'task', 'operationComplete', 'startTime', 'endTime')
 
 class ItemProcessingForm(ModelForm):
     formfield_callback = make_custom_datefield
+    item = forms.CharField(max_length=100)
+    def save(self):
+        item_name = self.cleaned_data['item']
+        item = Item.objects.get_or_create(name=item_name)[0]
+        self.instance.item = item
     class Meta:
         model = ProcessingSession
-        exclude = ('user')
+        exclude = ('user','item')
+        fields = ('item', 'identifier', 'pagesDone', 'comments', 'task', 'operationComplete', 'startTime', 'endTime')
 
 class BookForm(ModelForm):
     formfield_callback = make_custom_charfield
