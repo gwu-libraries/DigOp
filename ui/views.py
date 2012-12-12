@@ -52,6 +52,8 @@ def login(request):
         },context_instance=RequestContext(request))
     c = {}
     c.update(csrf(request))
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/indexPage/')
     if request.method == 'POST': # If the form has been submitted...
         form = LoginForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
