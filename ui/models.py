@@ -29,8 +29,6 @@ class Item(models.Model):
     def __unicode__(self):
         return self.barcode
 
-
-
 class ProcessingSession(models.Model):
     item = models.ForeignKey(Item)
     user = models.ForeignKey(User)
@@ -72,18 +70,39 @@ def make_custom_charfield(f,**kwargs):
     return formfield
 
 class ProcessingForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProcessingForm, self).__init__(*args, **kwargs)
+        self.fields['pagesDone'].error_messages['required'] = 'Enter a value for pagesDone field'
+        self.fields['endTime'].error_messages['required'] = 'Enter a value for Time Finished item field'
+        if self.errors:
+            for f_name in self.fields:
+                if f_name in self.errors:
+                    classes = self.fields[f_name].widget.attrs.get('class', '')
+                    classes += 'error'
+                    self.fields[f_name].widget.attrs['class'] = classes
     formfield_callback = make_custom_datefield
     item = forms.CharField(max_length=100)
     def save(self):
         item_name = self.cleaned_data['item']
         item = Item.objects.get_or_create(name=item_name)[0]
         self.instance.item = item
+        if self.errors:
+            for f_name in self.fields:
+                if f_name in self.errors:
+                    classes = self.fields[f_name].widget.attrs.get('class', '')
+                    classes += 'error'
+                    self.fields[f_name].widget.attrs['class'] = classes
     class Meta:
         model = ProcessingSession
         exclude = ('identifier','user','item',)
         fields = ('item', 'pagesDone', 'comments', 'task', 'operationComplete', 'startTime', 'endTime')
 
 class ItemProcessingForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ItemProcessingForm, self).__init__(*args, **kwargs)
+        self.fields['pagesDone'].error_messages['required'] = 'Enter a value for PagesDone field'
+        self.fields['endTime'].error_messages['required'] = 'Enter a value for Time Finished item field'
+        self.fields['identifier'].error_messages['required'] = 'Enter a value for Identifier field'
     formfield_callback = make_custom_datefield
     item = forms.CharField(max_length=100)
     def save(self):

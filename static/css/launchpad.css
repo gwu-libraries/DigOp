@@ -29,6 +29,22 @@ body {
 	background-color:#F4F4F8;
 }
 
+.error {
+    color: red;
+    font-weight: bold;
+}
+
+
+ul li{
+    text-transform: uppercase;
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+    font-style: italic;
+}
+
+
+
 table {
     border: None;
 }
