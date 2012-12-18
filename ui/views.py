@@ -147,30 +147,29 @@ def barcodePage(request):
 def barcodeReport(request):
     if request.method == 'POST':  # If the form has been submitted...
         bar = request.POST['barcode']
-        dictionary = None
+        dictionary = {}
         values = []
         try:
-            book = Item.objects.get(barcode=bar)
+            book = Item.objects.filter(barcode=bar)
         except Item.DoesNotExist:
             err_msg = 'Barcode does not exist '
             messages.add_message(request, messages.ERROR, err_msg)
             return render_to_response('barcoderesult.html', {
                 'list': values,
             }, context_instance=RequestContext(request))
-        result = ProcessingSession.objects.filter(book=book)
-        for item in result:
-            dictionary['barcode'] = item.book.barcode
-            dictionary['duration'] = str(item.endTime - item.startTime)
-            dictionary['objects'] = item.pagesDone
-            dictionary['user'] = item.user
-            dictionary['isFinished'] = item.operationComplete
-            rate_of_work = int(int(item.pagesDone) / (item.duration() / 3600))
+        result = ProcessingSession.objects.filter(item=book)
+        for rec in result:
+            dictionary['itemType'] = rec.item.itemType
+            dictionary['barcode'] = rec.item.barcode
+            dictionary['duration'] = str(rec.endTime - rec.startTime)
+            dictionary['objects'] = rec.pagesDone
+            dictionary['user'] = rec.user
+            dictionary['isFinished'] = rec.operationComplete
+            rate_of_work = int(int(rec.pagesDone) / (rec.duration() / 3600))
             dictionary['rate'] = rate_of_work
-            dictionary['task'] = item.task
-            dictionary['startTime'] = item.startTime
+            dictionary['task'] = rec.task
+            dictionary['startTime'] = rec.startTime
             values.append(dictionary)
-        err_msg = 'Results of Barcode ' + bar + ' are as follows: '
-        messages.add_message(request, messages.SUCCESS, err_msg)
         return render_to_response('barcoderesult.html', {
             'list': values,
         }, context_instance=RequestContext(request))
@@ -522,6 +521,7 @@ def produceData(request):
             rate = int(int(item.pagesDone) / (item.duration() / 3600))
             if item.endTime is not None:
                 dictionary = {'barcode': item.item.barcode,
+                              'itemType': item.item.itemType,
                               'duration': str(item.endTime - item.startTime),
                               'objects': item.pagesDone, 'user': name,
                               'isFinished': item.operationComplete,
@@ -535,6 +535,7 @@ def produceData(request):
             else:
                 rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
                 dictionary = {'barcode': item.book.barcode,
+                              'itemType': item.item.itemType,
                               'duration': None, 'objects': item.pagesDone,
                               'user': name,
                               'isFinished': item.operationComplete,
@@ -554,6 +555,7 @@ def produceData(request):
             if item.endTime is not None:
                 rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
                 dictionary = {'barcode': item.item.barcode,
+                              'itemType': item.item.itemType,
                               'duration': str(item.endTime - item.startTime),
                               'objects': item.pagesDone, 'user': us,
                               'isFinished': item.operationComplete,
@@ -568,6 +570,7 @@ def produceData(request):
                 denominator = item.duration() / 3600
                 rate = int(int(item.pagesDone) / denominator)
                 dictionary = {'barcode': item.book.barcode,
+                              'itemType': item.item.itemType,
                               'duration': None, 'objects': item.pagesDone,
                               'user': us,
                               'isFinished': item.operationComplete,

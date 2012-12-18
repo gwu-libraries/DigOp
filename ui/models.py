@@ -74,12 +74,6 @@ class ProcessingForm(ModelForm):
         super(ProcessingForm, self).__init__(*args, **kwargs)
         self.fields['pagesDone'].error_messages['required'] = 'Enter a value for pagesDone field'
         self.fields['endTime'].error_messages['required'] = 'Enter a value for Time Finished item field'
-        #if self.errors:
-            #for f_name in self.fields:
-                #if f_name in self.errors:
-                    #classes = self.fields[f_name].widget.attrs.get('class', '')
-                    #classes += 'error'
-                    #self.fields[f_name].widget.attrs['class'] = classes
     formfield_callback = make_custom_datefield
     item = forms.CharField(max_length=100)
     def save(self):

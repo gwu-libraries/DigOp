@@ -10,14 +10,8 @@
 {%load bootstrap%}
 {%bootstrap_css%}
 
+<div id ="contentcolumn">
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}><h2>{{ message }}</h2></li>
-    {% endfor %}
-</ul>
-{% endif %}
 <Table >
 
 <tr>
@@ -28,6 +22,7 @@
 <th> Book Complete </th>
 <th> Pages per Hour </th>
 <th> Comments </th>
+<th> Item Type </th>
 <th> Task Type</th>
 <th> Start Date </th>
 </tr>
@@ -41,15 +36,12 @@
 	<td>{{item.objects}} </td>
 	<td>{{item.isFinished}} </td>
 	<td>{{item.rate}} </td>
-	<td>{{item.comments}}
+        <td>{{item.comments}}</td>
+        <td>{{item.itemType}}</td>               
 	<td>{{item.task}} </td>
 	<td>{{item.startTime}} </td>
 	</tr>
-{% endfor %}
-<div class="span-8 last">
-				<ul class="hmenu large three">
-				<li><a href="../logoutUser">{% trans "Logout" %}</a></li>
-				<li><a Href="../indexPage">{% trans "Home" %}</a></li>
-				</ul>
-			</div>
+        {% endfor %}
+    </table>
+        </div>
 {% endblock %}
