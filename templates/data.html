@@ -30,19 +30,18 @@
 </tr>
 
 
-{% for item in list %}
+{% for record in list %}
 	<tr>
-	
-	<td>{{item.barcode}} </td>
-	<td>{{item.user}} </td>
-	<td>{{item.duration}} </td>
-	<td>{{item.objects}} </td>
-	<td>{{item.comments}}</td>
-	<td>{{item.isFinished}} </td>
-        <td>{{item.rate}} </td>
-        <td>{{item.itemType}}</td>
-	<td>{{item.task}} </td>
-	<td>{{item.startTime}} </td>
+        <td><a href="{%url barcode record.barcode %}">{{record.barcode}}</a> </td>
+        <td><a href="{%url user record.user %}">{{record.user}}</a></td>
+	<td>{{record.duration}} </td>
+	<td>{{record.objects}} </td>
+	<td>{{record.comments}}</td>
+	<td>{{record.isFinished}} </td>
+        <td>{{record.rate}} </td>
+        <td><a href="{%url item record.itemType %}">{{record.itemType}}</a></td>
+        <td><a href="{%url task record.task %}">{{record.task}} </a></td>
+	<td>{{record.startTime}} </td>
 	</tr>
 {% endfor %}
 	<hr>

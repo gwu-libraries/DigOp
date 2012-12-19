@@ -176,6 +176,36 @@ def barcodeReport(request):
 
 
 @login_required
+def barcode(request, identifier):
+    dictionary = {}
+    values = []
+    book = None
+    try:
+        book = Item.objects.filter(barcode=identifier)
+    except Item.DoesNotExist:
+        return render_to_response('barcoderesult.html', {
+            'list': values,
+            'barcode': identifier,
+        }, context_instance=RequestContext(request))
+    result = ProcessingSession.objects.filter(item=book)
+    for rec in result:
+        dictionary['itemType'] = rec.item.itemType
+        dictionary['barcode'] = rec.item.barcode
+        dictionary['duration'] = str(rec.endTime - rec.startTime)
+        dictionary['objects'] = rec.pagesDone
+        dictionary['user'] = rec.user
+        dictionary['isFinished'] = rec.operationComplete
+        rate_of_work = int(int(rec.pagesDone) / (rec.duration() / 3600))
+        dictionary['rate'] = rate_of_work
+        dictionary['task'] = rec.task
+        dictionary['startTime'] = rec.startTime
+        values.append(dictionary)
+    return render_to_response('barcoderesult.html', {
+        'list': values,
+    }, context_instance=RequestContext(request))
+
+
+@login_required
 def reportMenu(request):
     return render_to_response('reportmenu.html', {
     }, context_instance=RequestContext(request))
@@ -349,9 +379,6 @@ def processBookForm(request):
                     book = Item.objects.create(barcode=bar, totalPages=pages,
                                                itemType=item_type)
                     book.save()
-                    err_msg = 'Item object with barcode '
-                    err_msg = err_msg + bar + ' created successfully'
-                    messages.add_message(request, messages.SUCCESS, err_msg)
                     user = request.user
                     return render_to_response('itemProcessingForm.html', {
                         'form': ItemProcessingForm(initial={'item': book,
@@ -363,8 +390,6 @@ def processBookForm(request):
                         'item': book,
                     }, context_instance=RequestContext(request))
                 else:
-                    err_msg = 'Item object with barcode ' + bar + ' exists'
-                    messages.add_message(request, messages.ERROR, err_msg)
                     user = request.user
                     return render_to_response('itemProcessingForm.html', {
                         'form': ItemProcessingForm(initial={'item': book,
@@ -500,6 +525,140 @@ def itemProcessingForm(request):
         return render_to_response('itemProcessingForm.html', {
             'form': form,
         }, context_instance=RequestContext(request))
+
+
+@login_required
+def user(request, username):
+    myList = []
+    totalPages = 0
+    totalHours = 0
+    a = ProcessingSession.objects.filter(user__username=username)
+    dictionary = {}
+    for item in a:
+        rate = int(int(item.pagesDone) / (item.duration() / 3600))
+        if item.endTime is not None:
+            dictionary = {'barcode': item.item.barcode,
+                          'itemType': item.item.itemType,
+                          'duration': str(item.endTime - item.startTime),
+                          'objects': item.pagesDone, 'user': username,
+                          'isFinished': item.operationComplete,
+                          'rate': rate, 'task': item.task,
+                          'startTime': item.startTime,
+                          'comments': item.comments}
+            delta = item.endTime - item.startTime
+            conversion = delta.days * 86400 + delta.seconds
+            totalHours = totalHours + (conversion / 3600.0)
+            totalPages = totalPages + item.pagesDone
+        else:
+            rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
+            dictionary = {'barcode': item.book.barcode,
+                          'itemType': item.item.itemType,
+                          'duration': None, 'objects': item.pagesDone,
+                          'user': name,
+                          'isFinished': item.operationComplete,
+                          'rate': rate, 'task': item.task,
+                          'startTime': item.startTime,
+                          'comments': item.comments}
+            delta = item.endTime - item.startTime
+            conversion = delta.days * 86400 + delta.seconds
+            totalHours = totalHours + (conversion / 3600.0)
+            totalPages = totalPages + item.pagesDone
+        myList.append(dictionary)
+    return render_to_response('data.html', {
+        'list': myList,
+        'username': username,
+        'totalHours': totalHours,
+        'totalPages': totalPages,
+    }, context_instance=RequestContext(request))
+
+
+@login_required
+def task(request, tasktype):
+    a = ProcessingSession.objects.filter(task__exact=tasktype)
+    totalPages = 0
+    totalHours = 0
+    dictionary = {}
+    myList = []
+    for item in a:
+        rate = int(int(item.pagesDone) / (item.duration() / 3600))
+        if item.endTime is not None:
+            dictionary = {'barcode': item.item.barcode,
+                          'itemType': item.item.itemType,
+                          'duration': str(item.endTime - item.startTime),
+                          'objects': item.pagesDone, 'user': item.user.username,
+                          'isFinished': item.operationComplete,
+                          'rate': rate, 'task': item.task,
+                          'startTime': item.startTime,
+                          'comments': item.comments}
+            delta = item.endTime - item.startTime
+            conversion = delta.days * 86400 + delta.seconds
+            totalHours = totalHours + (conversion / 3600.0)
+            totalPages = totalPages + item.pagesDone
+        else:
+            rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
+            dictionary = {'barcode': item.book.barcode,
+                          'itemType': item.item.itemType,
+                          'duration': None, 'objects': item.pagesDone,
+                          'user': item.user.username,
+                          'isFinished': item.operationComplete,
+                          'rate': rate, 'task': item.task,
+                          'startTime': item.startTime,
+                          'comments': item.comments}
+            delta = item.endTime - item.startTime
+            conversion = delta.days * 86400 + delta.seconds
+            totalHours = totalHours + (conversion / 3600.0)
+            totalPages = totalPages + item.pagesDone
+        myList.append(dictionary)
+    return render_to_response('data.html', {
+        'list': myList,
+        'totalHours': totalHours,
+        'totalPages': totalPages,
+    }, context_instance=RequestContext(request))
+
+
+@login_required
+def item(request, itemtype):
+    a = ProcessingSession.objects.filter(item__itemType__exact=itemtype)
+    totalPages = 0
+    totalHours = 0
+    dictionary = {}
+    myList = []
+    for item in a:
+        rate = int(int(item.pagesDone) / (item.duration() / 3600))
+        if item.endTime is not None:
+            dictionary = {'barcode': item.item.barcode,
+                          'itemType': item.item.itemType,
+                          'duration': str(item.endTime - item.startTime),
+                          'objects': item.pagesDone, 'user': item.user.username,
+                          'isFinished': item.operationComplete,
+                          'rate': rate, 'task': item.task,
+                          'startTime': item.startTime,
+                          'comments': item.comments}
+            delta = item.endTime - item.startTime
+            conversion = delta.days * 86400 + delta.seconds
+            totalHours = totalHours + (conversion / 3600.0)
+            totalPages = totalPages + item.pagesDone
+        else:
+            rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
+            dictionary = {'barcode': item.book.barcode,
+                          'itemType': item.item.itemType,
+                          'duration': None, 'objects': item.pagesDone,
+                          'user': item.user.username,
+                          'isFinished': item.operationComplete,
+                          'rate': rate, 'task': item.task,
+                          'startTime': item.startTime,
+                          'comments': item.comments}
+            delta = item.endTime - item.startTime
+            conversion = delta.days * 86400 + delta.seconds
+            totalHours = totalHours + (conversion / 3600.0)
+            totalPages = totalPages + item.pagesDone
+        myList.append(dictionary)
+    return render_to_response('data.html', {
+        'list': myList,
+        'totalHours': totalHours,
+        'totalPages': totalPages,
+    }, context_instance=RequestContext(request))
+        
 
 
 @login_required
