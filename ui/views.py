@@ -666,6 +666,7 @@ def produceData(request):
     name = request.GET.get('user')
     start = request.GET.get('start')
     end = request.GET.get('end')
+    itemtype = request.GET.get('itemtype')
     myList = []
     totalPages = 0
     totalHours = 0
@@ -674,6 +675,7 @@ def produceData(request):
         a = a.filter(startTime__gte=start)
         c = ProcessingSession.objects.filter(user__username=name)
         c = c.filter(endTime__lte=end)
+        c = c.filter(item__itemType__exact=itemtype)
         b = a & c
         dictionary = None
         for item in b:
