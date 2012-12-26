@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import constants as messages
 from django.core.context_processors import csrf
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 
 from ui.models import LoginForm
@@ -529,6 +530,18 @@ def itemProcessingForm(request):
 
 @login_required
 def user(request, username):
+    if request.GET.get('user'):
+        request.session['user'] = request.GET.get('user')
+    if request.GET.get('start'):
+        request.session['start'] = request.GET.get('start')
+    if request.GET.get('end'):
+        request.session['end'] = request.GET.get('end')
+    if request.GET.get('itemtype'):
+        request.session['itemtype'] = request.GET.get('itemtype')
+    name = request.session['user']
+    start = request.session['start']
+    end = request.session['end']
+    itemtype = request.session['itemtype']
     myList = []
     totalPages = 0
     totalHours = 0
@@ -565,8 +578,16 @@ def user(request, username):
             totalHours = totalHours + (conversion / 3600.0)
             totalPages = totalPages + item.pagesDone
         myList.append(dictionary)
+    paginator = Paginator(myList, 10)
+    page = request.GET.get('page')
+    try:
+        rows = paginator.page(page)
+    except PageNotAnInteger:
+        rows = paginator.page(1)
+    except EmptyPage:
+        rows = paginator.page(paginator.num_pages)
     return render_to_response('data.html', {
-        'list': myList,
+        'list': rows,
         'username': username,
         'totalHours': totalHours,
         'totalPages': totalPages,
@@ -575,6 +596,18 @@ def user(request, username):
 
 @login_required
 def task(request, tasktype):
+    if request.GET.get('user'):
+        request.session['user'] = request.GET.get('user')
+    if request.GET.get('start'):
+        request.session['start'] = request.GET.get('start')
+    if request.GET.get('end'):
+        request.session['end'] = request.GET.get('end')
+    if request.GET.get('itemtype'):
+        request.session['itemtype'] = request.GET.get('itemtype')
+    name = request.session['user']
+    start = request.session['start']
+    end = request.session['end']
+    itemtype = request.session['itemtype']
     a = ProcessingSession.objects.filter(task__exact=tasktype)
     totalPages = 0
     totalHours = 0
@@ -611,8 +644,16 @@ def task(request, tasktype):
             totalHours = totalHours + (conversion / 3600.0)
             totalPages = totalPages + item.pagesDone
         myList.append(dictionary)
+    paginator = Paginator(myList, 10)
+    page = request.GET.get('page')
+    try:
+        rows = paginator.page(page)
+    except PageNotAnInteger:
+        rows = paginator.page(1)
+    except EmptyPage:
+        rows = paginator.page(paginator.num_pages)
     return render_to_response('data.html', {
-        'list': myList,
+        'list': rows,
         'totalHours': totalHours,
         'totalPages': totalPages,
     }, context_instance=RequestContext(request))
@@ -620,6 +661,18 @@ def task(request, tasktype):
 
 @login_required
 def item(request, itemtype):
+    if request.GET.get('user'):
+        request.session['user'] = request.GET.get('user')
+    if request.GET.get('start'):
+        request.session['start'] = request.GET.get('start')
+    if request.GET.get('end'):
+        request.session['end'] = request.GET.get('end')
+    if request.GET.get('itemtype'):
+        request.session['itemtype'] = request.GET.get('itemtype')
+    name = request.session['user']
+    start = request.session['start']
+    end = request.session['end']
+    itemtype = request.session['itemtype']
     a = ProcessingSession.objects.filter(item__itemType__exact=itemtype)
     totalPages = 0
     totalHours = 0
@@ -656,8 +709,16 @@ def item(request, itemtype):
             totalHours = totalHours + (conversion / 3600.0)
             totalPages = totalPages + item.pagesDone
         myList.append(dictionary)
+    paginator = Paginator(myList, 10)
+    page = request.GET.get('page')
+    try:
+        rows = paginator.page(page)
+    except PageNotAnInteger:
+        rows = paginator.page(1)
+    except EmptyPage:
+        rows = paginator.page(paginator.num_pages)
     return render_to_response('data.html', {
-        'list': myList,
+        'list': rows,
         'totalHours': totalHours,
         'totalPages': totalPages,
     }, context_instance=RequestContext(request))
@@ -665,10 +726,18 @@ def item(request, itemtype):
 
 @login_required
 def produceData(request):
-    name = request.GET.get('user')
-    start = request.GET.get('start')
-    end = request.GET.get('end')
-    itemtype = request.GET.get('itemtype')
+    if request.GET.get('user'):
+        request.session['user'] = request.GET.get('user')
+    if request.GET.get('start'):
+        request.session['start'] = request.GET.get('start')
+    if request.GET.get('end'):
+        request.session['end'] = request.GET.get('end')
+    if request.GET.get('itemtype'):
+        request.session['itemtype'] = request.GET.get('itemtype')
+    name = request.session['user']
+    start = request.session['start']
+    end = request.session['end']
+    itemtype = request.session['itemtype']
     myList = []
     totalPages = 0
     totalHours = 0
@@ -745,12 +814,22 @@ def produceData(request):
                 totalHours = totalHours + (conversion / 3600.0)
                 totalPages = totalPages + item.pagesDone
             myList.append(dictionary)
+    paginator = Paginator(myList, 10)
+    page = request.GET.get('page')
+    try:
+        rows = paginator.page(page)
+    except PageNotAnInteger:
+        rows = paginator.page(1)
+    except EmptyPage:
+        rows = paginator.page(paginator.num_pages)
 
     return render_to_response('data.html', {
-        'list': myList,
+        'list': rows,
         'username': name,
         'totalHours': totalHours,
         'totalPages': totalPages,
+        'start': start,
+        'end': end,
     }, context_instance=RequestContext(request))
 
 
