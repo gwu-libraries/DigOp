@@ -433,7 +433,7 @@ def processProcessingForm(request):
         if form.is_valid():  # All validation rules pass
             complete = False
             bookid = request.POST['item']
-            bookObject = Item.objects.get(barcode__exact=bookid)
+            bookObject = Item.objects.get(barcode=bookid)
             pages = request.POST['pagesDone']
             comm = request.POST['comments']
             if request.POST['operationComplete'] == '2':
@@ -540,7 +540,8 @@ def user(request, username):
             dictionary = {'barcode': item.item.barcode,
                           'itemType': item.item.itemType,
                           'duration': str(item.endTime - item.startTime),
-                          'objects': item.pagesDone, 'user': username,
+                          'objects': item.pagesDone,
+                          'user': username,
                           'isFinished': item.operationComplete,
                           'rate': rate, 'task': item.task,
                           'startTime': item.startTime,
@@ -554,7 +555,7 @@ def user(request, username):
             dictionary = {'barcode': item.book.barcode,
                           'itemType': item.item.itemType,
                           'duration': None, 'objects': item.pagesDone,
-                          'user': name,
+                          'user': username,
                           'isFinished': item.operationComplete,
                           'rate': rate, 'task': item.task,
                           'startTime': item.startTime,
@@ -585,7 +586,8 @@ def task(request, tasktype):
             dictionary = {'barcode': item.item.barcode,
                           'itemType': item.item.itemType,
                           'duration': str(item.endTime - item.startTime),
-                          'objects': item.pagesDone, 'user': item.user.username,
+                          'objects': item.pagesDone,
+                          'user': item.user.username,
                           'isFinished': item.operationComplete,
                           'rate': rate, 'task': item.task,
                           'startTime': item.startTime,
@@ -629,7 +631,8 @@ def item(request, itemtype):
             dictionary = {'barcode': item.item.barcode,
                           'itemType': item.item.itemType,
                           'duration': str(item.endTime - item.startTime),
-                          'objects': item.pagesDone, 'user': item.user.username,
+                          'objects': item.pagesDone,
+                          'user': item.user.username,
                           'isFinished': item.operationComplete,
                           'rate': rate, 'task': item.task,
                           'startTime': item.startTime,
@@ -658,7 +661,6 @@ def item(request, itemtype):
         'totalHours': totalHours,
         'totalPages': totalPages,
     }, context_instance=RequestContext(request))
-        
 
 
 @login_required

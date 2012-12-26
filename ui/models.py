@@ -78,7 +78,7 @@ class ProcessingForm(ModelForm):
     item = forms.CharField(max_length=100)
     def save(self):
         item_name = self.cleaned_data['item']
-        item = Item.objects.get_or_create(name=item_name)[0]
+        item = Item.objects.get_or_create(name=item_name)
         self.instance.item = item
         #if self.errors:
             #for f_name in self.fields:
@@ -86,9 +86,14 @@ class ProcessingForm(ModelForm):
                     #classes = self.fields[f_name].widget.attrs.get('class', '')
                     #classes += 'error'
                     #self.fields[f_name].widget.attrs['class'] = classes
+    def clean_item(self):
+        data = self.cleaned_data['item']
+        obj = Item.objects.get(barcode=data)
+        return obj
+
     class Meta:
         model = ProcessingSession
-        exclude = ('identifier','user','item',)
+        exclude = ('identifier','user')
         fields = ('item', 'pagesDone', 'comments', 'task', 'operationComplete', 'startTime', 'endTime')
 
 class ItemProcessingForm(ModelForm):
@@ -101,11 +106,17 @@ class ItemProcessingForm(ModelForm):
     item = forms.CharField(max_length=100)
     def save(self):
         item_name = self.cleaned_data['item']
-        item = Item.objects.get_or_create(name=item_name)[0]
-        self.instance.item = item
+        itemid = Item.objects.get_or_create(name=item_name)
+        self.instance.item = itemid
+
+    def clean_item(self):
+        data = self.cleaned_data['item']
+        obj = Item.objects.get(barcode=data)
+        return obj
+    
     class Meta:
         model = ProcessingSession
-        exclude = ('user','item')
+        exclude = ('user')
         fields = ('item', 'identifier', 'pagesDone', 'comments', 'task', 'operationComplete', 'startTime', 'endTime')
 
 class BookForm(ModelForm):
