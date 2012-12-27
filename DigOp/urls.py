@@ -9,11 +9,15 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
+from ui.models import ProfileForm
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'project.views.home', name='home'),
     # url(r'^project/', include('project.foo.urls')),
     url(r'^$', 'ui.views.login', name="login"),
+    url(r'^profiles/edit/$', 'profiles.views.edit_profile', {'form_class': ProfileForm,'success_url': '../../indexPage',},name='edit'),
+    url(r'^profiles/', include('profiles.urls')),
     url(r'^login/$', 'ui.views.login', name="login"),
     url(r'^user/(?P<username>[\w.@+-]+)/$', 'ui.views.user', name='user'),
     url(r'^task/(?P<tasktype>\S{2,4})$', 'ui.views.task', name='task'),

@@ -5,14 +5,10 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from django.db.models import signals
-
-from ui.signals import create_profile
+from django.db.models.signals import post_save
 
 
-# When model instance is saved, trigger creation of corresponding profile
-signals.post_save.connect(create_profile, sender=User)
-
+# Create your models here.
 
 TYPES = (
     ('Scan', 'Scan'),
@@ -164,24 +160,23 @@ class ProfileForm(ModelForm):
         super(ProfileForm, self).__init__(*args, **kwargs)
         try:
             self.fields['email'].initial = self.instance.user.email
-            self.fields['firstname'].initial = self.instance.user.first_name
-            self.fields['lastname'].initial = self.instance.user.last_name
+            self.fields['first_name'].initial = self.instance.user.first_name
+            self.fields['last_name'].initial = self.instance.user.last_name
         except User.DoesNotExist:
             pass
 
     email = forms.EmailField(label='Primary email', help_text='')
-    firstname = forms.CharField(max_length=100, label='First Name')
-    lastname= forms.CharField(max_length=100, label='Last Name')
+    first_name = forms.CharField(max_length=100, label='First Name')
+    last_name= forms.CharField(max_length=100, label='Last Name')
 
     class Meta:
         model = UserProfile
-        exclude = ('user')
 
     def save(self, *args, **kwargs):
         u = self.instance.user
         u.email = self.cleaned_data['email']
-        u.first_name = self.cleaned_data['firstname']
-        u.last_name = self.cleaned_data['lastname']
+        u.firstname = self.cleaned_data['firstname']
+        u.lastname = self.cleaned_data['lastname']
         u.save()
         profile = super(ProfileForm, self).save(*args,**kwargs)
         return profile

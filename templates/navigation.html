@@ -5,6 +5,9 @@
         <li><a href="{%url displayItemProcessingForm %}"> Process an Item </a></li>
         <li><a href="{% url showUsers %}">Generate a Report</a></li>
         <li><a href="{% url showGraph %}">Generate a Graph</a></li>
+        {%if user.is_authenticated%}
+            <li><a href="{% url edit %}">Edit profile</a></li>
+        {%endif%}
     </ul>
 </div>
 

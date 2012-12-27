@@ -1,0 +1,13 @@
+{% extends "base_2col.html" %}
+
+
+{% block title %}Edit Profile{% endblock %}
+ 
+{% block content %}
+<h1>Edit contact info for {{ user }}</h1>
+<form action="" method="POST"> {% csrf_token %}
+    {{ form.as_p }} 
+    <input id="submit" type="submit" name="submit" value="Update" />
+</form>
+ 
+{% endblock content %}

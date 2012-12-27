@@ -17,12 +17,21 @@ from ui.models import ProcessingForm
 from ui.models import ItemProcessingForm
 from ui.models import Item
 from ui.models import ProcessingSession
+from ui.models import UserProfile
+from ui.models import ProfileForm
 
+from profiles import views as profile_views
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
 
 use = None
 register = Library()
+
+def add_csrf(request, **kwargs):
+    """Add CSRF to dictionary."""
+    d = dict(user=request.user, **kwargs)
+    d.update(csrf(request))
+    return d
 
 
 def login(request):
@@ -60,6 +69,10 @@ def login(request):
             'c': c,
         }, context_instance=RequestContext(request))
 
+
+@login_required
+def edit_profile(request, pk):
+    return profile_views.edit_profile(request, form_class=ProfileForm)
 
 @login_required
 def indexPage(request):
