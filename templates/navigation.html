@@ -6,7 +6,7 @@
         <li><a href="{% url showUsers %}">Generate a Report</a></li>
         <li><a href="{% url showGraph %}">Generate a Graph</a></li>
         {%if user.is_authenticated%}
-            <li><a href="{% url edit %}">Edit profile</a></li>
+            <li><a href="{% url profile_menu %}">Edit profile</a></li>
         {%endif%}
     </ul>
 </div>

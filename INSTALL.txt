@@ -2,7 +2,7 @@
 
 2) Install the dependencies using the following command
 
-        sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb libjpeg-dev libjpeg62 libjpeg62-dev zlib1g-dev libfreetype6 libfreetype6-dev 
+        sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb 
 
 3) Clone the git repository using following command 
 
@@ -76,8 +76,10 @@ DATABASES = {
     "C:/templates"
 )
 
+11) Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
 
-11) Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
+
+12) Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
 	KABIS_SERVER_URL = ''
 	

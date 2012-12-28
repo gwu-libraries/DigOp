@@ -10,6 +10,7 @@ from django.contrib.messages import constants as messages
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
+from django.contrib.auth.views import password_reset
 
 from ui.models import LoginForm
 from ui.models import BookForm
@@ -73,6 +74,25 @@ def login(request):
 @login_required
 def edit_profile(request, pk):
     return profile_views.edit_profile(request, form_class=ProfileForm)
+
+
+@login_required
+def profile_menu(request):
+    return render(request,'profile_menu.html')
+
+
+def reset_done(request):
+    return render(request,'reset_done.html')
+
+
+@login_required
+def view_profile(request):
+        return render(request,'view_profile.html', {
+            'profile': UserProfile.objects.get(user=request.user),
+        })
+
+def reset_password(request, template_name='reset_password.html'):
+        return password_reset(request, template_name)
 
 @login_required
 def indexPage(request):

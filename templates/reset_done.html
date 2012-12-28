@@ -1,22 +1,24 @@
 {% extends "base_2col.html" %}
+{% load i18n %}
 
 
-{% block title %}Edit Profile{% endblock %}
- 
+{% block title %} {{ user.first_name }} {{ user.last_name }}{% endblock %}
+
+
+
 {% block content %}
+{%load bootstrap%}
+{%bootstrap_css%}
 <div id ="leftcolumn">
     <ul class='vertical_menu'>
         <li><a href="{%url view_profile%}">View Profile</a></li>
         <li><a href="{%url edit%}">Edit Profile</a></li>
         <li><a href="{%url reset_password%}">Reset Password</a></li>
     </ul>
-</div>
 
-<div id="contentcolumn">
-<h1>Edit contact info for {{ user }}</h1>
-<form action="" method="POST"> {% csrf_token %}
-    {{ form.as_p }} 
-    <input id="submit" type="submit" name="submit" value="Update" />
-</form>
 </div>
-{% endblock content %}
+<div id="contentcolumn">
+    <p> password reset was successful. An email to reset your password is sent. You should recieve it soon. </p>
+</div>
+{%endblock%}
+

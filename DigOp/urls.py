@@ -4,7 +4,6 @@ from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from django.conf.urls.defaults import *
 
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -18,6 +17,10 @@ urlpatterns = patterns('',
     url(r'^$', 'ui.views.login', name="login"),
     url(r'^profiles/edit/$', 'profiles.views.edit_profile', {'form_class': ProfileForm,'success_url': '../../indexPage',},name='edit'),
     url(r'^profiles/', include('profiles.urls')),
+    url(r'^profile_menu/$','ui.views.profile_menu', name='profile_menu'),
+    url(r'^accounts/password/reset/done/$','ui.views.reset_done', name='reset_done'),
+    url(r'^view_profile/$','ui.views.view_profile', name='view_profile'),
+    url(r'^reset_password/$', 'ui.views.reset_password',name='reset_password'),
     url(r'^login/$', 'ui.views.login', name="login"),
     url(r'^user/(?P<username>[\w.@+-]+)/$', 'ui.views.user', name='user'),
     url(r'^task/(?P<tasktype>\S{2,4})$', 'ui.views.task', name='task'),
