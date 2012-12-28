@@ -10,7 +10,7 @@ from django.contrib.messages import constants as messages
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-from django.contrib.auth.views import password_reset
+from django.contrib.auth.views import password_reset, password_change_done as auth_password_change_done
 
 from ui.models import LoginForm
 from ui.models import BookForm
@@ -74,6 +74,11 @@ def login(request):
 @login_required
 def edit_profile(request, pk):
     return profile_views.edit_profile(request, form_class=ProfileForm)
+
+
+@login_required
+def password_change_done(request, template='accounts/my_password_change_done.html'):
+    return auth_password_change_done(request,template_name=template)
 
 
 @login_required
