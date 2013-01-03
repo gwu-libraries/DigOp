@@ -1,17 +1,22 @@
 DigOps
 ======
-        A better answer to that all-important bottom line question: where does all the time go? DigOp is a time tracking application designed, engineered and customized for IMLS Digitization project that needs to track, manage and reports the scanning progress. By eliminating wasteful paper timesheets and replacing them with web-based, supervisor, project in-charge can see an the progress of any digital item 24x7. It drastically reduces tedious labor and endless headaches in keeping track of hours spent on a digital operation.
 
+A better answer to that all-important bottom line question: where does 
+all the time go? DigOp is a time tracking application designed, engineered 
+and customized for IMLS Digitization project that needs to track, manage 
+and reports the scanning progress. By eliminating wasteful paper timesheets 
+and replacing them with web-based, supervisor, project in-charge can see the 
+progress of any digital item 24x7. It drastically reduces tedious labor and 
+endless headaches in keeping track of hours spent on a digital operation.
 
 Installation Instructions
 -------------------------
 
-This software should be runnable on any kind of operating system. However, these installation instructions are tailored to a Linux server, and have
+This software should be runnable on any kind of operating system. However, 
+these installation instructions are tailored to a Linux server, and have
 only been tested on ubuntu 10.04 LTS.
 
-
 **Part I - Basic server requirements**
-
 
 1. Install the Apache Django and other dependencies using the following command:
 
@@ -24,7 +29,7 @@ only been tested on ubuntu 10.04 LTS.
 
 - - -
 
-** Part II - Setting up the project environment**
+**Part II - Setting up the project environment**
 
 1. Install virtualenv
 
@@ -57,17 +62,11 @@ only been tested on ubuntu 10.04 LTS.
 6. Install python suds library using following commands 
 
 	sudo wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
-
 	tar -zxvf python-suds-0.3.7.tar.gz
-
 	cd python-suds-0.3.7
-
 	python setup.py install
-	
 	cd ..
-
 	rm -rf python-suds-0.3.7
-
 	rm -r python-suds-0.3.7.tar.gz
 
 
@@ -116,7 +115,6 @@ only been tested on ubuntu 10.04 LTS.
 4. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
 
         Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
-
 
 5. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
