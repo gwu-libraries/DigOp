@@ -6,15 +6,18 @@ DigOps
 Installation Instructions
 -------------------------
 
+This software should be runnable on any kind of operating system. However, these installation instructions are tailored to a Linux server, and have
+only been tested on ubuntu 10.04 LTS.
+
+
 **Part I - Basic server requirements**
 
-1. DigOp app is developed and tested on python version 2.7 and Django version 1.4
 
-2. Install the Apache Django and other dependencies using the following command:
+1. Install the Apache Django and other dependencies using the following command:
 
         sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb 
 
-3. Install git
+2. Install git
 
         sudo apt-get install git-core
 
