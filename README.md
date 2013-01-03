@@ -116,5 +116,5 @@ only been tested on ubuntu 10.04 LTS.
 
 5. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
-	KABIS_SERVER_URL = ''
+        KABIS_SERVER_URL = ''
 
