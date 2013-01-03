@@ -49,7 +49,6 @@ only been tested on ubuntu 10.04 LTS.
         (everyone else)
         git clone https://github.com/gwu-libraries/DigOp.git
 	
-
 4. Create virtual python environment using following command 
 
         cd /DIGOPS-HOME/digop
@@ -68,7 +67,6 @@ only been tested on ubuntu 10.04 LTS.
 	cd ..
 	rm -rf python-suds-0.3.7
 	rm -r python-suds-0.3.7.tar.gz
-
 
 7. Install the additional required packages 
 
@@ -103,8 +101,8 @@ only been tested on ubuntu 10.04 LTS.
                     }
                 }
 
-3. Update the Path to the Templates folder in the following variable in settings.py. 
-	
+3. Update the Path to the Templates folder in the following variable in settings.py 
+        
         TEMPLATE_DIRS = (
                 # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
                 # Always use forward slashes, even on Windows.
