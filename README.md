@@ -1,13 +1,13 @@
 DigOps
 ======
 
-A better answer to that all-important bottom line question: where does 
-all the time go? DigOp is a time tracking application designed, engineered 
-and customized for IMLS Digitization project that needs to track, manage 
-and reports the scanning progress. By eliminating wasteful paper timesheets 
-and replacing them with web-based, supervisor, project in-charge can see the 
-progress of any digital item 24x7. It drastically reduces tedious labor and 
-endless headaches in keeping track of hours spent on a digital operation.
+DigOps is a Django App designed to keep track of time sent in different 
+workflow steps involved in digitization of items. DigOps also supports generation
+of reports that can be used to track the rate at which items are being digitized.
+It also supports plotting of data in graphs using Google chart API.
+It uses Django authentication to identify users of the system.It drastically 
+reduces tedious labor and endless headaches in keeping track of hours spent 
+on a digital operation.
 
 Installation Instructions
 -------------------------
