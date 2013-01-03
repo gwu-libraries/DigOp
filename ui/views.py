@@ -274,8 +274,6 @@ def processItemForm(request):
                     book = Item.objects.create(barcode=bar, totalPages=pages,
                                                itemType=item_type)
                     book.save()
-                    err_msg = 'Item with barcode ' + bar + ' created'
-                    messages.add_message(request, messages.SUCCESS, err_msg)
                     task_type = request.POST['taskType']
                     return render_to_response('processingForm.html', {
                         'form': ProcessingForm(initial={'item': book,
@@ -316,9 +314,6 @@ def processItemForm(request):
                     book = Item.objects.create(barcode=bar, totalPages=pages,
                                                itemType=item_type)
                     book.save()
-                    err_msg = 'Item object with barcode '
-                    err_msg = err_msg + bar + ' created successfully'
-                    messages.add_message(request, messages.SUCCESS, err_msg)
                     task_type = request.POST['taskType']
                     user = request.user
                     return render_to_response('itemProcessingForm.html', {
@@ -333,7 +328,6 @@ def processItemForm(request):
                     err_msg = 'Item object with barcode ' + bar + ' exists'
                     task_type = request.POST['taskType']
                     user = request.user
-                    messages.add_message(request, messages.ERROR, err_msg)
                     return render_to_response('itemProcessingForm.html', {
                         'form': ItemProcessingForm(initial={'item': book,
                                                             'user': user,

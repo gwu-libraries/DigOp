@@ -1,3 +1,121 @@
-DigOp
------
-	A better answer to that all-important bottom line question: where does all the time go? DigOp is a time tracking application designed, engineered and customized for IMLS Digitization project that needs to track, manage and reports the scanning progress. By eliminating wasteful paper timesheets and replacing them with web-based, supervisor, project in-charge can see an the progress of any digital item 24x7. It drastically reduces tedious labor and endless headaches in keeping track of hours spent on a digital operation. 
+DigOps
+======
+        A better answer to that all-important bottom line question: where does all the time go? DigOp is a time tracking application designed, engineered and customized for IMLS Digitization project that needs to track, manage and reports the scanning progress. By eliminating wasteful paper timesheets and replacing them with web-based, supervisor, project in-charge can see an the progress of any digital item 24x7. It drastically reduces tedious labor and endless headaches in keeping track of hours spent on a digital operation.
+
+
+Installation Instructions
+-------------------------
+
+**Part I - Basic server requirements**
+
+1. DigOp app is developed and tested on python version 2.7 and Django version 1.4
+
+2. Install the Apache Django and other dependencies using the following command:
+
+        sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb 
+
+3. Install git
+
+        sudo apt-get install git-core
+
+
+- - -
+
+** Part II - Setting up the project environment**
+
+1. Install virtualenv
+
+        sudo apt-get install python-setuptools
+        sudo easy_install virtualenv
+
+2. Create directory for your projects (replace DIGOPS-HOME with your root directory)
+
+        mkdir /DIGOPS-HOME
+        cd /DISOPS-HOME
+
+3. Clone the git repository using following command 
+
+	(GW staff only)
+        git clone git@github.com:gwu-libraries/DigOp.git
+
+        (everyone else)
+        git clone https://github.com/gwu-libraries/DigOp.git
+	
+
+4. Create virtual python environment using following command 
+
+        cd /DIGOPS-HOME/digop
+	virtualenv --no-site-packages ENV
+
+5. Activate the virtual environemnt using the following command
+
+	source ENV/bin/activate 
+
+6. Install python suds library using following commands 
+
+	sudo wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
+
+	tar -zxvf python-suds-0.3.7.tar.gz
+
+	cd python-suds-0.3.7
+
+	python setup.py install
+	
+	cd ..
+
+	rm -rf python-suds-0.3.7
+
+	rm -r python-suds-0.3.7.tar.gz
+
+
+7. Install the additional required packages 
+
+	pip install -r requirements.txt
+
+
+- - -
+
+**Part III - Configuring installation**
+
+1. Login to mysql, create the Database, Database user and assign the privileges to user. Change the username and password.
+
+	mysql -u root -p
+        create Database Production
+        CREATE USER 'user1'@'localhost' IDENTIFIED BY 'pass1';
+	GRANT ALTER,CREATE,SELECT,INSERT,UPDATE,DELETE ON Production.* TO 'user1'@'localhost';
+	FLUSH PRIVILEGES;
+
+2. Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
+
+        DATABASES = {
+                'default': {
+                    'NAME': 'Production',
+                    'ENGINE': 'sqlserver_ado',
+                    'HOST': 'GLS-KABIS\SQLEXPRESS',
+                    'USER': '',
+                    'PASSWORD': '',
+                    'OPTIONS' : {
+                        'provider': 'SQLOLEDB',             
+	                'use_mars': True, 
+                        },
+                    }
+                }
+
+3. Update the Path to the Templates folder in the following variable in settings.py. 
+	
+        TEMPLATE_DIRS = (
+                # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
+                # Always use forward slashes, even on Windows.
+                # Don't forget to use absolute paths, not relative paths.
+                "C:/templates"
+                )
+
+4. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
+
+        Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
+
+
+5. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
+
+	KABIS_SERVER_URL = ''
+
