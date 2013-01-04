@@ -3,14 +3,16 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.models import User
 from django.template import Library
 from django.contrib.auth import logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages import constants as messages
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-from django.contrib.auth.views import password_reset, password_change_done as auth_password_change_done
+from django.contrib.auth.views import password_reset, \
+    password_change_done as auth_password_change_done
+from django.utils import simplejson as json
 
 from ui.models import LoginForm
 from ui.models import BookForm
@@ -27,6 +29,7 @@ from profiles import views as profile_views
 
 use = None
 register = Library()
+
 
 def add_csrf(request, **kwargs):
     """Add CSRF to dictionary."""
@@ -72,32 +75,46 @@ def login(request):
 
 
 @login_required
+def user_json(request, username):
+    dictionary = user(request, username, json_view=True)
+    return HttpResponse(json.dumps(dictionary, default=_date_handler),
+                        content_type='application/json')
+
+
+def _date_handler(obj):
+        return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+
+
+@login_required
 def edit_profile(request, pk):
     return profile_views.edit_profile(request, form_class=ProfileForm)
 
 
 @login_required
-def password_change_done(request, template='accounts/my_password_change_done.html'):
-    return auth_password_change_done(request,template_name=template)
+def password_change_done(request,
+                         template='accounts/my_password_change_done.html'):
+    return auth_password_change_done(request, template_name=template)
 
 
 @login_required
 def profile_menu(request):
-    return render(request,'profile_menu.html')
+    return render(request, 'profile_menu.html')
 
 
 def reset_done(request):
-    return render(request,'reset_done.html')
+    return render(request, 'reset_done.html')
 
 
 @login_required
 def view_profile(request):
-        return render(request,'view_profile.html', {
+        return render(request, 'view_profile.html', {
             'profile': UserProfile.objects.get(user=request.user),
         })
 
+
 def reset_password(request, template_name='reset_password.html'):
         return password_reset(request, template_name)
+
 
 @login_required
 def indexPage(request):
@@ -215,7 +232,14 @@ def barcodeReport(request):
 
 
 @login_required
-def barcode(request, identifier):
+def barcode_json(request, identifier):
+    dictionary = barcode(request, identifier, json_view=True)
+    return HttpResponse(json.dumps(dictionary, default= _date_handler),
+                        content_type='application/json')
+
+
+@login_required
+def barcode(request, identifier, json_view=False):
     dictionary = {}
     values = []
     book = None
@@ -232,16 +256,28 @@ def barcode(request, identifier):
         dictionary['barcode'] = rec.item.barcode
         dictionary['duration'] = str(rec.endTime - rec.startTime)
         dictionary['objects'] = rec.pagesDone
-        dictionary['user'] = rec.user
+        dictionary['user'] = rec.user.username
         dictionary['isFinished'] = rec.operationComplete
         rate_of_work = int(int(rec.pagesDone) / (rec.duration() / 3600))
         dictionary['rate'] = rate_of_work
         dictionary['task'] = rec.task
         dictionary['startTime'] = rec.startTime
         values.append(dictionary)
-    return render_to_response('barcoderesult.html', {
-        'list': values,
-    }, context_instance=RequestContext(request))
+    paginator = Paginator(values, 10)
+    page = request.GET.get('page')
+    try:
+        rows = paginator.page(page)
+    except PageNotAnInteger:
+        rows = paginator.page(1)
+    except EmptyPage:
+        rows = paginator.page(paginator.num_pages)
+    if json_view:
+        dataset = {'Sessions': values}
+        return dataset
+    else:
+        return render_to_response('data.html', {
+            'list': rows,
+        }, context_instance=RequestContext(request))
 
 
 @login_required
@@ -325,7 +361,6 @@ def processItemForm(request):
                         'task': request.POST['taskType'],
                     }, context_instance=RequestContext(request))
                 else:
-                    err_msg = 'Item object with barcode ' + bar + ' exists'
                     task_type = request.POST['taskType']
                     user = request.user
                     return render_to_response('itemProcessingForm.html', {
@@ -561,8 +596,8 @@ def itemProcessingForm(request):
 
 
 @login_required
-def user(request, username):
-    if request.GET.get('user'):
+def user(request, username, json_view=False):
+    '''if request.GET.get('user'):
         request.session['user'] = request.GET.get('user')
     if request.GET.get('start'):
         request.session['start'] = request.GET.get('start')
@@ -573,7 +608,7 @@ def user(request, username):
     name = request.session['user']
     start = request.session['start']
     end = request.session['end']
-    itemtype = request.session['itemtype']
+    itemtype = request.session['itemtype']'''
     myList = []
     totalPages = 0
     totalHours = 0
@@ -618,17 +653,31 @@ def user(request, username):
         rows = paginator.page(1)
     except EmptyPage:
         rows = paginator.page(paginator.num_pages)
-    return render_to_response('data.html', {
-        'list': rows,
-        'username': username,
-        'totalHours': totalHours,
-        'totalPages': totalPages,
-    }, context_instance=RequestContext(request))
+    if json_view:
+        return {'Sessions': myList,
+                'username': username,
+                'totalHours': totalHours,
+                'totalPages': totalPages,
+                }
+    else:
+        return render_to_response('data.html', {
+            'list': rows,
+            'username': username,
+            'totalHours': totalHours,
+            'totalPages': totalPages,
+        }, context_instance=RequestContext(request))
 
 
 @login_required
-def task(request, tasktype):
-    if request.GET.get('user'):
+def task_json(request, tasktype):
+    dict = task(request, tasktype, json_view=True)
+    return HttpResponse(json.dumps(dict, default=_date_handler,
+                        indent=2), content_type='application/json')
+
+
+@login_required
+def task(request, tasktype, json_view=False):
+    '''if request.GET.get('user'):
         request.session['user'] = request.GET.get('user')
     if request.GET.get('start'):
         request.session['start'] = request.GET.get('start')
@@ -639,7 +688,7 @@ def task(request, tasktype):
     name = request.session['user']
     start = request.session['start']
     end = request.session['end']
-    itemtype = request.session['itemtype']
+    itemtype = request.session['itemtype']'''
     a = ProcessingSession.objects.filter(task__exact=tasktype)
     totalPages = 0
     totalHours = 0
@@ -684,16 +733,30 @@ def task(request, tasktype):
         rows = paginator.page(1)
     except EmptyPage:
         rows = paginator.page(paginator.num_pages)
-    return render_to_response('data.html', {
-        'list': rows,
-        'totalHours': totalHours,
-        'totalPages': totalPages,
-    }, context_instance=RequestContext(request))
+    if json_view:
+        return {
+            'Sessions': myList,
+            'totalHours': totalHours,
+            'totalPages': totalPages,
+        }
+    else:
+        return render_to_response('data.html', {
+            'list': rows,
+            'totalHours': totalHours,
+            'totalPages': totalPages,
+        }, context_instance=RequestContext(request))
 
 
 @login_required
-def item(request, itemtype):
-    if request.GET.get('user'):
+def item_json(request, itemtype):
+    dictionary = item(request, itemtype, json_view=True)
+    return HttpResponse(json.dumps(dictionary, default=_date_handler,
+                        indent=2), content_type='application/json')
+
+
+@login_required
+def item(request, itemtype, json_view=False):
+    '''if request.GET.get('user'):
         request.session['user'] = request.GET.get('user')
     if request.GET.get('start'):
         request.session['start'] = request.GET.get('start')
@@ -704,7 +767,7 @@ def item(request, itemtype):
     name = request.session['user']
     start = request.session['start']
     end = request.session['end']
-    itemtype = request.session['itemtype']
+    item_type = request.session['itemtype']'''
     a = ProcessingSession.objects.filter(item__itemType__exact=itemtype)
     totalPages = 0
     totalHours = 0
@@ -749,11 +812,18 @@ def item(request, itemtype):
         rows = paginator.page(1)
     except EmptyPage:
         rows = paginator.page(paginator.num_pages)
-    return render_to_response('data.html', {
-        'list': rows,
-        'totalHours': totalHours,
-        'totalPages': totalPages,
-    }, context_instance=RequestContext(request))
+    if json_view:
+        return {
+            'Sessions': myList,
+            'totalHours': totalHours,
+            'totalPages': totalPages,
+        }
+    else:
+        return render_to_response('data.html', {
+            'list': rows,
+            'totalHours': totalHours,
+            'totalPages': totalPages,
+        }, context_instance=RequestContext(request))
 
 
 @login_required
