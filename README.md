@@ -1,7 +1,7 @@
 DigOps
 ======
 
-DigOps is a Django App designed to keep track of time sent in different 
+DigOps is a Django App designed to keep track of time spent in different 
 workflow steps involved in digitization of items. DigOps also supports generation
 of reports that can be used to track the rate at which items are being digitized.
 It also supports plotting of data in graphs using Google chart API.
