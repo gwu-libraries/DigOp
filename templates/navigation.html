@@ -1,12 +1,15 @@
 <div class="navigation">
     <ul>
         <li><a href="{% url indexPage %}">Home</a></li>
-        <li><a href="{% url adminSessionData %}">Scan new Item</a></li>
+        <li><a href="{% url adminSessionData %}">Scan an Item</a></li>
         <li><a href="{%url displayItemProcessingForm %}"> Process an Item </a></li>
-        <li><a href="{% url showUsers %}">Generate a Report</a></li>
-        <li><a href="{% url showGraph %}">Generate a Graph</a></li>
+        <li><a href="{% url showUsers %}">Generate Report</a></li>
+        <li><a href="{% url showGraph %}">Generate Graph</a></li>
         {%if user.is_authenticated%}
             <li><a href="{% url profile_menu %}">Edit profile</a></li>
+            {%if user.is_superuser%}
+                <li><a href="../admin/"> Admin </a></li>
+            {%endif%}
         {%endif%}
     </ul>
 </div>

@@ -135,16 +135,16 @@ height: 35px;
 margin-bottom: 10px;
 background: url(images/nav.gif);
 background-repeat: repeat-x;
-border-radius: 6px;
--moz-border-radius: 6px;
--webkit-border-radius: 6px;
--khtml-border-radius: 6px;
+border-radius: 2px;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+-khtml-border-radius: 2px;
 }
 
 .navigation ul {
         margin: 0;
         text-align: center;
-        width: 95%;
+        width: 100%;
         padding: 0;
 }
 
@@ -156,7 +156,7 @@ border-radius: 6px;
         display: inline;
         text-align: center;
         line-height: 1.8em;
-        padding-left: 2%;
+        padding-left: 1%;
         margin: 0;
 }
 
