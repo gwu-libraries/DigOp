@@ -234,7 +234,7 @@ def barcodeReport(request):
 @login_required
 def barcode_json(request, identifier):
     dictionary = barcode(request, identifier, json_view=True)
-    return HttpResponse(json.dumps(dictionary, default= _date_handler),
+    return HttpResponse(json.dumps(dictionary, default=_date_handler),
                         content_type='application/json')
 
 
