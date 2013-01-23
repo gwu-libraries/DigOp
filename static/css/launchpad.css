@@ -24,6 +24,7 @@ body {
 	background-color:#FFCCCC;
 	margin:1px;
 }
+
 .item_body {
 	padding: 5px 10px 15px;
 	background-color:#F4F4F8;
@@ -33,7 +34,6 @@ body {
     color: red;
     font-weight: bold;
 }
-
 
 ul li{
     text-transform: uppercase;
