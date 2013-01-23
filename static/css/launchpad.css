@@ -30,6 +30,11 @@ body {
 	background-color:#F4F4F8;
 }
 
+.submit-row {
+    width:400px;
+    text-align:center;
+}
+
 .error {
     color: red;
     font-weight: bold;

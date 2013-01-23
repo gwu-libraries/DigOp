@@ -17,8 +17,10 @@
 <div id="contentcolumn">
 <h1>Edit contact info for {{ user }}</h1>
 <form action="" method="POST"> {% csrf_token %}
-    {{ form.as_p }} 
-    <input id="submit" type="submit" name="submit" value="Update" />
+    {{ form.as_p }}
+    <div class="submit-row">
+        <input id="submit" type="submit" name="submit" value="Update" />
+    </div>
 </form>
 </div>
 {% endblock content %}
