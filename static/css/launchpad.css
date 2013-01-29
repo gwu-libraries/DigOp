@@ -207,11 +207,11 @@ ul.top-level {
 
 #navcontainer A
 {
-    color: #444;
+    color: #ddd;
     display: block;
     width: auto;
     text-decoration: none;
-    background: #010145;
+    background: #03314b;
     margin: 0;
     padding: 2px 5px;
     border-left: 1px solid #fff;
@@ -220,7 +220,7 @@ ul.top-level {
 }
 
 #navcontainer A:hover, #navcontainer A:active { 
-    background: #030970; 
+    background: #03314b; 
 }
 
 #navcontainer A.active:link, #navcontainer A.active:visited
@@ -263,7 +263,7 @@ ul.top-level {
 .vertical_menu li a:link, a:visited  {
     font-weight: bold;
     text-decoration: none;
-    color: #aaa;
+    color: #ddd;
 }
                 
 .vertical_menu li a:hover {
