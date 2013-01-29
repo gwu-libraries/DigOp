@@ -40,6 +40,7 @@ body {
     font-weight: bold;
 }
 
+
 ul li{
     text-transform: uppercase;
     color: red;
@@ -47,7 +48,6 @@ ul li{
     font-size: 16px;
     font-style: italic;
 }
-
 
 
 table {
@@ -182,37 +182,55 @@ ul.top-level {
    width: 198px;
 }
 
-
-.menu{
-    width: 100%;
-    background-color: #333; 
+#navcontainer
+{
+    margin: 17px;
+    padding: 0 0 0 2px;
 }
 
-.menu ul{
-    margin: 0; padding: 0;
-    float: left;
+#navcontainer UL
+{
+    list-style: none;
+    margin: 2px;
+    padding: 1px;
+    border: none;
 }
-         
-.menu ul li{
-    display: inline;
-}
-             
-.menu ul li a{
+
+#navcontainer LI
+{
+    display: block;
+    top-margin: 7px;
+    padding: 0;
     float: left;
+    width: auto;
+}
+
+#navcontainer A
+{
+    color: #444;
+    display: block;
+    width: auto;
     text-decoration: none;
-    color: white; 
-    padding: 10.5px 11px;
-    background-color:  #03314b;
+    background: #010145;
+    margin: 0;
+    padding: 2px 5px;
+    border-left: 1px solid #fff;
+    border-top: 1px solid #fff;
+    border-right: 1px solid #aaa;
 }
-                             
-.menu ul li a:visited{
-    color: white;
+
+#navcontainer A:hover, #navcontainer A:active { 
+    background: #030970; 
 }
-                                 
-.menu ul li a:hover, .menu ul li .current{
-    color: #fff;
-    background-color: #0b75b2;
+
+#navcontainer A.active:link, #navcontainer A.active:visited
+{
+    position: relative;
+    z-index: 102;
+    background: #777777;
+    font-weight: bold;
 }
+
 
 #contentwrapper{
    float: left;
