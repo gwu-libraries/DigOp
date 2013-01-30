@@ -59,7 +59,7 @@ only been tested on ubuntu 10.04 LTS.
         
 6. Activate the virtual environemnt using the following command
 
-        source ENV/bin/activate 
+        source ENV/bin/activate
 
 7. Install python suds library using following commands
 
