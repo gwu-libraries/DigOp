@@ -52,14 +52,14 @@ only been tested on ubuntu 10.04 LTS.
 4. cd into digop directory
 
         cd /DIGOPS-HOME/digop
-	
+        	
 5. Create virtual python environment using following command 
 
         virtualenv --no-site-packages ENV
         
 6. Activate the virtual environemnt using the following command
 
-	source ENV/bin/activate 
+        source ENV/bin/activate 
 
 7. Install python suds library using following commands 
 
@@ -80,7 +80,7 @@ only been tested on ubuntu 10.04 LTS.
 
 **Part III - Configuring installation**
 
-1. Login to mysql create the Database, Database user and assign the privileges to user. Change the username and password
+1. Login to mysql
 
 	mysql -u root -p
 
