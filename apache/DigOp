@@ -45,3 +45,5 @@
             Allow from all
         </Files>
     </Directory>
+
+</VirtualHost>

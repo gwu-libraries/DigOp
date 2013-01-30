@@ -150,3 +150,8 @@ only been tested on ubuntu 10.04 LTS.
 
         sudo cp ../apache/DigOp /etc/apache2/sites-available/DigOp
         vim /etc/apache2/sites-available/DigOp
+
+14. Enable the app in apache and bounce apache2 to start it up
+
+        sudo a2ensite DigOp
+        sudo /etc/init.d/apache2 restart
