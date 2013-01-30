@@ -61,7 +61,7 @@ only been tested on ubuntu 10.04 LTS.
 
         source ENV/bin/activate 
 
-7. Install python suds library using following commands 
+7. Install python suds library using following commands
 
 	sudo wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
 	tar -zxvf python-suds-0.3.7.tar.gz
@@ -71,7 +71,7 @@ only been tested on ubuntu 10.04 LTS.
 	rm -rf python-suds-0.3.7
 	rm -r python-suds-0.3.7.tar.gz
 
-8. Install the additional required packages 
+8. Install the additional required packages
 
 	pip install -r requirements.txt
 
