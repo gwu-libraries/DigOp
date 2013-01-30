@@ -105,14 +105,11 @@ only been tested on ubuntu 10.04 LTS.
         DATABASES = {
                 'default': {
                     'NAME': 'Production',
-                    'ENGINE': 'sqlserver_ado',
-                    'HOST': 'GLS-KABIS\SQLEXPRESS',
+                    'ENGINE': 'django.db.backends.mysql',
+                    'HOST': 'localhost',
                     'USER': '',
                     'PASSWORD': '',
-                    'OPTIONS' : {
-                        'provider': 'SQLOLEDB',             
-	                'use_mars': True, 
-                        },
+                    'PORT': 3306,
                     }
                 }
 
