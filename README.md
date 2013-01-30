@@ -104,8 +104,8 @@ only been tested on ubuntu 10.04 LTS.
 
         DATABASES = {
                 'default': {
-                    'NAME': 'Production',
                     'ENGINE': 'django.db.backends.mysql',
+                    'NAME': 'Production',
                     'HOST': 'localhost',
                     'USER': '',
                     'PASSWORD': '',
