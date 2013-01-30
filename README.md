@@ -146,3 +146,7 @@ only been tested on ubuntu 10.04 LTS.
         python manage.py runserver 0.0.0.0:8080
         (visit http://your-server:8080/item/198738 to test)
 
+13. If you want to use apache, add apache config file to sites-enabled and edit it
+
+        sudo cp ../apache/DigOp /etc/apache2/sites-available/DigOp
+        vim /etc/apache2/sites-available/DigOp
