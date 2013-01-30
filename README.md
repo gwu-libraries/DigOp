@@ -63,13 +63,13 @@ only been tested on ubuntu 10.04 LTS.
 
 7. Install python suds library using following commands
 
-	sudo wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
-	tar -zxvf python-suds-0.3.7.tar.gz
-	cd python-suds-0.3.7
-	python setup.py install
-	cd ..
-	rm -rf python-suds-0.3.7
-	rm -r python-suds-0.3.7.tar.gz
+        sudo wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
+        tar -zxvf python-suds-0.3.7.tar.gz
+        cd python-suds-0.3.7
+        python setup.py install
+        cd ..
+        rm -rf python-suds-0.3.7
+        rm -r python-suds-0.3.7.tar.gz
 
 8. Install the additional required packages
 
