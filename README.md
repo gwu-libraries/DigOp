@@ -94,11 +94,11 @@ only been tested on ubuntu 10.04 LTS.
 
 4. Assign the privileges to user
 
-	GRANT ALTER,CREATE,SELECT,INSERT,UPDATE,DELETE ON Production.* TO 'user1'@'localhost';
+        GRANT ALTER,CREATE,SELECT,INSERT,UPDATE,DELETE ON Production.* TO 'user1'@'localhost';
 
-5. Commit the chages
+5. Commit the changes
 
-	FLUSH PRIVILEGES;
+        FLUSH PRIVILEGES;
 
 6. Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
 
