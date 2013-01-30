@@ -77,7 +77,7 @@ only been tested on ubuntu 10.04 LTS.
 
 **Part III - Configuring installation**
 
-1. Login to mysql, create the Database, Database user and assign the privileges to user. Change the username and password.
+1. Login to mysql, create the Database, Database user and assign the privileges to user. Change the username and password
 
 	mysql -u root -p
         create Database Production
