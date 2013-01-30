@@ -20,7 +20,7 @@ only been tested on ubuntu 10.04 LTS.
 
 1. Install the Apache Django and other dependencies using the following command:
 
-        sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb 
+        sudo apt-get install apache2 python-dev mysql-server mysql-client python-setuptools libapache2-mod-wsgi python-mysqldb libmysqlclient15-dev 
 
 2. Install git
 
