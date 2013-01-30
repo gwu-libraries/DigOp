@@ -113,7 +113,12 @@ only been tested on ubuntu 10.04 LTS.
                     }
                 }
 
-7. Update the Path to the Templates folder in the following variable in settings.py 
+7. Edit wsgi file
+
+        cp Digop/wsgi.py.template Digop/wsgi.py
+        vim Digop/wsgi.py
+
+8. Update the Path to the Templates folder in the following variable in settings.py 
         
         TEMPLATE_DIRS = (
                 # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -122,11 +127,11 @@ only been tested on ubuntu 10.04 LTS.
                 "C:/templates"
                 )
 
-8. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
+9. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
 
         Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
 
-9. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
+10. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
         KABIS_SERVER_URL = ''
 
