@@ -43,9 +43,9 @@ only been tested on ubuntu 10.04 LTS.
 
 3. Clone the git repository using following command 
 
-	(GW staff only)
+	For GW staff only
         git clone git@github.com:gwu-libraries/DigOp.git
-        (everyone else)
+        For everyone else
         git clone https://github.com/gwu-libraries/DigOp.git
 	
 4. Create virtual python environment using following command 
