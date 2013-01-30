@@ -45,7 +45,6 @@ only been tested on ubuntu 10.04 LTS.
 
 	(GW staff only)
         git clone git@github.com:gwu-libraries/DigOp.git
-
         (everyone else)
         git clone https://github.com/gwu-libraries/DigOp.git
 	
