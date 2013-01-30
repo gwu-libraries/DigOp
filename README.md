@@ -73,7 +73,7 @@ only been tested on ubuntu 10.04 LTS.
 
 8. Install the additional required packages
 
-	pip install -r requirements.txt
+        pip install -r requirements.txt
 
 
 - - -
@@ -82,7 +82,7 @@ only been tested on ubuntu 10.04 LTS.
 
 1. Login to mysql
 
-	mysql -u root -p
+        mysql -u root -p
 
 2. Create the Database
         
