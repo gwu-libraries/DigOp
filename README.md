@@ -100,7 +100,13 @@ only been tested on ubuntu 10.04 LTS.
 
         FLUSH PRIVILEGES;
 
-6. Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
+6. Configure database and other settings in a local_settings file
+
+        cd DigOp
+        cp local_settings.py.template local_settings.py
+        vim local_settings.py
+
+7. Fill in the values for Database in local_settings.py as follows:
 
         DATABASES = {
                 'default': {
@@ -113,12 +119,12 @@ only been tested on ubuntu 10.04 LTS.
                     }
                 }
 
-7. Edit wsgi file
+8. Edit wsgi file
 
         cp DigOp/wsgi.py.template DigOp/wsgi.py
         vim DigOp/wsgi.py
 
-8. Update the Path to the Templates folder in the following variable in settings.py 
+9. Update the Path to the Templates folder in the following variable in settings.py 
         
         TEMPLATE_DIRS = (
                 # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -127,11 +133,11 @@ only been tested on ubuntu 10.04 LTS.
                 "C:/templates"
                 )
 
-9. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
+10. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
 
         Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
 
-10. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
+11. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
         KABIS_SERVER_URL = ''
 
