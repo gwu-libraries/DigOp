@@ -52,7 +52,7 @@ only been tested on ubuntu 10.04 LTS.
 4. cd into digop directory
 
         cd /DIGOPS-HOME/digop
-        	
+
 5. Create virtual python environment using following command 
 
         virtualenv --no-site-packages ENV
