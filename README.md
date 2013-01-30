@@ -85,13 +85,19 @@ only been tested on ubuntu 10.04 LTS.
         
         create Database Production;
 
-3. Create Database user and assign the privileges to user while changing use1 with a different username and pass1 with a different password
+3. Create Database user while changing user1 with a different username and pass1 with a different password
         
         CREATE USER 'user1'@'localhost' IDENTIFIED BY 'pass1';
+
+4. Assign the privileges to user
+
 	GRANT ALTER,CREATE,SELECT,INSERT,UPDATE,DELETE ON Production.* TO 'user1'@'localhost';
+
+5. Commit the chages
+
 	FLUSH PRIVILEGES;
 
-4. Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
+6. Install Django's mssql server driver and fill in the values for Database in settings.py as follows:
 
         DATABASES = {
                 'default': {
@@ -107,7 +113,7 @@ only been tested on ubuntu 10.04 LTS.
                     }
                 }
 
-5. Update the Path to the Templates folder in the following variable in settings.py 
+7. Update the Path to the Templates folder in the following variable in settings.py 
         
         TEMPLATE_DIRS = (
                 # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -116,11 +122,11 @@ only been tested on ubuntu 10.04 LTS.
                 "C:/templates"
                 )
 
-6. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
+8. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
 
         Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
 
-7. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
+9. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
         KABIS_SERVER_URL = ''
 
