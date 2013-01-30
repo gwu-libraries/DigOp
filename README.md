@@ -141,3 +141,8 @@ only been tested on ubuntu 10.04 LTS.
 
         KABIS_SERVER_URL = ''
 
+12. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
+
+        python manage.py runserver 0.0.0.0:8080
+        (visit http://your-server:8080/item/198738 to test)
+
