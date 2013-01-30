@@ -51,7 +51,7 @@ only been tested on ubuntu 10.04 LTS.
 
 4. cd into digop directory
 
-        cd /DIGOPS-HOME/digop
+        cd /DIGOPS-HOME/DigOp
 
 5. Create virtual python environment using following command 
 
@@ -115,8 +115,8 @@ only been tested on ubuntu 10.04 LTS.
 
 7. Edit wsgi file
 
-        cp Digop/wsgi.py.template Digop/wsgi.py
-        vim Digop/wsgi.py
+        cp DigOp/wsgi.py.template DigOp/wsgi.py
+        vim DigOp/wsgi.py
 
 8. Update the Path to the Templates folder in the following variable in settings.py 
         
