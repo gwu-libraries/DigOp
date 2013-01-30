@@ -41,11 +41,12 @@ only been tested on ubuntu 10.04 LTS.
         mkdir /DIGOPS-HOME
         cd /DISOPS-HOME
 
-3. Clone the git repository using following command 
+3. Clone the git repository using one of the following commands 
 
-	For GW staff only
+        (GW staff only)
         git clone git@github.com:gwu-libraries/DigOp.git
-        For everyone else
+
+        (everyone else)
         git clone https://github.com/gwu-libraries/DigOp.git
 	
 4. Create virtual python environment using following command 
