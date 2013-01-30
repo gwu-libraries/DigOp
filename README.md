@@ -56,7 +56,7 @@ only been tested on ubuntu 10.04 LTS.
 5. Create virtual python environment using following command 
 
         virtualenv --no-site-packages ENV
-
+        
 6. Activate the virtual environemnt using the following command
 
 	source ENV/bin/activate 
