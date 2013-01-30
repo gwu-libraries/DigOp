@@ -48,17 +48,20 @@ only been tested on ubuntu 10.04 LTS.
 
         (everyone else)
         git clone https://github.com/gwu-libraries/DigOp.git
-	
-4. Create virtual python environment using following command 
+
+4. cd into digop directory
 
         cd /DIGOPS-HOME/digop
-	virtualenv --no-site-packages ENV
+	
+5. Create virtual python environment using following command 
 
-5. Activate the virtual environemnt using the following command
+        virtualenv --no-site-packages ENV
+
+6. Activate the virtual environemnt using the following command
 
 	source ENV/bin/activate 
 
-6. Install python suds library using following commands 
+7. Install python suds library using following commands 
 
 	sudo wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
 	tar -zxvf python-suds-0.3.7.tar.gz
@@ -68,7 +71,7 @@ only been tested on ubuntu 10.04 LTS.
 	rm -rf python-suds-0.3.7
 	rm -r python-suds-0.3.7.tar.gz
 
-7. Install the additional required packages 
+8. Install the additional required packages 
 
 	pip install -r requirements.txt
 
