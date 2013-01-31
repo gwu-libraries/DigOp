@@ -166,3 +166,5 @@ only been tested on ubuntu 10.04 LTS.
 
         sudo a2ensite DigOp
         sudo /etc/init.d/apache2 restart
+
+17. open a web browser and type in the url of the server running DigOps app. Type in the admin user and password created in step 13 to login.
