@@ -141,10 +141,9 @@ only been tested on ubuntu 10.04 LTS.
 
         KABIS_SERVER_URL = ''
 
-12. Use the following two commands in shell to export the two environment variables
+12. Use the following command in shell to set the loacale
 
-        export LANG=es_ES.UTF-8
-        export LC_ALL=es_ES.UTF-8
+        sudo dpkg-reconfigure locales
 
 13. Go into the DIGOPS-HOME directory where manage.py is stored and type in the following command
 
