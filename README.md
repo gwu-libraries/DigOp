@@ -94,7 +94,7 @@ only been tested on ubuntu 10.04 LTS.
 
 4. Assign the privileges to user
 
-        GRANT ALTER,CREATE,SELECT,INSERT,UPDATE,DELETE ON Production.* TO 'user1'@'localhost';
+        GRANT ALTER,CREATE,SELECT,INSERT,UPDATE,DELETE,INDEX ON Production.* TO 'user1'@'localhost';
 
 5. Commit the changes
 
