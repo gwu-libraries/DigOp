@@ -141,22 +141,28 @@ only been tested on ubuntu 10.04 LTS.
 
         KABIS_SERVER_URL = ''
 
-12. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
-
-        python manage.py runserver 0.0.0.0:8080
-        (visit http://your-server:8080/item/198738 to test)
-
-13. Use the following two commands in shell to export the two environment variables
+12. Use the following two commands in shell to export the two environment variables
 
         export LANG=es_ES.UTF-8
         export LC_ALL=es_ES.UTF-8
 
-14. If you want to use apache, add apache config file to sites-enabled and edit it
+13. Go into the DIGOPS-HOME directory where manage.py is stored and type in the following command
+
+        python manage.py syncdb
+    create the admin user and the password when prompted
+
+14. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
+
+        python manage.py runserver 0.0.0.0:8080
+        (visit http://your-server:8080/item/198738 to test)
+
+
+15. If you want to use apache, add apache config file to sites-enabled and edit it
 
         sudo cp ../apache/DigOp /etc/apache2/sites-available/DigOp
         vim /etc/apache2/sites-available/DigOp
 
-15. Enable the app in apache and bounce apache2 to start it up
+16. Enable the app in apache and bounce apache2 to start it up
 
         sudo a2ensite DigOp
         sudo /etc/init.d/apache2 restart
