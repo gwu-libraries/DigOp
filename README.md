@@ -153,7 +153,7 @@ only been tested on ubuntu 10.04 LTS.
 14. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
 
         python manage.py runserver 0.0.0.0:8080
-        (visit http://your-server:8080/item/198738 to test)
+        (visit http://your-server:8080 to test)
 
 
 15. If you want to use apache, add apache config file to sites-enabled and edit it
