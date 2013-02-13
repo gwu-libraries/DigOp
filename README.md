@@ -144,6 +144,8 @@ only been tested on ubuntu 10.04 LTS.
 12. Use the following command in shell to set the loacale
 
         sudo dpkg-reconfigure locales
+        export LC_ALL=en_GB.UTF-8
+        export LANG=en_GB.UTF-8
 
 13. Go into the DIGOPS-HOME directory where manage.py is stored and type in the following command
 
