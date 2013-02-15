@@ -170,4 +170,4 @@ only been tested on ubuntu 10.04 LTS.
 
 17. open a web browser and type in the url of the server running DigOps app. Type in the admin user and password created in step 13 to login.
 
-18. If you get the Access Forbidden error, Make sure that the folder containing DIGOPS-HOME is in a folder with read and execute permissions to everyone. Typically, this might require giving 755 with chmod to your home directory if DIGOPS-HOME resides in your home directory.
+18. If you get the Access Forbidden error, Make sure that the folder containing DIGOPS-HOME allows read and execute permissions to everyone. Typically, this might require giving 755 with chmod to your home directory if DIGOPS-HOME resides in your home directory.
