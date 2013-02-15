@@ -32,9 +32,9 @@
 
     AliasMatch ^/static/css/([^/]*\.css) /DIGOPS-HOME/DigOp/static/css/$1
     AliasMatch ^/static/img/(.*) /DIGOPS_HOME/DigOp/static/images/$1
-     AliasMatch ^/static/(.*) /DIGOPS-HOME/DigOp/static/$1
+    AliasMatch ^/static/(.*) /DIGOPS-HOME/DigOp/static/$1
 
-    WSGIDaemonProcess <your.server.name> processes=2 threads=15 python-path=/DIGOPS-HOME/DigOp/ENV/lib/python/2.X/site-packages:/DIGOPS-HOME/DigOp
+    WSGIDaemonProcess <your.server.name> processes=2 threads=15 python-path=/DIGOPS-HOME/DigOp/ENV/lib/python2.X/site-packages:/DIGOPS-HOME/DigOp
 
     WSGIProcessGroup <your.server.name>
 
