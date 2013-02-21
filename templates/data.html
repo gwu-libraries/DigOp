@@ -7,7 +7,11 @@
     $(function()
     {
         $('#results').dataTable(
-        {"bJQueryUI": true
+        {   "bJQueryUI": true,
+            "sDom": 'T<"clear">lfrtip',
+            "oTableTools": {
+                "sSwfPath": "{{STATIC_URL}}TableTools/media/swf/copy_csv_xls_pdf.swf"
+        }
         });
     });
 </script>
@@ -19,6 +23,7 @@
     @import "{{STATIC_URL}}media/css/demo_page.css";
     @import "{{STATIC_URL}}media/css/demo_table.css";
     @import "{{STATIC_URL}}media/css/jquery-ui.min.css";
+    @import "{{STATIC_URL}}media/css/TableTools.css";
                                                                 
     .dataTables_info { padding-top: 0; }
     .dataTables_paginate { padding-top: 0; }
