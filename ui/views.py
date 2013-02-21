@@ -263,20 +263,12 @@ def barcode(request, identifier, json_view=False):
         dictionary['task'] = rec.task
         dictionary['startTime'] = rec.startTime
         values.append(dictionary)
-    paginator = Paginator(values, 10)
-    page = request.GET.get('page')
-    try:
-        rows = paginator.page(page)
-    except PageNotAnInteger:
-        rows = paginator.page(1)
-    except EmptyPage:
-        rows = paginator.page(paginator.num_pages)
     if json_view:
         dataset = {'Sessions': values}
         return dataset
     else:
         return render_to_response('data.html', {
-            'list': rows,
+            'list': values,
         }, context_instance=RequestContext(request))
 
 
@@ -645,14 +637,6 @@ def user(request, username, json_view=False):
             totalHours = totalHours + (conversion / 3600.0)
             totalPages = totalPages + item.pagesDone
         myList.append(dictionary)
-    paginator = Paginator(myList, 10)
-    page = request.GET.get('page')
-    try:
-        rows = paginator.page(page)
-    except PageNotAnInteger:
-        rows = paginator.page(1)
-    except EmptyPage:
-        rows = paginator.page(paginator.num_pages)
     if json_view:
         return {'Sessions': myList,
                 'username': username,
@@ -661,7 +645,7 @@ def user(request, username, json_view=False):
                 }
     else:
         return render_to_response('data.html', {
-            'list': rows,
+            'list': myList,
             'username': username,
             'totalHours': totalHours,
             'totalPages': totalPages,
@@ -725,14 +709,6 @@ def task(request, tasktype, json_view=False):
             totalHours = totalHours + (conversion / 3600.0)
             totalPages = totalPages + item.pagesDone
         myList.append(dictionary)
-    paginator = Paginator(myList, 10)
-    page = request.GET.get('page')
-    try:
-        rows = paginator.page(page)
-    except PageNotAnInteger:
-        rows = paginator.page(1)
-    except EmptyPage:
-        rows = paginator.page(paginator.num_pages)
     if json_view:
         return {
             'Sessions': myList,
@@ -741,7 +717,7 @@ def task(request, tasktype, json_view=False):
         }
     else:
         return render_to_response('data.html', {
-            'list': rows,
+            'list': myList,
             'totalHours': totalHours,
             'totalPages': totalPages,
         }, context_instance=RequestContext(request))
@@ -804,14 +780,6 @@ def item(request, itemtype, json_view=False):
             totalHours = totalHours + (conversion / 3600.0)
             totalPages = totalPages + item.pagesDone
         myList.append(dictionary)
-    paginator = Paginator(myList, 10)
-    page = request.GET.get('page')
-    try:
-        rows = paginator.page(page)
-    except PageNotAnInteger:
-        rows = paginator.page(1)
-    except EmptyPage:
-        rows = paginator.page(paginator.num_pages)
     if json_view:
         return {
             'Sessions': myList,
@@ -820,7 +788,7 @@ def item(request, itemtype, json_view=False):
         }
     else:
         return render_to_response('data.html', {
-            'list': rows,
+            'list': myList,
             'totalHours': totalHours,
             'totalPages': totalPages,
         }, context_instance=RequestContext(request))
@@ -916,17 +884,17 @@ def produceData(request):
                 totalHours = totalHours + (conversion / 3600.0)
                 totalPages = totalPages + item.pagesDone
             myList.append(dictionary)
-    paginator = Paginator(myList, 10)
-    page = request.GET.get('page')
-    try:
-        rows = paginator.page(page)
-    except PageNotAnInteger:
-        rows = paginator.page(1)
-    except EmptyPage:
-        rows = paginator.page(paginator.num_pages)
+    #paginator = Paginator(myList, 10)
+    #page = request.GET.get('page')
+    #try:
+        #rows = paginator.page(page)
+    #except PageNotAnInteger:
+        #rows = paginator.page(1)
+    #except EmptyPage:
+        #rows = paginator.page(paginator.num_pages)
 
     return render_to_response('data.html', {
-        'list': rows,
+        'list': myList,
         'username': name,
         'totalHours': totalHours,
         'totalPages': totalPages,

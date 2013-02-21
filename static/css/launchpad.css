@@ -50,6 +50,7 @@ ul li{
 }
 
 
+
 table {
     border: None;
 }
@@ -71,6 +72,7 @@ td {
     MARGIN: 0px;
     COLOR: #000000;
 }
+
 
 .library-group-header{
     padding-top: 1em;
@@ -263,7 +265,7 @@ ul.top-level {
 .vertical_menu li a:link, a:visited  {
     font-weight: bold;
     text-decoration: none;
-    color: #ddd;
+    color: black;
 }
                 
 .vertical_menu li a:hover {
