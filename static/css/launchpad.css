@@ -265,7 +265,7 @@ ul.top-level {
 .vertical_menu li a:link, a:visited  {
     font-weight: bold;
     text-decoration: none;
-    color: black;
+    color: #919191;
 }
                 
 .vertical_menu li a:hover {
