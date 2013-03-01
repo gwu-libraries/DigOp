@@ -150,47 +150,42 @@ def showUsers(request):
 
 
 @login_required
-def showGraph(request):
+def showGraph(request,chartType):
     userObjects = User.objects.all()
     users = []
-    colors = ['Blue', 'Red', 'Green', 'Black', 'Brown', 'Pink', 'Beige']
-    colors.extend(['Chocolate', 'Grey', 'Cyan', 'DarkRed', 'Violet', 'Gold'])
-    colors.extend(['Magneta', 'Khaki', 'Ivory', 'Lavender', 'Lime', 'Yellow'])
-    colors.extend(['GoldenRed', 'Navy', 'Olive', 'orchid', 'Linen', 'Orange'])
-    colors.extend(['Peru', 'Purple', 'Plum', 'RoyalBlue', 'SandyBrown'])
-    colors.extend(['Silver', 'Tan', 'Teal', 'Thistle', 'Tomato', 'Violet'])
-    colors.extend(['Turquoise', 'Sienna', 'PaleGreen', 'PaleVioletRed'])
-    colors.extend(['MintCream', 'MediumPurple', 'RosyBrown', 'SeaGreen'])
-    colors.extend(['IndianRed', 'HotPink', 'GreenYellow', 'ForestGreen'])
-    colors.extend(['DarkViolet', 'Aqua', 'Coral', 'Salmon', 'Wheat'])
-    colors.extend(['OliveDrab', 'skyBlue'])
-    low = 100
+    low = 0
     high = 0
     values = []
     valuesList = []
     entryList = []
+    hoursList = []
     for u in userObjects:
         users.append(u.username)
         userrows = ProcessingSession.objects.filter(user=u)
         pages = 0
+        hours = 0
         for row in userrows:
             pages = pages + row.pagesDone
+            hours = hours + row.duration()
         if pages < low:
             low = pages
         if pages > high:
             high = pages
         valuesList.append(u.username + '(' + str(pages) + ')')
         entryList.append(pages)
+        hoursList.append(hours)
     values.append(entryList)
-    return render_to_response('showGraph.html', {
-        'users': users,
-        'low': low,
-        'high': high,
-        'values': valuesList,
-        'testValues': values,
-        'entries': entryList,
-        'colors': colors[:len(valuesList)],
-    }, context_instance=RequestContext(request))
+    if chartType == 'pie' or chartType == 'bar':
+        return render_to_response('showGraph.html', {
+            'users': users,
+            'low': low,
+            'high': high,
+            'hours': hoursList,
+            'values': zip(users, entryList),
+            'testValues': values,
+            'entries': entryList,
+            'chartType': chartType,
+        }, context_instance=RequestContext(request))
 
 
 @login_required
