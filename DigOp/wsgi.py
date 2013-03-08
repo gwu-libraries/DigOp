@@ -13,6 +13,11 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
+# if using a virtualenv, uncomment and set the next three lines appropriately
+import site
+ENV = '/home/gilani/projects/DigOp/ENV'
+site.addsitedir(ENV + '/lib/python2.6/site-packages')
+
 import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DigOp.settings")

@@ -120,7 +120,7 @@ ROOT_URLCONF = 'DigOp.urls'
 WSGI_APPLICATION = 'DigOp.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/home/gilani/DigOp/templates'
+    '/home/gilani/projects/DigOp/templates'
 )
 
 INSTALLED_APPS = (
