@@ -35,8 +35,16 @@ DEPTS = (
     ('STG', 'STG'),
 )
 
+class Project(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.TextField()
+    startDate = models.DateTimeField('Project Start Date', default=datetime.now)
+    endDate = models.DateTimeField(blank=True)
+    projectComplete = models.BooleanField(blank=True)
+
 
 class Item(models.Model):
+    project = models.ForeignKey(Project)
     barcode = models.CharField(max_length=50)
     totalPages = models.IntegerField(blank=True)
     itemType = models.CharField(max_length=10, choices=ITEMS)
@@ -193,3 +201,7 @@ class BookForm(ModelForm):
         model = Item
         exclude = ('totalPages')
 
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        exclude = ('endDate', 'projectComplete')
