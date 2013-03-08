@@ -39,8 +39,11 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
     startDate = models.DateTimeField('Project Start Date', default=datetime.now)
-    endDate = models.DateTimeField(blank=True)
+    endDate = models.DateTimeField(default=datetime.now)
     projectComplete = models.BooleanField(blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Item(models.Model):
@@ -202,6 +205,14 @@ class BookForm(ModelForm):
         exclude = ('totalPages')
 
 class ProjectForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        self.fields['name'].error_messages['required'] = \
+                'Enter a value for Project Name'
+        self.fields['description'].error_messages['required'] = \
+                'Enter a value for Project Description'
+        self.fields['startDate'].error_messages['required'] = \
+                'Enter a value for Project start Date'
     class Meta:
         model = Project
         exclude = ('endDate', 'projectComplete')

@@ -1,0 +1,20 @@
+{% extends "base_2col.html" %}
+{% load i18n %}
+
+{% block content %}
+{%load bootstrap%}
+{%bootstrap_css%}
+<div id ="leftcolumn">
+    <ul class="vertical_menu">
+        <li><a href="{%url addProject%}"> Create New Project</a></li>
+        <li><a href="{%url closeProject%}">Close a Project</a></li>
+    </ul>
+</div>
+<div id="contentcolumn">
+    <form action="../addProject/" method="post"> {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+{%endblock%}
+

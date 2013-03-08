@@ -20,8 +20,10 @@ from ui.models import ProcessingForm
 from ui.models import ItemProcessingForm
 from ui.models import Item
 from ui.models import ProcessingSession
+from ui.models import Project
 from ui.models import UserProfile
 from ui.models import ProfileForm
+from ui.models import ProjectForm
 
 from profiles import views as profile_views
 #django-qsstats-magic Should be install before running the app
@@ -99,6 +101,15 @@ def password_change_done(request,
 @login_required
 def profile_menu(request):
     return render(request, 'profile_menu.html')
+
+@login_required
+def project(request):
+    return render(request, 'project_menu.html')
+
+
+@login_required
+def projectForm(request):
+    return render(request,'add_project.html')
 
 
 def reset_done(request):
@@ -525,6 +536,36 @@ def processProcessingForm(request):
         return render_to_response('processingForm.html', {
             'form': form,
         }, context_instance=RequestContext(request))
+
+
+@login_required
+def addProject(request):
+    def errorHandle(error):
+        form = ProjectForm(request.POST)
+        return render_to_response('add_project.html', {
+            'error': error,
+            'form': form,
+        },context_instance=RequestContext(request))
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            project = Project(name=request.POST['name'], description=request.POST['description'], startDate=request.POST['startDate'])
+            project.save()
+            return render(request,'project_menu.html')
+        else:
+            error = 'form is invalid'
+            return errorHandle(error)
+    else:
+        form = ProjectForm()
+        return render_to_response('add_project.html', {
+            'form': form,
+        }, context_instance=RequestContext(request))
+
+
+@login_required
+def closeProject(request):
+    return render(request,close_project_form.html)
+
 
 
 @login_required
