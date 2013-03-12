@@ -108,6 +108,11 @@ def project(request):
 
 
 @login_required
+def itemMenu(request):
+    return render(request, 'item_menu.html')
+
+
+@login_required
 def projectForm(request):
     return render(request,'add_project.html')
 

@@ -32,6 +32,12 @@ $("input#autocomplete").autocomplete({
 
 {% block content %}
 
+<div id ="leftcolumn">
+    <ul class="vertical_menu">
+        <li><a href="{% url adminSessionData %}">Scan an Item</a></li>
+        <li><a href="{%url displayItemProcessingForm %}"> Process an Item </a></li>
+    </ul>
+</div>
 
 
 
