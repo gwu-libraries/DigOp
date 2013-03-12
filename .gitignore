@@ -1,6 +1,5 @@
 *.swp
 *.pyc
-migrations
 ENV
 wsgi.py
 
