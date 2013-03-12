@@ -17,8 +17,8 @@
 {% endblock %}
 
 {% block content %}
-{%load bootstrap%}
-{%bootstrap_css%}
+
+
 <div id="contentcolumn">
 
     <form action="{% if next %}?next={{ next }}{% endif %}" method="post" accept-charset="utf-8"> {% csrf_token %}

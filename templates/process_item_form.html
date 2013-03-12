@@ -8,9 +8,6 @@
 {% block javascript_extra %}
 
 
-<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 <script>
 var data= new Array();
 {%get_all_barcodes%}
@@ -35,8 +32,8 @@ $("input#autocomplete").autocomplete({
 
 {% block content %}
 
-{%load bootstrap%}
-{%bootstrap_css%}
+
+
 
 <div id="contentcolumn">
 <h1> Process an Item </h1>
@@ -60,7 +57,7 @@ $("input#autocomplete").autocomplete({
 
 <label id="toLabel">Enter Barcode:</label>  
              
-                <p><input name="barcode" id="autocomplete" > </p> 
+<p><input type="text" id="autocomplete" name="barcode" maxlength="50" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></p> 
        
 		<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
 
