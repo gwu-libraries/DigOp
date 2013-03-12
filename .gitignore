@@ -2,5 +2,6 @@
 *.pyc
 migrations
 ENV
+wsgi.py
 
 *local_settings.py
