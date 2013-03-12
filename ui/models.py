@@ -213,6 +213,8 @@ class ProjectForm(ModelForm):
                 'Enter a value for Project Description'
         self.fields['startDate'].error_messages['required'] = \
                 'Enter a value for Project start Date'
+    formfield_callback = make_custom_datefield
+
     class Meta:
         model = Project
         exclude = ('endDate', 'projectComplete')

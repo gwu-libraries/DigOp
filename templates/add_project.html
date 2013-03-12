@@ -1,4 +1,13 @@
 {% extends "base_2col.html" %}
+{% block javascript_extra %}
+<script src="{{STATIC_URL}}anytime.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $( ".AnyTime_picker" ).AnyTime_picker();
+        });
+</script>
+{% endblock javascript_extra%}
+
 {% load i18n %}
 
 {% block content %}
@@ -6,7 +15,7 @@
 
 <div id ="leftcolumn">
     <ul class="vertical_menu">
-        <li><a href="{%url addProject%}"> Create New Project</a></li>
+        <li><a href="{%url addProject%}"> Open a Project</a></li>
         <li><a href="{%url closeProject%}">Close a Project</a></li>
     </ul>
 </div>
