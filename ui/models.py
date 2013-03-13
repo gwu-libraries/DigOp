@@ -229,7 +229,7 @@ class CloseProjectForm(ModelForm):
         self.fields['projectComplete'].error_messages['required'] = \
                 'Please select an end date'
     formfield_callback = make_custom_datefield
-    name = forms.ModelChoiceField(Project.objects.filter(projectComplete=False))
+    name = forms.ModelChoiceField(Project.objects.filter(projectComplete=False), initial=0)
 
     class Meta:
         model = Project
