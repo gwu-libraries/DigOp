@@ -24,6 +24,7 @@ from ui.models import Project
 from ui.models import UserProfile
 from ui.models import ProfileForm
 from ui.models import ProjectForm
+from ui.models import CloseProjectForm
 
 from profiles import views as profile_views
 #django-qsstats-magic Should be install before running the app
@@ -115,6 +116,30 @@ def itemMenu(request):
 @login_required
 def projectForm(request):
     return render(request,'add_project.html')
+
+
+@login_required
+def closeProject(request):
+    def errorHandle(error):
+        form = CloseProjectForm()
+        return render_to_response('closeProjectForm.html', {
+            'error': error,
+            'form': form,
+        }, context_instance=RequestContext(request))
+    if request.method == 'POST':  # If the form has been submitted...
+        project = Project.objects.get(pk=request.POST['name'])
+        form = CloseProjectForm(request.POST, instance=project)  # A form bound to the POST data
+        if form.is_valid():  # All validation rules pass
+            form.save()
+            return render(request, 'project_menu.html')
+        else:
+            error = 'form is invalid'
+            return errorHandle(error)
+    else:
+        form = CloseProjectForm()  # An unbound form
+        return render_to_response('closeProjectForm.html',  {
+            'form': form,
+        }, context_instance=RequestContext(request))
 
 
 def reset_done(request):
@@ -408,8 +433,9 @@ def processBookForm(request):
                     #if pages is None:
                     pages = 0
                     item_type = request.POST['itemType']
+                    p = Project.objects.get(id=request.POST['project'])
                     book = Item.objects.create(barcode=bar, totalPages=pages,
-                                               itemType=item_type)
+                                               itemType=item_type, project=p)
                     book.save()
                     return render_to_response('processingForm.html', {
                         'form': ProcessingForm(initial={'item': book,
@@ -565,12 +591,6 @@ def addProject(request):
         return render_to_response('add_project.html', {
             'form': form,
         }, context_instance=RequestContext(request))
-
-
-@login_required
-def closeProject(request):
-    return render(request,close_project_form.html)
-
 
 
 @login_required

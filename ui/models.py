@@ -218,3 +218,19 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         exclude = ('endDate', 'projectComplete')
+
+class CloseProjectForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(CloseProjectForm, self).__init__(*args, **kwargs)
+        self.fields['name'].error_messages['required'] = \
+                'Select a Project Name'
+        self.fields['endDate'].error_messages['required'] = \
+                'Please select an end date'
+        self.fields['projectComplete'].error_messages['required'] = \
+                'Please select an end date'
+    formfield_callback = make_custom_datefield
+    name = forms.ModelChoiceField(Project.objects.filter(projectComplete=False))
+
+    class Meta:
+        model = Project
+        exclude = ('description', 'startDate')
