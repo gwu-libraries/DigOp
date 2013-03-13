@@ -251,6 +251,7 @@ def barcodeReport(request):
             }, context_instance=RequestContext(request))
         result = ProcessingSession.objects.filter(item=book)
         for rec in result:
+            dictionary['project'] = rec.item.project
             dictionary['itemType'] = rec.item.itemType
             dictionary['barcode'] = rec.item.barcode
             dictionary['duration'] = str(rec.endTime - rec.startTime)
@@ -288,6 +289,7 @@ def barcode(request, identifier, json_view=False):
         }, context_instance=RequestContext(request))
     result = ProcessingSession.objects.filter(item=book)
     for rec in result:
+        dictionary['project'] = rec.item.project
         dictionary['itemType'] = rec.item.itemType
         dictionary['barcode'] = rec.item.barcode
         dictionary['duration'] = str(rec.endTime - rec.startTime)
@@ -299,6 +301,50 @@ def barcode(request, identifier, json_view=False):
         dictionary['task'] = rec.task
         dictionary['startTime'] = rec.startTime
         values.append(dictionary)
+    if json_view:
+        dataset = {'Sessions': values}
+        return dataset
+    else:
+        return render_to_response('data.html', {
+            'list': values,
+        }, context_instance=RequestContext(request))
+
+
+@login_required
+def projectData_json(request, identifier):
+    dictionary = projectData(request, identifier, json_view=True)
+    return HttpResponse(json.dumps(dictionary, default=_date_handler),
+                        content_type='application/json')
+
+
+@login_required
+def projectData(request, identifier, json_view=False):
+    dictionary = {}
+    values = []
+    p = None
+    try:
+        p = Project.objects.get(name=identifier)
+    except Project.DoesNotExist:
+        return render_to_response('barcoderesult.html', {
+            'list': values,
+            'project': identifier,
+        }, context_instance=RequestContext(request))
+    item = Item.objects.filter(project=p)
+    for i in item:
+        result = ProcessingSession.objects.filter(item=i)
+        for rec in result:
+            dictionary['project'] = rec.item.project
+            dictionary['itemType'] = rec.item.itemType
+            dictionary['barcode'] = rec.item.barcode
+            dictionary['duration'] = str(rec.endTime - rec.startTime)
+            dictionary['objects'] = rec.pagesDone
+            dictionary['user'] = rec.user.username
+            dictionary['isFinished'] = rec.operationComplete
+            rate_of_work = int(int(rec.pagesDone) / (rec.duration() / 3600))
+            dictionary['rate'] = rate_of_work
+            dictionary['task'] = rec.task
+            dictionary['startTime'] = rec.startTime
+            values.append(dictionary)
     if json_view:
         dataset = {'Sessions': values}
         return dataset
@@ -650,18 +696,6 @@ def itemProcessingForm(request):
 
 @login_required
 def user(request, username, json_view=False):
-    '''if request.GET.get('user'):
-        request.session['user'] = request.GET.get('user')
-    if request.GET.get('start'):
-        request.session['start'] = request.GET.get('start')
-    if request.GET.get('end'):
-        request.session['end'] = request.GET.get('end')
-    if request.GET.get('itemtype'):
-        request.session['itemtype'] = request.GET.get('itemtype')
-    name = request.session['user']
-    start = request.session['start']
-    end = request.session['end']
-    itemtype = request.session['itemtype']'''
     myList = []
     totalPages = 0
     totalHours = 0
@@ -670,7 +704,8 @@ def user(request, username, json_view=False):
     for item in a:
         rate = int(int(item.pagesDone) / (item.duration() / 3600))
         if item.endTime is not None:
-            dictionary = {'barcode': item.item.barcode,
+            dictionary = {'project': item.item.project,
+                          'barcode': item.item.barcode,
                           'itemType': item.item.itemType,
                           'duration': str(item.endTime - item.startTime),
                           'objects': item.pagesDone,
@@ -685,7 +720,8 @@ def user(request, username, json_view=False):
             totalPages = totalPages + item.pagesDone
         else:
             rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
-            dictionary = {'barcode': item.book.barcode,
+            dictionary = {'project': item.item.project,
+                          'barcode': item.book.barcode,
                           'itemType': item.item.itemType,
                           'duration': None, 'objects': item.pagesDone,
                           'user': username,
@@ -722,18 +758,6 @@ def task_json(request, tasktype):
 
 @login_required
 def task(request, tasktype, json_view=False):
-    '''if request.GET.get('user'):
-        request.session['user'] = request.GET.get('user')
-    if request.GET.get('start'):
-        request.session['start'] = request.GET.get('start')
-    if request.GET.get('end'):
-        request.session['end'] = request.GET.get('end')
-    if request.GET.get('itemtype'):
-        request.session['itemtype'] = request.GET.get('itemtype')
-    name = request.session['user']
-    start = request.session['start']
-    end = request.session['end']
-    itemtype = request.session['itemtype']'''
     a = ProcessingSession.objects.filter(task__exact=tasktype)
     totalPages = 0
     totalHours = 0
@@ -742,7 +766,8 @@ def task(request, tasktype, json_view=False):
     for item in a:
         rate = int(int(item.pagesDone) / (item.duration() / 3600))
         if item.endTime is not None:
-            dictionary = {'barcode': item.item.barcode,
+            dictionary = {'project': item.item.project,
+                          'barcode': item.item.barcode,
                           'itemType': item.item.itemType,
                           'duration': str(item.endTime - item.startTime),
                           'objects': item.pagesDone,
@@ -757,7 +782,8 @@ def task(request, tasktype, json_view=False):
             totalPages = totalPages + item.pagesDone
         else:
             rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
-            dictionary = {'barcode': item.book.barcode,
+            dictionary = {'project': item.item.project,
+                          'barcode': item.book.barcode,
                           'itemType': item.item.itemType,
                           'duration': None, 'objects': item.pagesDone,
                           'user': item.user.username,
@@ -793,18 +819,6 @@ def item_json(request, itemtype):
 
 @login_required
 def item(request, itemtype, json_view=False):
-    '''if request.GET.get('user'):
-        request.session['user'] = request.GET.get('user')
-    if request.GET.get('start'):
-        request.session['start'] = request.GET.get('start')
-    if request.GET.get('end'):
-        request.session['end'] = request.GET.get('end')
-    if request.GET.get('itemtype'):
-        request.session['itemtype'] = request.GET.get('itemtype')
-    name = request.session['user']
-    start = request.session['start']
-    end = request.session['end']
-    item_type = request.session['itemtype']'''
     a = ProcessingSession.objects.filter(item__itemType__exact=itemtype)
     totalPages = 0
     totalHours = 0
@@ -813,7 +827,8 @@ def item(request, itemtype, json_view=False):
     for item in a:
         rate = int(int(item.pagesDone) / (item.duration() / 3600))
         if item.endTime is not None:
-            dictionary = {'barcode': item.item.barcode,
+            dictionary = {'project': item.item.project,
+                          'barcode': item.item.barcode,
                           'itemType': item.item.itemType,
                           'duration': str(item.endTime - item.startTime),
                           'objects': item.pagesDone,
@@ -828,7 +843,8 @@ def item(request, itemtype, json_view=False):
             totalPages = totalPages + item.pagesDone
         else:
             rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
-            dictionary = {'barcode': item.book.barcode,
+            dictionary = {'project': item.item.project,
+                          'barcode': item.book.barcode,
                           'itemType': item.item.itemType,
                           'duration': None, 'objects': item.pagesDone,
                           'user': item.user.username,
@@ -883,7 +899,8 @@ def produceData(request):
         for item in b:
             rate = int(int(item.pagesDone) / (item.duration() / 3600))
             if item.endTime is not None:
-                dictionary = {'barcode': item.item.barcode,
+                dictionary = {'project': item.item.project,
+                              'barcode': item.item.barcode,
                               'itemType': item.item.itemType,
                               'duration': str(item.endTime - item.startTime),
                               'objects': item.pagesDone, 'user': name,
@@ -897,7 +914,8 @@ def produceData(request):
                 totalPages = totalPages + item.pagesDone
             else:
                 rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
-                dictionary = {'barcode': item.book.barcode,
+                dictionary = {'project': item.item.project,
+                              'barcode': item.book.barcode,
                               'itemType': item.item.itemType,
                               'duration': None, 'objects': item.pagesDone,
                               'user': name,
@@ -917,7 +935,8 @@ def produceData(request):
             us = item.user.username
             if item.endTime is not None:
                 rate = int(int(item.pagesDone) / (item.duration() / (60 * 60)))
-                dictionary = {'barcode': item.item.barcode,
+                dictionary = {'project': item.item.project,
+                              'barcode': item.item.barcode,
                               'itemType': item.item.itemType,
                               'duration': str(item.endTime - item.startTime),
                               'objects': item.pagesDone, 'user': us,
@@ -932,7 +951,8 @@ def produceData(request):
             else:
                 denominator = item.duration() / 3600
                 rate = int(int(item.pagesDone) / denominator)
-                dictionary = {'barcode': item.book.barcode,
+                dictionary = {'project': item.item.project,
+                              'barcode': item.book.barcode,
                               'itemType': item.item.itemType,
                               'duration': None, 'objects': item.pagesDone,
                               'user': us,

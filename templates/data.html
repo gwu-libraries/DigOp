@@ -45,7 +45,8 @@
 
 <Table cellpadding="0" cellspacing="0" border="0" class="display" id="results" width="100%">
     <thead>
-<tr>
+    <tr>
+<th> Project </th>
 <th> Barcode </th>
 <th> User </th>
 <th> Duration </th>
@@ -61,7 +62,8 @@
 
 <tbody>
 {% for record in list %}
-	<tr>
+    <tr>
+        <td><a href="{%url projectData record.project%}"> {{record.project}} </a></td>
         <td><a href="{%url barcode record.barcode %}">{{record.barcode}}</a> </td>
         <td><a href="{%url user record.user %}">{{record.user}}</a></td>
 	<td>{{record.duration}} </td>
