@@ -217,13 +217,13 @@ class ProjectForm(ModelForm):
 
     class Meta:
         model = Project
-        exclude = ('endDate', 'projectComplete')
+        exclude = ('endDate','projectComplete')
 
 class CloseProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CloseProjectForm, self).__init__(*args, **kwargs)
-        self.fields['name'].error_messages['required'] = \
-                'Select a Project Name'
+        '''self.fields['name'].error_messages['required'] = \
+                'Select a Project Name'''
         self.fields['endDate'].error_messages['required'] = \
                 'Please select an end date'
         self.fields['projectComplete'].error_messages['required'] = \
