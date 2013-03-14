@@ -230,6 +230,28 @@ def showGraph(request,chartType):
 
 
 @login_required
+def showProjects(request):
+    projects = Project.objects.all()
+    rows = []
+    for p in projects:
+        items = Item.objects.filter(project=p)
+        num_items = 0
+        for i in items:
+            num_items = num_items + 1
+        data = {}
+        data['project'] = p.name
+        data['description'] = p.description
+        data['start'] = p.startDate 
+        data['end'] = p.endDate
+        data['closed'] = p.projectComplete
+        data['items'] = num_items
+        rows.append(data)
+    return render(request, 'showProjects.html' , {
+        'rows': rows,
+    })
+
+
+@login_required
 def barcodePage(request):
     return render_to_response('barcodereportform.html', {
     }, context_instance=RequestContext(request))
@@ -626,7 +648,7 @@ def addProject(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            project = Project(name=request.POST['name'], description=request.POST['description'], startDate=request.POST['startDate'])
+            project = Project(name=request.POST['name'], description=request.POST['description'], startDate=request.POST['startDate'], endDate=None, projectComplete=False)
             project.save()
             return render(request,'project_menu.html')
         else:

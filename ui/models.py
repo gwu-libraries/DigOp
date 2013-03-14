@@ -39,8 +39,8 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField()
     startDate = models.DateTimeField('Project Start Date', default=datetime.now)
-    endDate = models.DateTimeField(default=datetime.now)
-    projectComplete = models.BooleanField(blank=True)
+    endDate = models.DateTimeField(null=True, blank=True)
+    projectComplete = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
