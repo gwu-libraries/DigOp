@@ -200,33 +200,61 @@ def showGraph(request,chartType):
     valuesList = []
     entryList = []
     hoursList = []
-    for u in userObjects:
-        users.append(u.username)
-        userrows = ProcessingSession.objects.filter(user=u)
-        pages = 0
-        hours = 0
-        for row in userrows:
-            pages = pages + row.pagesDone
-            hours = hours + row.duration()
-        if pages < low:
-            low = pages
-        if pages > high:
-            high = pages
-        valuesList.append(u.username + '(' + str(pages) + ')')
-        entryList.append(pages)
-        hoursList.append(hours)
-    values.append(entryList)
+    projectsList = []
     if chartType == 'pie' or chartType == 'bar':
-        return render_to_response('showGraph.html', {
-            'users': users,
-            'low': low,
-            'high': high,
-            'hours': hoursList,
-            'values': zip(users, entryList),
-            'testValues': values,
-            'entries': entryList,
+        for u in userObjects:
+            users.append(u.username)
+            userrows = ProcessingSession.objects.filter(user=u)
+            pages = 0
+            hours = 0
+            for row in userrows:
+                pages = pages + row.pagesDone
+                hours = hours + row.duration()
+            if pages < low:
+                low = pages
+            if pages > high:
+                high = pages
+            valuesList.append(u.username + '(' + str(pages) + ')')
+            entryList.append(pages)
+            hoursList.append(hours)
+        values.append(entryList)
+        if chartType == 'pie':
+            return render_to_response('pieChart.html', {
+                'users': users,
+                'low': low,
+                'high': high,
+                'hours': hoursList,
+                'values': zip(users, entryList),
+                'testValues': values,
+                'entries': entryList,
+                'chartType': chartType,
+            }, context_instance=RequestContext(request))
+        else:
+            return render_to_response('barChart.html', {
+                'users': users,
+                'low': low,
+                'high': high,
+                'hours': hoursList,
+                'values': zip(users, entryList),
+                'testValues': values,
+                'entries': entryList,
+                'chartType': chartType,
+            }, context_instance=RequestContext(request))
+
+    else:
+        projects = Project.objects.all()
+        for p in projects:
+            items = Item.objects.filter(project=p)
+            num_items = 0
+            for i in items:
+                num_items = num_items + 1
+            entryList.append(num_items)
+            projectsList.append(p.name)
+        return render(request, 'comboChart.html', {
+            'values': zip(projectsList, entryList),
             'chartType': chartType,
-        }, context_instance=RequestContext(request))
+        }) 
+
 
 
 @login_required
