@@ -1,0 +1,36 @@
+{% extends "base_2col.html" %}
+
+
+{% load i18n %}
+{% load barcode_tags %}
+
+{% block content %}
+
+<div id ="leftcolumn">
+    <ul class="vertical_menu">
+        <li><a  href="../../showGraph/pie">Pie Chart</a></li>
+        <li><a  href="../../showGraph/bar">Bar Chart</a></li>
+        <li><a  href="../../showGraph/combo"> Combo Chart</a></li>
+        <li><a  href="../../showGraph/time"> Timeline Chart</a></li>
+
+    </ul>
+</div>
+
+
+
+
+
+  <div id="contentcolumn">
+
+    <h1> Scan New Item </h1>
+<form action="../../displayTimeLineGraph/" method="post"> {% csrf_token %}
+    <select name="project">
+        {%for p in projects%}
+        <option value="{{ p.id }}">{{ p.name }}</option>
+        {%endfor%}
+    </select>
+<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
+</form>
+  </div>	
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base_2col.html" %}
+{% load i18n %}
+
+
+
+{%block javascript_extra%}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+
+            google.load('visualization', '1.0', {'packages':['annotatedtimeline']});
+            google.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+
+            // Create the data table.
+            var rows = []
+            rows.push(['Date', 'Items', 'Task']);
+            {%for v in values%}
+
+            rows.push(['{{v.Date}}', {{v.objects}}, '{{v.task}}']);
+            {%endfor%}
+
+            var data = google.visualization.arrayToDataTable(rows);
+            var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
+            chart.draw(data, {displayAnnotations: true});
+        
+    }
+</script>
+
+{%endblock javascript_extra%}
+
+{% block title %}{% trans "Home" %}{% endblock %}
+
+{% block content %}
+
+
+<div id ="leftcolumn">
+    <ul class="vertical_menu">
+        <li><a  href="../../showGraph/pie">Pie Chart</a></li>
+        <li><a  href="../../showGraph/bar">Bar Chart</a></li>
+        <li><a  href="../../showGraph/combo"> Combo Chart</a></li>
+        <li><a  href="../../showGraph/time"> Timeline Chart</a></li>
+    </ul>
+</div>
+
+<div id="contentcolumn">
+    <h1>Welcome {{ user.username}} </h1>
+<div id="dashboard_div">
+<div id="filter_div"></div>
+<div id="chart_div" style='width: 700px; height: 240px;'></div>
+
+</div>
+</div>
+
+{% endblock %}

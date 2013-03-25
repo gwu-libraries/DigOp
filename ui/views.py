@@ -13,6 +13,7 @@ from django.shortcuts import render
 from django.contrib.auth.views import password_reset, \
     password_change_done as auth_password_change_done
 from django.utils import simplejson as json
+from operator import itemgetter
 
 from ui.models import LoginForm
 from ui.models import BookForm
@@ -241,7 +242,7 @@ def showGraph(request,chartType):
                 'chartType': chartType,
             }, context_instance=RequestContext(request))
 
-    else:
+    elif chartType=='combo':
         projects = Project.objects.all()
         for p in projects:
             items = Item.objects.filter(project=p)
@@ -253,8 +254,36 @@ def showGraph(request,chartType):
         return render(request, 'comboChart.html', {
             'values': zip(projectsList, entryList),
             'chartType': chartType,
-        }) 
+        })
+    else:
+        projects = Project.objects.all()
+        projList = []
+        for p in projects:
+            projList.append(p)
+        return render(request, 'timeGraphForm.html', {
+            'projects': projList,
+        })
 
+
+@login_required
+def displayTimeLineGraph(request):
+    if request.method == 'POST':  # If the form has been submitted...
+        project_id = request.POST['project']
+        p = Project.objects.get(pk=project_id)
+        items = Item.objects.filter(project=p)
+        values = []
+        for i in items:
+            item_data = ProcessingSession.objects.filter(item=i)
+            for val in item_data:
+                row = {}
+                row['Date'] = val.startTime
+                row['objects'] = val.pagesDone
+                row['task'] = val.task
+                values.append(row)
+        sorted_values = sorted(values, key=itemgetter('Date'))
+        return render(request, 'timeChart.html' , {
+            'values': sorted_values,
+        })
 
 
 @login_required
