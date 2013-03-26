@@ -14,14 +14,18 @@
 
 
             // Create the data table.
-            var rows = []
-            rows.push(['Date', 'Items', 'Task']);
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'Date');
+            data.addColumn('number', 'Items');
+            data.addColumn('string', 'Task');
             {%for v in values%}
+            var date_obj = '{{v.Date}}';
+            date_obj = date_obj.replace(/\./g,'');
+            date_obj = date_obj.replace(/,/g,'');
 
-            rows.push(['{{v.Date}}', {{v.objects}}, '{{v.task}}']);
+            data.addRow([new Date(date_obj), {{v.objects}}, '{{v.task}}']);
             {%endfor%}
 
-            var data = google.visualization.arrayToDataTable(rows);
             var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
             chart.draw(data, {displayAnnotations: true});
         
