@@ -204,6 +204,13 @@ class BookForm(ModelForm):
         model = Item
         exclude = ('totalPages')
 
+class ProcessBookForm(ModelForm):
+    formfield_callback = make_custom_charfield
+
+    class Meta:
+        model = Item
+        exclude = ('totalPages','project')
+
 class ProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)

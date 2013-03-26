@@ -17,6 +17,7 @@ from operator import itemgetter
 
 from ui.models import LoginForm
 from ui.models import BookForm
+from ui.models import ProcessBookForm
 from ui.models import ProcessingForm
 from ui.models import ItemProcessingForm
 from ui.models import Item
@@ -442,15 +443,15 @@ def reportMenu(request):
 @login_required
 def processItemForm(request):
     def errorHandle(error):
-        form = BookForm()
-        return render_to_response('getbarcode.html', {
+        form = ProcessBookForm()
+        return render_to_response('process_item_form.html', {
             'error': error,
             'form': form,
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
         if request.POST['itemType'] in ['Book', 'Map']:
             book = None
-            form = BookForm(request.POST)  # A form bound to the POST data
+            form = ProcessBookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
                 bar = request.POST['barcode']
                 try:
@@ -487,7 +488,7 @@ def processItemForm(request):
                 return errorHandle(error)
         else:
             book = None
-            form = BookForm(request.POST)  # A form bound to the POST data
+            form = ProcessBookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
                 bar = request.POST['barcode']
                 try:
@@ -528,8 +529,8 @@ def processItemForm(request):
                 error = 'form is invalid'
                 return errorHandle(error)
     else:
-        form = BookForm()  # An unbound form
-        return render_to_response('getbarcode.html', {
+        form = ProcessBookForm()  # An unbound form
+        return render_to_response('process_item_form.html', {
             'form': form,
         }, context_instance=RequestContext(request))
 
