@@ -27,7 +27,20 @@
             {%endfor%}
 
             var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
-            chart.draw(data, {displayAnnotations: true});
+            chart.draw(data, {
+                    'colors': ['blue', 'red', '#0000bb'], // The colors to be used
+                    'displayAnnotations': true,
+                    'displayExactValues': true, // Do not truncate values (i.e. using K suffix)
+                    'displayRangeSelector' : true, // Do not sow the range selector
+                    'displayZoomButtons': false, // DO not display the zoom buttons
+                    'fill': 30, // Fill the area below the lines with 20% opacity
+                    'legendPosition': 'newRow', // Can be sameRow
+                    //'max': 100000, // Override the automatic default
+                    //'min':  100000, // Override the automatic default
+                    'scaleColumns': [0, 1], // Have two scales, by the first and second lines
+                    'scaleType': 'allfixed', // See docs...
+                    'thickness': 2 // Make the lines t
+                });
         
     }
 </script>
@@ -52,7 +65,7 @@
     <h1>Welcome {{ user.username}} </h1>
 <div id="dashboard_div">
 <div id="filter_div"></div>
-<div id="chart_div" style='width: 700px; height: 240px;'></div>
+<div id="chart_div" style='width: 700px; height: 200px;'></div>
 
 </div>
 </div>
