@@ -1,32 +1,28 @@
-from django.contrib.auth import authenticate, login as auth_login
-from django.shortcuts import render_to_response
-from django.contrib.auth.models import User
-from django.template import Library
-from django.contrib.auth import logout
-from django.http import HttpResponseRedirect, HttpResponse
-from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
-from django.contrib.messages import constants as messages
 from django.core.context_processors import csrf
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.contrib.auth.views import password_reset, \
     password_change_done as auth_password_change_done
+from django.contrib.messages import constants as messages
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import render_to_response, render
+from django.template import Library, RequestContext
 from django.utils import simplejson as json
 from operator import itemgetter
 
-from ui.models import LoginForm
 from ui.models import BookForm
-from ui.models import ProcessBookForm
-from ui.models import ProcessingForm
+from ui.models import CloseProjectForm
 from ui.models import ItemProcessingForm
 from ui.models import Item
+from ui.models import LoginForm
+from ui.models import ProcessBookForm
+from ui.models import ProcessingForm
 from ui.models import ProcessingSession
-from ui.models import Project
-from ui.models import UserProfile
 from ui.models import ProfileForm
 from ui.models import ProjectForm
-from ui.models import CloseProjectForm
+from ui.models import Project
+from ui.models import UserProfile
 
 from profiles import views as profile_views
 #django-qsstats-magic Should be install before running the app
