@@ -48,6 +48,13 @@ $("input#autocomplete").autocomplete({
 
 <form action="../processItemForm/" method="post"> {% csrf_token %}
 
+    <p><label for="id_project">Project:</label> <select name="project" id="id_project">
+        <option value="" selected="selected">---------</option>
+        {%for p in projects%}
+        <option value="{{p.id}}"> {{p.name}} </option>
+        {%endfor%}
+    </select></p>
+
 <label id="id_taskType"> Task </label>
 <p>
 <select name="taskType">

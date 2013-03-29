@@ -16,7 +16,6 @@ from ui.models import CloseProjectForm
 from ui.models import ItemProcessingForm
 from ui.models import Item
 from ui.models import LoginForm
-from ui.models import ProcessBookForm
 from ui.models import ProcessingForm
 from ui.models import ProcessingSession
 from ui.models import ProfileForm
@@ -175,8 +174,10 @@ def adminSessionData(request):
 
 @login_required
 def displayItemProcessingForm(request):
+    projects = Project.objects.all()
     form = BookForm()
     return render(request, 'process_item_form.html', {
+        'projects': projects,
         'form': form,
     })
 
@@ -439,7 +440,7 @@ def reportMenu(request):
 @login_required
 def processItemForm(request):
     def errorHandle(error):
-        form = ProcessBookForm()
+        form = BookForm()
         return render_to_response('process_item_form.html', {
             'error': error,
             'form': form,
@@ -447,7 +448,7 @@ def processItemForm(request):
     if request.method == 'POST':  # If the form has been submitted...
         if request.POST['itemType'] in ['Book', 'Map']:
             book = None
-            form = ProcessBookForm(request.POST)  # A form bound to the POST data
+            form = BookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
                 bar = request.POST['barcode']
                 try:
@@ -457,7 +458,7 @@ def processItemForm(request):
                 if book is None:
                     pages = 0
                     item_type = request.POST['itemType']
-                    book = Item.objects.create(barcode=bar, totalPages=pages,
+                    book = Item.objects.create(project=request.POST['project'],barcode=bar, totalPages=pages,
                                                itemType=item_type)
                     book.save()
                     task_type = request.POST['taskType']
@@ -484,7 +485,7 @@ def processItemForm(request):
                 return errorHandle(error)
         else:
             book = None
-            form = ProcessBookForm(request.POST)  # A form bound to the POST data
+            form = BookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
                 bar = request.POST['barcode']
                 try:
@@ -497,7 +498,7 @@ def processItemForm(request):
                     #if pages is None:
                     pages = 0
                     item_type = request.POST['itemType']
-                    book = Item.objects.create(barcode=bar, totalPages=pages,
+                    book = Item.objects.create(project=request.POST['project'],barcode=bar, totalPages=pages,
                                                itemType=item_type)
                     book.save()
                     task_type = request.POST['taskType']
@@ -525,7 +526,7 @@ def processItemForm(request):
                 error = 'form is invalid'
                 return errorHandle(error)
     else:
-        form = ProcessBookForm()  # An unbound form
+        form = BookForm()  # An unbound form
         return render_to_response('process_item_form.html', {
             'form': form,
         }, context_instance=RequestContext(request))
