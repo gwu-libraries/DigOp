@@ -48,7 +48,7 @@ def login(request):
     c = {}
     c.update(csrf(request))
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/indexPage/')
+        return HttpResponseRedirect('/index_page/')
     if request.method == 'POST':  # If the form has been submitted...
         form = LoginForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -58,7 +58,7 @@ def login(request):
             request.session['user_id'] = use
             if use is not None:
                 auth_login(request, use)
-                return HttpResponseRedirect('/indexPage/')
+                return HttpResponseRedirect('/index_page/')
             else:  # Return a 'disabled account' error message
                 error = 'account disabled'
                 return errorHandle(error)
@@ -106,20 +106,20 @@ def project(request):
 
 
 @login_required
-def itemMenu(request):
+def item_menu(request):
     return render(request, 'item_menu.html')
 
 
 @login_required
-def projectForm(request):
+def project_form(request):
     return render(request,'add_project.html')
 
 
 @login_required
-def closeProject(request):
+def close_project(request):
     def errorHandle(error):
         form = CloseProjectForm()
-        return render_to_response('closeProjectForm.html', {
+        return render_to_response('close_project_form.html', {
             'error': error,
             'form': form,
         }, context_instance=RequestContext(request))
@@ -134,7 +134,7 @@ def closeProject(request):
             return errorHandle(error)
     else:
         form = CloseProjectForm()  # An unbound form
-        return render_to_response('closeProjectForm.html',  {
+        return render_to_response('close_project_form.html',  {
             'form': form,
         }, context_instance=RequestContext(request))
 
@@ -155,7 +155,7 @@ def reset_password(request, template_name='reset_password.html'):
 
 
 @login_required
-def indexPage(request):
+def index_page(request):
     if request.user.is_superuser:
         return render_to_response('admin_page.html', {
         }, context_instance=RequestContext(request))
@@ -165,15 +165,15 @@ def indexPage(request):
 
 
 @login_required
-def adminSessionData(request):
+def admin_session_data(request):
     form = BookForm()
-    return render_to_response('getbarcode.html', {
+    return render_to_response('get_barcode.html', {
         'form': form,
     }, context_instance=RequestContext(request))
 
 
 @login_required
-def displayItemProcessingForm(request):
+def display_item_processing_form(request):
     projects = Project.objects.all()
     form = BookForm()
     return render(request, 'process_item_form.html', {
@@ -183,14 +183,14 @@ def displayItemProcessingForm(request):
 
 
 @login_required
-def showUsers(request):
+def show_users(request):
     return render_to_response('admin_login.html', {
         'users': User.objects.all(),
     }, context_instance=RequestContext(request))
 
 
 @login_required
-def showGraph(request,chartType):
+def show_graph(request,chartType):
     userObjects = User.objects.all()
     users = []
     low = 0
@@ -218,7 +218,7 @@ def showGraph(request,chartType):
             hoursList.append(hours)
         values.append(entryList)
         if chartType == 'pie':
-            return render_to_response('pieChart.html', {
+            return render_to_response('pie_chart.html', {
                 'users': users,
                 'low': low,
                 'high': high,
@@ -229,7 +229,7 @@ def showGraph(request,chartType):
                 'chartType': chartType,
             }, context_instance=RequestContext(request))
         else:
-            return render_to_response('barChart.html', {
+            return render_to_response('bar_chart.html', {
                 'users': users,
                 'low': low,
                 'high': high,
@@ -249,7 +249,7 @@ def showGraph(request,chartType):
                 num_items = num_items + 1
             entryList.append(num_items)
             projectsList.append(p.name)
-        return render(request, 'comboChart.html', {
+        return render(request, 'combo_chart.html', {
             'values': zip(projectsList, entryList),
             'chartType': chartType,
         })
@@ -258,13 +258,13 @@ def showGraph(request,chartType):
         projList = []
         for p in projects:
             projList.append(p)
-        return render(request, 'timeGraphForm.html', {
+        return render(request, 'time_graph_form.html', {
             'projects': projList,
         })
 
 
 @login_required
-def displayTimeLineGraph(request):
+def display_time_line_graph(request):
     if request.method == 'POST':  # If the form has been submitted...
         project_id = request.POST['project']
         p = Project.objects.get(pk=project_id)
@@ -279,13 +279,13 @@ def displayTimeLineGraph(request):
                 row['task'] = val.task
                 values.append(row)
         sorted_values = sorted(values, key=itemgetter('Date'))
-        return render(request, 'timeChart.html' , {
+        return render(request, 'time_chart.html' , {
             'values': sorted_values,
         })
 
 
 @login_required
-def showProjects(request):
+def show_projects(request):
     projects = Project.objects.all()
     rows = []
     for p in projects:
@@ -301,19 +301,19 @@ def showProjects(request):
         data['closed'] = p.projectComplete
         data['items'] = num_items
         rows.append(data)
-    return render(request, 'showProjects.html' , {
+    return render(request, 'show_projects.html' , {
         'rows': rows,
     })
 
 
 @login_required
-def barcodePage(request):
-    return render_to_response('barcodereportform.html', {
+def barcode_page(request):
+    return render_to_response('barcode_report_form.html', {
     }, context_instance=RequestContext(request))
 
 
 @login_required
-def barcodeReport(request):
+def barcode_report(request):
     if request.method == 'POST':  # If the form has been submitted...
         bar = request.POST['barcode']
         dictionary = {}
@@ -323,7 +323,7 @@ def barcodeReport(request):
         except Item.DoesNotExist:
             err_msg = 'Barcode does not exist '
             messages.add_message(request, messages.ERROR, err_msg)
-            return render_to_response('barcoderesult.html', {
+            return render_to_response('barcode_result.html', {
                 'list': values,
             }, context_instance=RequestContext(request))
         result = ProcessingSession.objects.filter(item=book)
@@ -340,7 +340,7 @@ def barcodeReport(request):
             dictionary['task'] = rec.task
             dictionary['startTime'] = rec.startTime
             values.append(dictionary)
-        return render_to_response('barcoderesult.html', {
+        return render_to_response('barcode_result.html', {
             'list': values,
         }, context_instance=RequestContext(request))
 
@@ -360,7 +360,7 @@ def barcode(request, identifier, json_view=False):
     try:
         book = Item.objects.filter(barcode=identifier)
     except Item.DoesNotExist:
-        return render_to_response('barcoderesult.html', {
+        return render_to_response('barcode_result.html', {
             'list': values,
             'barcode': identifier,
         }, context_instance=RequestContext(request))
@@ -388,21 +388,21 @@ def barcode(request, identifier, json_view=False):
 
 
 @login_required
-def projectData_json(request, identifier):
-    dictionary = projectData(request, identifier, json_view=True)
+def project_data_json(request, identifier):
+    dictionary = project_data(request, identifier, json_view=True)
     return HttpResponse(json.dumps(dictionary, default=_date_handler),
                         content_type='application/json')
 
 
 @login_required
-def projectData(request, identifier, json_view=False):
+def project_data(request, identifier, json_view=False):
     dictionary = {}
     values = []
     p = None
     try:
         p = Project.objects.get(name=identifier)
     except Project.DoesNotExist:
-        return render_to_response('barcoderesult.html', {
+        return render_to_response('barcode_result.html', {
             'list': values,
             'project': identifier,
         }, context_instance=RequestContext(request))
@@ -432,13 +432,13 @@ def projectData(request, identifier, json_view=False):
 
 
 @login_required
-def reportMenu(request):
-    return render_to_response('reportmenu.html', {
+def report_menu(request):
+    return render_to_response('report_menu.html', {
     }, context_instance=RequestContext(request))
 
 
 @login_required
-def processItemForm(request):
+def process_item_form(request):
     def errorHandle(error):
         form = BookForm()
         return render_to_response('process_item_form.html', {
@@ -462,7 +462,7 @@ def processItemForm(request):
                                                itemType=item_type)
                     book.save()
                     task_type = request.POST['taskType']
-                    return render_to_response('processingForm.html', {
+                    return render_to_response('processing_form.html', {
                         'form': ProcessingForm(initial={'item': book,
                                                         'user': request.user,
                                                         'task': task_type,
@@ -472,7 +472,7 @@ def processItemForm(request):
                     }, context_instance=RequestContext(request))
                 else:
                     task_type = request.POST['taskType']
-                    return render_to_response('processingForm.html', {
+                    return render_to_response('processing_form.html', {
                         'form': ProcessingForm(initial={'item': book,
                                                         'user': request.user,
                                                         'task': task_type,
@@ -503,7 +503,7 @@ def processItemForm(request):
                     book.save()
                     task_type = request.POST['taskType']
                     user = request.user
-                    return render_to_response('itemProcessingForm.html', {
+                    return render_to_response('item_processing_form.html', {
                         'form': ItemProcessingForm(initial={'item': book,
                                                             'user': user,
                                                             'task': task_type,
@@ -514,7 +514,7 @@ def processItemForm(request):
                 else:
                     task_type = request.POST['taskType']
                     user = request.user
-                    return render_to_response('itemProcessingForm.html', {
+                    return render_to_response('item_processing_form.html', {
                         'form': ItemProcessingForm(initial={'item': book,
                                                             'user': user,
                                                             'task': task_type,
@@ -533,10 +533,10 @@ def processItemForm(request):
 
 
 @login_required
-def processBookForm(request):
+def process_book_form(request):
     def errorHandle(error):
         form = BookForm(request.POST)
-        return render_to_response('getbarcode.html', {
+        return render_to_response('get_barcode.html', {
             'error': error,
             'form': form,
         }, context_instance=RequestContext(request))
@@ -560,7 +560,7 @@ def processBookForm(request):
                     book = Item.objects.create(barcode=bar, totalPages=pages,
                                                itemType=item_type, project=p)
                     book.save()
-                    return render_to_response('processingForm.html', {
+                    return render_to_response('processing_form.html', {
                         'form': ProcessingForm(initial={'item': book,
                                                         'user': request.user,
                                                         'task': 'Scan',
@@ -570,7 +570,7 @@ def processBookForm(request):
                         'item': book,
                     }, context_instance=RequestContext(request))
                 else:
-                    return render_to_response('processingForm.html', {
+                    return render_to_response('processing_form.html', {
                         'form': ProcessingForm(initial={'item': book,
                                                         'user': request.user,
                                                         'task': 'Scan',
@@ -600,7 +600,7 @@ def processBookForm(request):
                                                itemType=item_type)
                     book.save()
                     user = request.user
-                    return render_to_response('itemProcessingForm.html', {
+                    return render_to_response('item_processing_form.html', {
                         'form': ItemProcessingForm(initial={'item': book,
                                                             'user': user,
                                                             'task': 'Scan',
@@ -611,7 +611,7 @@ def processBookForm(request):
                     }, context_instance=RequestContext(request))
                 else:
                     user = request.user
-                    return render_to_response('itemProcessingForm.html', {
+                    return render_to_response('item_processing_form.html', {
                         'form': ItemProcessingForm(initial={'item': book,
                                                             'user': user,
                                                             'task': 'Scan'
@@ -624,17 +624,17 @@ def processBookForm(request):
                 return errorHandle(error)
     else:
         form = BookForm()  # An unbound form
-        return render_to_response('getbarcode.html', {
+        return render_to_response('get_barcode.html', {
             'form': form,
         }, context_instance=RequestContext(request))
 
 
 @login_required
-def processProcessingForm(request):
+def process_processing_form(request):
     def errorHandle(error):
         if request.POST['itemType'] in ['Book', 'Map']:
             form = ProcessingForm(request.POST)
-            return render_to_response('processingForm.html', {
+            return render_to_response('processing_form.html', {
                 'error': error,
                 'form': form,
                 'task': request.POST['task'],
@@ -642,7 +642,7 @@ def processProcessingForm(request):
             }, context_instance=RequestContext(request))
         else:
             form = ItemProcessingForm(request.POST)
-            return render_to_response('itemProcessingForm.html', {
+            return render_to_response('item_processing_form.html', {
                 'error': error,
                 'form': form,
                 'task': request.POST['task'],
@@ -679,7 +679,7 @@ def processProcessingForm(request):
                 }, context_instance=RequestContext(request))
             else:
                 form = BookForm()
-                return render_to_response('getbarcode.html', {
+                return render_to_response('get_barcode.html', {
                     'form': form,
                 }, context_instance=RequestContext(request))
         else:
@@ -687,13 +687,13 @@ def processProcessingForm(request):
             return errorHandle(error)
     else:
         form = ProcessingForm()  # An unbound form
-        return render_to_response('processingForm.html', {
+        return render_to_response('processing_form.html', {
             'form': form,
         }, context_instance=RequestContext(request))
 
 
 @login_required
-def addProject(request):
+def add_project(request):
     def errorHandle(error):
         form = ProjectForm(request.POST)
         return render_to_response('add_project.html', {
@@ -717,10 +717,10 @@ def addProject(request):
 
 
 @login_required
-def itemProcessingForm(request):
+def item_processing_form(request):
     def errorHandle(error):
         form = ItemProcessingForm(request.POST)
-        return render_to_response('itemProcessingForm.html', {
+        return render_to_response('item_processing_form.html', {
             'error': error,
             'form': form,
             'task': request.POST['task'],
@@ -753,7 +753,7 @@ def itemProcessingForm(request):
                 form = BookForm()
                 msg = 'record added successfully'
                 messages.add_message(request, messages.SUCCESS, msg)
-                return render_to_response('getbarcode.html', {
+                return render_to_response('get_barcode.html', {
                     'form': form,
                 }, context_instance=RequestContext(request))
             else:
@@ -766,7 +766,7 @@ def itemProcessingForm(request):
             return errorHandle(error)
     else:
         form = ItemProcessingForm()  # An unbound form
-        return render_to_response('itemProcessingForm.html', {
+        return render_to_response('item_processing_form.html', {
             'form': form,
         }, context_instance=RequestContext(request))
 
@@ -949,7 +949,7 @@ def item(request, itemtype, json_view=False):
 
 
 @login_required
-def produceData(request):
+def produce_data(request):
     if request.GET.get('user'):
         request.session['user'] = request.GET.get('user')
     if request.GET.get('start'):
@@ -1061,6 +1061,6 @@ def produceData(request):
     }, context_instance=RequestContext(request))
 
 
-def logoutUser(request):
+def logout_user(request):
     logout(request)
     return render(request, 'logout.html')

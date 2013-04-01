@@ -36,8 +36,8 @@ $("input#autocomplete").autocomplete({
 
 <div id ="leftcolumn">
     <ul class="vertical_menu">
-        <li><a href="{% url adminSessionData %}">Scan an Item</a></li>
-        <li><a href="{%url displayItemProcessingForm %}"> Process an Item </a></li>
+        <li><a href="{% url admin_session_data %}">Scan an Item</a></li>
+        <li><a href="{%url display_item_processing_form %}"> Process an Item </a></li>
     </ul>
 </div>
 
@@ -46,7 +46,7 @@ $("input#autocomplete").autocomplete({
 <div id="contentcolumn">
 <h1> Process an Item </h1>
 
-<form action="../processItemForm/" method="post"> {% csrf_token %}
+<form action="../process_item_form/" method="post"> {% csrf_token %}
 
     <p><label for="id_project">Project:</label> <select name="project" id="id_project">
         <option value="" selected="selected">---------</option>

@@ -4,12 +4,12 @@
 <script type="text/javascript">
     $(function() {
         $( ".AnyTime_picker" ).AnyTime_picker();
-        });
+            });
 </script>
 {% endblock javascript_extra%}
 
-{% load i18n %}
 
+{% load i18n %}
 {% block content %}
 
 
@@ -20,11 +20,13 @@
         <li><a href="{%url close_project%}">Close a Project</a></li>
     </ul>
 </div>
+
 <div id="contentcolumn">
-    <form action="../add_project/" method="post"> {% csrf_token %}
+    <form action="{% url close_project%}" method="post"> {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="Submit" />
-    </form>
+     </form>
+
 </div>
 {%endblock%}
 

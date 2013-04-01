@@ -63,7 +63,7 @@
 <tbody>
 {% for record in list %}
     <tr>
-        <td><a href="{%url projectData record.project%}"> {{record.project}} </a></td>
+        <td><a href="{%url project_data record.project%}"> {{record.project}} </a></td>
         <td><a href="{%url barcode record.barcode %}">{{record.barcode}}</a> </td>
         <td><a href="{%url user record.user %}">{{record.user}}</a></td>
 	<td>{{record.duration}} </td>
