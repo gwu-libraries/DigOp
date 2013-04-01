@@ -48,8 +48,20 @@ $("input#autocomplete").autocomplete({
   <div id="contentcolumn">
 
     <h1> Scan New Item </h1>
-<form action="../process_book_form/" method="post"> {% csrf_token %}
- {{ form.as_p }}
+    <form action="../process_book_form/" method="post"> {% csrf_token %}
+        <p><label for="id_project">Project:</label> <select name="project" id="id_project">
+            <option value="" selected="selected">---------</option>
+            {%for p in projects%}
+                <option value="{{p.id}}"> {{p.name}} </option>
+            {%endfor%}
+        </select></p>
+        <p><label for="autocomplete">Barcode:</label> <input type="text" id="autocomplete" name="barcode" maxlength="50" /></p>
+        <p><label for="autocomplete">ItemType:</label> <select id="autocomplete" name="itemType">
+            <option value="" selected="selected">---------</option>
+            <option value="Book">Book</option>
+            <option value="Map">Map</option>
+            <option value="Microfilm">Microfilm</option>
+        </select></p>
 <input type="submit" value="Submit" style="position:relative;left: 30%;"/>
 </form>
   </div>	

@@ -166,8 +166,14 @@ def index_page(request):
 
 @login_required
 def admin_session_data(request):
+    projects = Project.objects.all()
+    open_projects = []
+    for p in projects:
+        if p.projectComplete == False:
+            open_projects.append(p)
     form = BookForm()
     return render_to_response('get_barcode.html', {
+        'projects': open_projects,
         'form': form,
     }, context_instance=RequestContext(request))
 
@@ -175,9 +181,13 @@ def admin_session_data(request):
 @login_required
 def display_item_processing_form(request):
     projects = Project.objects.all()
+    open_projects = []
+    for p in projects:
+        if p.projectComplete == False:
+            open_projects.append(p)
     form = BookForm()
     return render(request, 'process_item_form.html', {
-        'projects': projects,
+        'projects': open_projects,
         'form': form,
     })
 
