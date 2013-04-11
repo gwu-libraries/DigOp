@@ -4,7 +4,7 @@
     <div id="libheader-container">
         <div id="libheader" >
             {% if user.is_authenticated %}
-                <div class="libheader-libbutton"><input type="button" value="logout" onclick="location.href='../logoutUser';" style="background-color:white;"></div>
+                <div class="libheader-libbutton"><input type="button" value="logout" onclick="location.href='../logout_user';" style="background-color:white;"></div>
             {%else%}
                 <div class="libheader-libbutton"><input type="button" value="login" onclick="location.href='../login';" style="background-color:white;"></div>
             {%endif%}
