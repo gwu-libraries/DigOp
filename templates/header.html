@@ -1,17 +1,11 @@
 {% load url from future %}
 
-<header>
-    <div id="libheader-container">
-        <div id="libheader" >
+            <div style="float:right;">
             {% if user.is_authenticated %}
-                <div class="libheader-libbutton"><input type="button" value="logout" onclick="location.href='../logout_user';" style="background-color:white;"></div>
+            <button onclick="location.href='../logout_user';">logout</button>
             {%else%}
-                <div class="libheader-libbutton"><input type="button" value="login" onclick="location.href='../login';" style="background-color:white;"></div>
+            <button onclick="location.href='../login';">login</button>
             {%endif%}
-            <div class="libheader-logo hide-lo"><a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{ STATIC_URL }}images/gwheaderlogo.png" width='309' height='32' alt="logo: The George Washington University" /></a></div>
-            <div class="libheader-liblink"><a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a></div>
+            </div>
             {%include "navigation.html"%}
         
-        </div>
-    </div>
-</header>

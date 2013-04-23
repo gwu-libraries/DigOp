@@ -233,7 +233,7 @@ ul.top-level {
     display: block;
     width: auto;
     text-decoration: none;
-    background: #03314b;
+    background: #005581;
     margin: 0;
     padding: 2px 5px;
     border-left: 1px solid #fff;
@@ -268,11 +268,13 @@ ul.top-level {
 #leftcolumn{
    float: left;
    width: 200px; /*Width of left column*/
-   background-color: #03314b;
+   background-color: #005581;
+   padding-top:5px;
+   margin-left:16px;
 }
 
 .vertical_menu {
-    background-color: #03314b;
+    background-color: #005581;
 }
 
 .vertical_menu li {
