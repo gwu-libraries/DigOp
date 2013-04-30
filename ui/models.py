@@ -5,6 +5,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.conf import settings
 from django.db.models import signals
 
 from ui.signals import create_profile
@@ -37,6 +38,7 @@ DEPTS = (
 
 class Project(models.Model):
     name = models.CharField(max_length=50)
+    #global_id = models.CharField(max_length=settings.ID_MAX_LENGTH)
     description = models.TextField()
     startDate = models.DateTimeField('Project Start Date', default=datetime.now)
     endDate = models.DateTimeField(null=True, blank=True)

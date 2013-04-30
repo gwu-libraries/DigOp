@@ -53,7 +53,6 @@ urlpatterns = patterns('',
 
     url(r'^produce_data/$', 'ui.views.produce_data', name="produce_data"),
 
-    url(r'^project/$', 'ui.views.project', name="project"),
     url(r'^project_data/(?P<identifier>\w+)$', 'ui.views.project_data', name='project_data'),
     url(r'^project_data/(?P<identifier>\w+).json$', 'ui.views.project_data_json', name='project_data_json'),
     url(r'^project_form/$', 'ui.views.project_form', name="project_form"),

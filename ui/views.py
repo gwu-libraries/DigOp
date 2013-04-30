@@ -100,10 +100,6 @@ def password_change_done(request,
 def profile_menu(request):
     return render(request, 'profile_menu.html')
 
-@login_required
-def project(request):
-    return render(request, 'project_menu.html')
-
 
 @login_required
 def item_menu(request):

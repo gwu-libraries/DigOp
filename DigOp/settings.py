@@ -168,6 +168,8 @@ LOGGING = {
     }
 }
 
+ID_MAX_LENGTH = 18
+
 # Be sure to create your own 'local_settings.py' file as described in README
 try:
     from local_settings import *
