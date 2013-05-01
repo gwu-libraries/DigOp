@@ -27,7 +27,7 @@ urlpatterns = patterns('',
     url(r'^close_project/$', 'ui.views.close_project', name="close_project"),
 
     url(r'^display_item_processing_form/$', 'ui.views.display_item_processing_form', name="display_item_processing_form"),
-    url(r'^display_time_line_graph/$', 'ui.views.display_time_line_graph', name="display_time_line_graph"),
+    url(r'^display_time_line_graph/(?P<identifier>\w+)$', 'ui.views.display_time_line_graph', name="display_time_line_graph"),
 
     url(r'^index_page/$', 'ui.views.index_page', name="index_page"),
     url(r'^item/(?P<itemtype>\Map|Book|Microfilm).json$', 'ui.views.item_json', name='item_json'),
@@ -61,7 +61,7 @@ urlpatterns = patterns('',
     url(r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'password_reset_confirm.html'}),
     url(r'^reset_password/$', 'django.contrib.auth.views.password_reset', {'template_name': 'reset_password.html'}, name='reset_password'),
     
-    url(r'^show_graph/(?P<chartType>[a-z]+)/$', 'ui.views.show_graph', name="show_graph"),
+    url(r'^show_graph/(?P<chartType>[a-z]+)/(?P<project>\w+)/$', 'ui.views.show_graph', name="show_graph"),
     url(r'^show_projects/$', 'ui.views.show_projects', name="show_projects"),
     url(r'^show_users/$', 'ui.views.show_users', name="show_users"),
     

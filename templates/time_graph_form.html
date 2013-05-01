@@ -23,7 +23,7 @@
   <div id="contentcolumn">
 
     <h1> Scan New Item </h1>
-<form action="../../display_time_line_graph/" method="post"> {% csrf_token %}
+<form action="../../display_time_line_graph/" method="get"> {% csrf_token %}
     <select name="project">
         {%for p in projects%}
         <option value="{{ p.id }}">{{ p.name }}</option>

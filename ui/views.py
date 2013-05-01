@@ -196,8 +196,9 @@ def show_users(request):
 
 
 @login_required
-def show_graph(request,chartType):
+def show_graph(request,chartType,project):
     userObjects = User.objects.all()
+    p = Project.objects.get(id=project)
     users = []
     low = 0
     high = 0
@@ -209,7 +210,7 @@ def show_graph(request,chartType):
     if chartType == 'pie' or chartType == 'bar':
         for u in userObjects:
             users.append(u.username)
-            userrows = ProcessingSession.objects.filter(user=u)
+            userrows = ProcessingSession.objects.filter(user=u, item__project=p)
             pages = 0
             hours = 0
             for row in userrows:
@@ -233,6 +234,7 @@ def show_graph(request,chartType):
                 'testValues': values,
                 'entries': entryList,
                 'chartType': chartType,
+                'project': p.id,
             }, context_instance=RequestContext(request))
         else:
             return render_to_response('bar_chart.html', {
@@ -244,6 +246,7 @@ def show_graph(request,chartType):
                 'testValues': values,
                 'entries': entryList,
                 'chartType': chartType,
+                'project': p.id,
             }, context_instance=RequestContext(request))
 
     elif chartType=='combo':
@@ -270,24 +273,23 @@ def show_graph(request,chartType):
 
 
 @login_required
-def display_time_line_graph(request):
-    if request.method == 'POST':  # If the form has been submitted...
-        project_id = request.POST['project']
-        p = Project.objects.get(pk=project_id)
-        items = Item.objects.filter(project=p)
-        values = []
-        for i in items:
-            item_data = ProcessingSession.objects.filter(item=i)
-            for val in item_data:
-                row = {}
-                row['Date'] = val.startTime
-                row['objects'] = val.pagesDone
-                row['task'] = val.task
-                values.append(row)
-        sorted_values = sorted(values, key=itemgetter('Date'))
-        return render(request, 'time_chart.html' , {
-            'values': sorted_values,
-        })
+def display_time_line_graph(request,identifier):
+    p = Project.objects.get(pk=identifier)
+    items = Item.objects.filter(project=p)
+    values = []
+    for i in items:
+        item_data = ProcessingSession.objects.filter(item=i)
+        for val in item_data:
+            row = {}
+            row['Date'] = val.startTime
+            row['objects'] = val.pagesDone
+            row['task'] = val.task
+            values.append(row)
+    sorted_values = sorted(values, key=itemgetter('Date'))
+    return render(request, 'time_chart.html' , {
+        'values': sorted_values,
+        'project': p,
+    })
 
 
 @login_required
@@ -407,6 +409,7 @@ def project_data(request, identifier, json_view=False):
     p = None
     try:
         p = Project.objects.get(name=identifier)
+        pid = p.id
     except Project.DoesNotExist:
         return render_to_response('barcode_result.html', {
             'list': values,
@@ -432,8 +435,9 @@ def project_data(request, identifier, json_view=False):
         dataset = {'Sessions': values}
         return dataset
     else:
-        return render_to_response('data.html', {
+        return render_to_response('project_page.html', {
             'list': values,
+            'project': pid, 
         }, context_instance=RequestContext(request))
 
 
