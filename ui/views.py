@@ -235,6 +235,7 @@ def show_graph(request,chartType,project):
                 'entries': entryList,
                 'chartType': chartType,
                 'project': p.id,
+                'project_name': p.name,
             }, context_instance=RequestContext(request))
         else:
             return render_to_response('bar_chart.html', {
@@ -247,6 +248,7 @@ def show_graph(request,chartType,project):
                 'entries': entryList,
                 'chartType': chartType,
                 'project': p.id,
+                'project_name': p.name,
             }, context_instance=RequestContext(request))
 
     elif chartType=='combo':
