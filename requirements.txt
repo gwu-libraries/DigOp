@@ -4,3 +4,4 @@ django-bootstrapped
 python-dateutil
 south
 django-profiles
+git+https://github.com/pivotal-energy-solutions/django-datatable-view

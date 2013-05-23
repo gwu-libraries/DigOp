@@ -4,16 +4,14 @@
 
 {% block javascript_extra %}
 <script>
-    $(function()
-    {
-        $('#results').dataTable(
-        {   "bJQueryUI": true,
-            "sDom": 'T<"clear">lfrtip',
-            "oTableTools": {
-                "sSwfPath": "{{STATIC_URL}}TableTools/media/swf/copy_csv_xls_pdf.swf"
-        }
-        });
-    });
+    function confirm_datatable_options(options) {
+        options.bJQueryUI = true;
+        options.sDom = 'T<"clear">lfrtip';
+        options.oTableTools = {
+             "sSwfPath": "{{STATIC_URL}}TableTools/media/swf/copy_csv_xls_pdf.swf"
+         }
+         return options;
+    }
 </script>
 {% endblock javascript_extra%}
 {%block styles%}
@@ -42,53 +40,8 @@
   <div >
 
       <h2>printing results for user {{user}} {{json_view}}</h2>
+      {{ datatable }}
 
-<Table cellpadding="0" cellspacing="0" border="0" class="display" id="results" width="100%">
-    <thead>
-    <tr>
-<th> Project </th>
-<th> Barcode </th>
-<th> User </th>
-<th> Duration </th>
-<th> Pages </th>
-<th> Comments</th>
-<th> Book Complete </th>
-<th> Pages per Hour </th>
-<th> Item Type </th>
-<th> Task Type</th>
-<th> Start Date </th>
-</tr>
-</thead>
-
-<tbody>
-{% for record in list %}
-    <tr>
-        <td><a href="{%url project_data record.project%}"> {{record.project}} </a></td>
-        <td><a href="{%url barcode record.barcode %}">{{record.barcode}}</a> </td>
-        <td><a href="{%url user record.user %}">{{record.user}}</a></td>
-	<td>{{record.duration}} </td>
-	<td>{{record.objects}} </td>
-	<td>{{record.comments}}</td>
-	<td>{{record.isFinished}} </td>
-        <td>{{record.rate}} </td>
-        <td><a href="{%url item record.itemType %}">{{record.itemType}}</a></td>
-        <td><a href="{%url task record.task %}">{{record.task}} </a></td>
-        <td>{{record.startTime}} </td>
-	</tr>
-{% endfor %}
-
-    </tbody>
-    <tfoot>
-        <tr>
-        <td> <b>TOTAL</b>       </td>
-        <td>            </td>
-        <td>{{totalHours}} Hours                </td>
-        <td>{{totalPages}}              </td>
-        </tr>
-
-    </tfoot>
-
-</table>
 
 </div>
 {% endblock %}

@@ -3,12 +3,19 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from django.conf.urls.defaults import *
+from django.contrib.auth.decorators import login_required
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
 from ui.models import ProfileForm
+from ui.views import ReportListView
+from ui.views import ProjectListView
+from ui.views import BarcodeListView
+from ui.views import UserListView
+from ui.views import TaskListView
+from ui.views import ItemListView
 
 urlpatterns = patterns('',
     # Examples:
@@ -19,7 +26,7 @@ urlpatterns = patterns('',
     url(r'^add_project/$', 'ui.views.add_project', name="add_project"),
     url(r'^admin_session_data/$', 'ui.views.admin_session_data', name="admin_session_data"),
 
-    url(r'^barcode/(?P<identifier>\w+)$', 'ui.views.barcode', name='barcode'),
+    url(r'^barcode/(?P<identifier>\w+)$', BarcodeListView.as_view(template_name='data.html'), name='barcode'),
     url(r'^barcode/(?P<identifier>\w+).json$', 'ui.views.barcode_json', name='barcode_json'),
     url(r'^barcode_page/$', 'ui.views.barcode_page', name="barcode_page"),
     url(r'^barcode_report/$', 'ui.views.barcode_report', name="barcode_report"),
@@ -31,7 +38,7 @@ urlpatterns = patterns('',
 
     url(r'^index_page/$', 'ui.views.index_page', name="index_page"),
     url(r'^item/(?P<itemtype>\Map|Book|Microfilm).json$', 'ui.views.item_json', name='item_json'),
-    url(r'^item/(?P<itemtype>\S{0,9})$', 'ui.views.item', name='item'),
+    url(r'^item/(?P<itemtype>\S{0,9})$', ItemListView.as_view(template_name='data.html'), name='item'),
     url(r'^item_processing_form/$', 'ui.views.item_processing_form', name="item_processing_form"),
     url(r'^item_menu/$', 'ui.views.item_menu', name="item_menu"),
 
@@ -51,9 +58,9 @@ urlpatterns = patterns('',
     url(r'^process_item_form/$', 'ui.views.process_item_form', name="process_item_form"),
     url(r'^process_processing_form/$', 'ui.views.process_processing_form', name="process_processing_form"),
 
-    url(r'^produce_data/$', 'ui.views.produce_data', name="produce_data"),
+    url(r'^produce_data/$', ReportListView.as_view(template_name="data.html"), name="produce_data"),
 
-    url(r'^project_data/(?P<identifier>\w+)$', 'ui.views.project_data', name='project_data'),
+    url(r'^project_data/(?P<identifier>\w+)$', ProjectListView.as_view(template_name='data.html'), name='project_data'),
     url(r'^project_data/(?P<identifier>\w+).json$', 'ui.views.project_data_json', name='project_data_json'),
     url(r'^project_form/$', 'ui.views.project_form', name="project_form"),
     
@@ -65,10 +72,10 @@ urlpatterns = patterns('',
     url(r'^show_projects/$', 'ui.views.show_projects', name="show_projects"),
     url(r'^show_users/$', 'ui.views.show_users', name="show_users"),
     
-    url(r'^task/(?P<tasktype>\S{2,4})$', 'ui.views.task', name='task'),
+    url(r'^task/(?P<tasktype>\S{2,4})$', TaskListView.as_view(template_name='data.html'), name='task'),
     url(r'^task/(?P<tasktype>\S{2,4}).json$', 'ui.views.task_json', name='task_json'),
     
-    url(r'^user/(?P<username>[\w.@+-]+)/$', 'ui.views.user', name='user'),
+    url(r'^user/(?P<username>[\w.@+-]+)/$', UserListView.as_view(template_name='data.html'), name='user'),
     url(r'^user/(?P<username>[\w.@+-]+).json$', 'ui.views.user_json', name='user_json'),
 
     url(r'^view_profile/$','ui.views.view_profile', name='view_profile'),

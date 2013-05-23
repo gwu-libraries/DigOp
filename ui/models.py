@@ -38,7 +38,7 @@ DEPTS = (
 
 class Project(models.Model):
     name = models.CharField(max_length=50)
-    global_id = models.CharField(max_length=settings.ID_MAX_LENGTH)
+    #global_id = models.CharField(max_length=settings.ID_MAX_LENGTH)
     description = models.TextField()
     startDate = models.DateTimeField('Project Start Date', default=datetime.now)
     endDate = models.DateTimeField(null=True, blank=True)

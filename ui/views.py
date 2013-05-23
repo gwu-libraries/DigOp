@@ -1,4 +1,8 @@
+from datetime import datetime
+import time
+
 from django.core.context_processors import csrf
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -23,12 +27,117 @@ from ui.models import ProjectForm
 from ui.models import Project
 from ui.models import UserProfile
 
+from datatableview.views import DatatableView
 from profiles import views as profile_views
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
 
 use = None
 register = Library()
+
+class ReportListView(DatatableView):
+    datatable_options = {
+        'columns': [
+            ("Project" , 'item__project'),
+            ("Barcode" , 'item__barcode'),
+            ("User", 'user__username'),
+            'Duration',
+            ("Items" , 'pagesDone'),
+            ("Comments" , 'comments'),
+            ("Task Completed" , 'operationComplete'),
+            ("Pages Per Hour" , 'Rate'),
+            ("Item Type" , 'item__itemType'),
+            ("Task Type" ,'task'),
+            ("Start Date", 'startTime'),
+            'endTime',
+        ],
+
+        'hidden_columns': [
+            'endTime',
+        ]
+        
+    }
+    
+    def get_queryset(self):
+        if self.request.GET.get('user'):
+            self.request.session['user'] = self.request.GET.get('user')
+        if self.request.GET.get('start'):
+            self.request.session['start'] = self.request.GET.get('start')
+        if self.request.GET.get('end'):
+            self.request.session['end'] = self.request.GET.get('end')
+        if self.request.GET.get('itemtype'):
+            self.request.session['itemtype'] = self.request.GET.get('itemtype')
+        name = self.request.session['user']
+        start = self.request.session['start']
+        end = self.request.session['end']
+        itemtype = self.request.session['itemtype']
+        if name != 'all':
+            a = ProcessingSession.objects.filter(user__username=name)
+            a = a.filter(startTime__gte=start)
+            c = ProcessingSession.objects.filter(user__username=name)
+            c = c.filter(endTime__lte=end)
+            c = c.filter(item__itemType__exact=itemtype)
+            b = a & c
+            return b
+        else:
+            return ProcessingSession.objects.all()
+
+
+    def get_column_Duration_data(self, instance, *args, **kwargs):
+        return str(instance.endTime - instance.startTime)
+
+    def get_column_Pages_Per_Hour_data(self, instance, *args, **kwargs):
+        fmt = '%Y-%m-%d %H:%M:%S'
+        d1 = datetime.strptime(str(instance.endTime)[:19], fmt)
+        d2 = datetime.strptime(str(instance.startTime)[:19], fmt)
+        d1_ts = time.mktime(d1.timetuple())
+        d2_ts = time.mktime(d2.timetuple())
+        return int(int(instance.pagesDone) / (float(d1_ts - d2_ts) / 3600))
+
+    def get_column_Project_data(self, instance, *args, **kwargs):
+        return  '<a href="{0}">'.format(reverse('project_data',args=[instance.item.project.id]))+"{0}</a>".format(instance.item.project)
+
+    def get_column_Barcode_data(self, instance, *args, **kwargs):
+        return  '<a href="{0}">'.format(reverse('barcode',args=[instance.item.id]))+"{0}</a>".format(instance.item.barcode)
+
+    def get_column_User_data(self, instance, *args, **kwargs):
+        return  '<a href="{0}">'.format(reverse('user',args=[instance.user.username]))+"{0}</a>".format(instance.user)
+
+    def get_column_Item_Type_data(self, instance, *args, **kwargs):
+        return  '<a href="{0}">'.format(reverse('item',args=[instance.item.itemType]))+"{0}</a>".format(instance.item.itemType)
+
+    def get_column_Task_Type_data(self, instance, *args, **kwargs):
+        return  '<a href="{0}">'.format(reverse('task',args=[instance.task]))+"{0}</a>".format(instance.task)
+
+class ProjectListView(ReportListView):
+    def get_queryset(self):
+        p = Project.objects.get(id=self.kwargs['identifier'])
+        items = Item.objects.filter(project=p)
+        returnobj = ProcessingSession.objects.none()
+        for i in items:
+            obj = ProcessingSession.objects.filter(item=i)
+            returnobj = returnobj | obj
+        return returnobj
+
+
+class BarcodeListView(ReportListView):
+    def get_queryset(self):
+        items = Item.objects.filter(id=self.kwargs['identifier'])
+        return ProcessingSession.objects.filter(item=items)
+
+
+class UserListView(ReportListView):
+    def get_queryset(self):
+        return ProcessingSession.objects.filter(user__username=self.kwargs['username'])
+    
+    
+class ItemListView(ReportListView):
+    def get_queryset(self):
+        return ProcessingSession.objects.filter(item__itemType__exact=self.kwargs['itemtype'])
+
+class TaskListView(ReportListView):
+    def get_queryset(self):
+        return ProcessingSession.objects.filter(task__exact=self.kwargs['tasktype'])
 
 
 def add_csrf(request, **kwargs):
@@ -985,6 +1094,7 @@ def produce_data(request):
         c = c.filter(endTime__lte=end)
         c = c.filter(item__itemType__exact=itemtype)
         b = a & c
+
         dictionary = None
         for item in b:
             rate = int(int(item.pagesDone) / (item.duration() / 3600))
