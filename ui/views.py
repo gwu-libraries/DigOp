@@ -718,8 +718,9 @@ def process_book_form(request):
                     #if pages is None:
                     pages = 0
                     item_type = request.POST['itemType']
+                    p = Project.objects.get(id=request.POST['project'])
                     book = Item.objects.create(barcode=bar, totalPages=pages,
-                                               itemType=item_type)
+                                               itemType=item_type, project=p)
                     book.save()
                     user = request.user
                     return render_to_response('item_processing_form.html', {
