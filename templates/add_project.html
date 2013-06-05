@@ -23,6 +23,8 @@
 <div id="contentcolumn">
     <form action="../add_project/" method="post"> {% csrf_token %}
         {{form.as_p}}
+        <input type="checkbox" name="collection" value="collection">add project to inventory collection<br>
+
         <input type="submit" value="Submit" />
     </form>
 </div>

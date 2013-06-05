@@ -29,6 +29,7 @@ from ui.models import UserProfile
 
 from datatableview.views import DatatableView
 from profiles import views as profile_views
+import requests
 #django-qsstats-magic Should be install before running the app
 #python-dateutil
 
@@ -190,8 +191,13 @@ def user_json(request, username):
                         content_type='application/json')
 
 
+@login_required
+def get_collections(request):
+    return None
+        
+        
 def _date_handler(obj):
-        return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 
 @login_required
