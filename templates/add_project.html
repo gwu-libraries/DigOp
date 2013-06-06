@@ -3,7 +3,12 @@
 <script src="{{STATIC_URL}}anytime.js"></script>
 <script type="text/javascript">
     $(function() {
-        $( ".AnyTime_picker" ).AnyTime_picker();
+            $( ".AnyTime_picker" ).AnyTime_picker();
+            $("#collection").change(function()
+                {
+                var showOrHide =$(this).is(':checked');
+                $("#collections").toggle(showOrHide);
+        });
         });
 </script>
 {% endblock javascript_extra%}
@@ -23,8 +28,13 @@
 <div id="contentcolumn">
     <form action="../add_project/" method="post"> {% csrf_token %}
         {{form.as_p}}
-        <input type="checkbox" name="collection" value="collection">add project to inventory collection<br>
-
+        <p><input id="collection" type="checkbox" name="collection" value="collection">add project to inventory collection</p>
+        <p><select id="collections" name="collections" title="Collections" style="display:none">
+            {%for collection in collections%}
+            <option value="{{collection.id}}"> {{collection.name}}</option>
+            {%endfor%}
+        </select>
+        </p>
         <input type="submit" value="Submit" />
     </form>
 </div>

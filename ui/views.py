@@ -193,7 +193,16 @@ def user_json(request, username):
 
 @login_required
 def get_collections(request):
-    return None
+    raw_data = requests.get("http://gwinventory-test.wrlc.org/api/v1/collection/?format=json&username=digops&api_key=77627e92c352b846e735bb1117758e68af9bac29")
+    data = json.loads(raw_data.content)
+    collections = data['objects']
+    col = {}
+    collection_list = []
+    for collection in collections:
+        col['name'] = collection['name']
+        col['id'] = collection['id']
+        collection_list.append(col)
+    return collection_list
         
         
 def _date_handler(obj):
@@ -834,14 +843,21 @@ def add_project(request):
         if form.is_valid():
             project = Project(name=request.POST['name'], description=request.POST['description'], startDate=request.POST['startDate'], endDate=None, projectComplete=False)
             project.save()
-            return render(request,'project_menu.html')
+            url = "http://gwinventory-test.wrlc.org/api/v1/project/"
+            payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
+            headers = {'content-type': 'application/json', 'Authorization': 'ApiKey digops:77627e92c352b846e735bb1117758e68af9bac29'}
+            status = requests.post(url, data=json.dumps(payload), headers=headers)
+            return render(request,'project_menu.html', {
+                })
         else:
             error = 'form is invalid'
             return errorHandle(error)
     else:
         form = ProjectForm()
+        collections = get_collections(request)
         return render_to_response('add_project.html', {
             'form': form,
+            'collections': collections,
         }, context_instance=RequestContext(request))
 
 
