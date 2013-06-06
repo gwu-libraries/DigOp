@@ -3,6 +3,7 @@ import time
 
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -36,28 +37,27 @@ import requests
 use = None
 register = Library()
 
+
 class ReportListView(DatatableView):
     datatable_options = {
         'columns': [
-            ("Project" , 'item__project'),
-            ("Barcode" , 'item__barcode'),
+            ("Project", 'item__project'),
+            ("Barcode", 'item__barcode'),
             ("User", 'user__username'),
             'Duration',
-            ("Items" , 'pagesDone'),
-            ("Comments" , 'comments'),
-            ("Task Completed" , 'operationComplete'),
-            ("Pages Per Hour" , 'Rate'),
-            ("Item Type" , 'item__itemType'),
-            ("Task Type" ,'task'),
+            ("Items", 'pagesDone'),
+            ("Comments", 'comments'),
+            ("Task Completed", 'operationComplete'),
+            ("Pages Per Hour", 'Rate'),
+            ("Item Type", 'item__itemType'),
+            ("Task Type", 'task'),
             ("Start Date", 'startTime'),
             'endTime',
         ],
 
         'hidden_columns': [
             'endTime',
-        ]
-        
-    }
+        ]}
     
     def get_queryset(self):
         if self.request.GET.get('user'):
@@ -83,7 +83,6 @@ class ReportListView(DatatableView):
         else:
             return ProcessingSession.objects.all()
 
-
     def get_column_Duration_data(self, instance, *args, **kwargs):
         return str(instance.endTime - instance.startTime)
 
@@ -96,19 +95,24 @@ class ReportListView(DatatableView):
         return int(int(instance.pagesDone) / (float(d1_ts - d2_ts) / 3600))
 
     def get_column_Project_data(self, instance, *args, **kwargs):
-        return  '<a href="{0}">'.format(reverse('project_data',args=[instance.item.project.id]))+"{0}</a>".format(instance.item.project)
+        return '<a href="{0}">'.format(reverse('project_data',
+            args=[instance.item.project.id]))+"{0}</a>".format(instance.item.project)
 
     def get_column_Barcode_data(self, instance, *args, **kwargs):
-        return  '<a href="{0}">'.format(reverse('barcode',args=[instance.item.id]))+"{0}</a>".format(instance.item.barcode)
+        return '<a href="{0}">'.format(reverse('barcode',
+            args=[instance.item.id]))+"{0}</a>".format(instance.item.barcode)
 
     def get_column_User_data(self, instance, *args, **kwargs):
-        return  '<a href="{0}">'.format(reverse('user',args=[instance.user.username]))+"{0}</a>".format(instance.user)
+        return '<a href="{0}">'.format(reverse('user',
+            args=[instance.user.username]))+"{0}</a>".format(instance.user)
 
     def get_column_Item_Type_data(self, instance, *args, **kwargs):
-        return  '<a href="{0}">'.format(reverse('item',args=[instance.item.itemType]))+"{0}</a>".format(instance.item.itemType)
+        return '<a href="{0}">'.format(reverse('item',
+            args=[instance.item.itemType]))+"{0}</a>".format(instance.item.itemType)
 
     def get_column_Task_Type_data(self, instance, *args, **kwargs):
-        return  '<a href="{0}">'.format(reverse('task',args=[instance.task]))+"{0}</a>".format(instance.task)
+        return '<a href="{0}">'.format(reverse('task',
+            args=[instance.task]))+"{0}</a>".format(instance.task)
 
 class ProjectListView(ReportListView):
     def get_queryset(self):
@@ -841,12 +845,14 @@ def add_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            project = Project(name=request.POST['name'], description=request.POST['description'], startDate=request.POST['startDate'], endDate=None, projectComplete=False)
+            project = Project(name=request.POST['name'], 
+                    description=request.POST['description'],
+                    startDate=request.POST['startDate'],
+                    endDate=None, projectComplete=False)
             project.save()
-            url = "http://gwinventory-test.wrlc.org/api/v1/project/"
             payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
-            headers = {'content-type': 'application/json', 'Authorization': 'ApiKey digops:77627e92c352b846e735bb1117758e68af9bac29'}
-            status = requests.post(url, data=json.dumps(payload), headers=headers)
+            headers = {'content-type': 'application/json', 'Authorization': 'ApiKey ' + settings.INV_USER + ':' + settings.INV_API_KEY}
+            status = requests.post(settings.INV_URL, data=json.dumps(payload), headers=headers)
             return render(request,'project_menu.html', {
                 })
         else:
