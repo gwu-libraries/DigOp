@@ -850,9 +850,10 @@ def add_project(request):
                     startDate=request.POST['startDate'],
                     endDate=None, projectComplete=False)
             project.save()
-            payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
-            headers = {'content-type': 'application/json', 'Authorization': 'ApiKey ' + settings.INV_USER + ':' + settings.INV_API_KEY}
-            status = requests.post(settings.INV_URL, data=json.dumps(payload), headers=headers)
+            if request.POST['collections']:
+                payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
+                headers = {'content-type': 'application/json', 'Authorization': 'ApiKey ' + settings.INV_USER + ':' + settings.INV_API_KEY}
+                status = requests.post(settings.INV_URL, data=json.dumps(payload), headers=headers)
             return render(request,'project_menu.html', {
                 })
         else:
