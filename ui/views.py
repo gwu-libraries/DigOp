@@ -850,7 +850,7 @@ def add_project(request):
                     startDate=request.POST['startDate'],
                     endDate=None, projectComplete=False)
             project.save()
-            if request.POST['collections']:
+            if request.POST.get('collection',False):
                 payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
                 headers = {'content-type': 'application/json', 'Authorization': 'ApiKey ' + settings.INV_USER + ':' + settings.INV_API_KEY}
                 status = requests.post(settings.INV_URL, data=json.dumps(payload), headers=headers)
