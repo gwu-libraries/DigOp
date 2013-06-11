@@ -1,13 +1,13 @@
 <div id="navcontainer">
     <ul id="navlist">
-        <li id="active"><a href="{% url index_page %}" id="current">Home</a></li>
-        <li><a href="{% url show_projects %}">Project</a></li>
-        <li><a href="{% url item_menu %}">Item</a></li>
-        <li><a href="{% url show_users %}">Generate Report</a></li>
+        <li id="active"><a href="{% url 'index_page' %}" id="current">Home</a></li>
+        <li><a href="{% url 'show_projects' %}">Project</a></li>
+        <li><a href="{% url 'item_menu' %}">Item</a></li>
+        <li><a href="{% url 'show_users' %}">Generate Report</a></li>
         {%if user.is_authenticated%}
-            <li><a href="{% url profile_menu %}">Edit profile</a></li>
+            <li><a href="{% url 'profile_menu' %}">Edit profile</a></li>
             {%if user.is_superuser%}
-            <li><a href="{% url admin:index%}"> Admin </a></li>
+            <li><a href="{% url 'admin:index'%}"> Admin </a></li>
             {%endif%}
         {%endif%}
     </ul>

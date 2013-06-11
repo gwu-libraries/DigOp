@@ -1,8 +1,8 @@
-django==1.4.5
+django
 MySQL-python
 django-bootstrapped
 python-dateutil
 south
-django-profiles
+git+https://github.com/gwu-libraries/django-profiles
 git+https://github.com/pivotal-energy-solutions/django-datatable-view
 requests

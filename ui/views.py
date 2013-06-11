@@ -432,7 +432,7 @@ def show_projects(request):
         for i in items:
             num_items = num_items + 1
         data = {}
-        data['project'] = p.name
+        data['project'] = p
         data['description'] = p.description
         data['start'] = p.startDate 
         data['end'] = p.endDate

@@ -36,9 +36,9 @@
 {% block content %}
 <div id ="leftcolumn">
     <ul class="vertical_menu">
-        <li><a href="{%url show_projects%}"> Show Projects </a></li>
-        <li><a href="{%url add_project%}"> Open a Project</a></li>
-        <li><a href="{%url close_project%}">Close a Project</a></li>
+        <li><a href="{%url 'show_projects'%}"> Show Projects </a></li>
+        <li><a href="{%url 'add_project'%}"> Open a Project</a></li>
+        <li><a href="{%url 'close_project'%}">Close a Project</a></li>
     </ul>
 </div>
 
@@ -59,7 +59,7 @@
         <tbody>
             {%for r in rows%}
             <tr>
-                <td><a href="{%url project_data r.project%}">{{r.project}}</a></td>
+                <td><a href="{%url 'project_data' r.project.id%}">{{r.project}}</a></td>
                 <td>{{r.description}} </td>
                 <td>{{r.items}} </td>
                 <td>{{r.start}}</td>

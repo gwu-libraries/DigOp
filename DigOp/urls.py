@@ -45,7 +45,7 @@ urlpatterns = patterns('',
     url(r'^login/$', 'ui.views.login', name="login"),
     url(r'^logout_user/$', 'ui.views.logout_user', name="logout_user"),
 
-    url(r'^profiles/edit/$', 'profiles.views.edit_profile', {'form_class': ProfileForm,'success_url': '../../indexPage',},name='edit'),
+    url(r'^profiles/edit/$', 'profiles.views.edit_profile', {'form_class': ProfileForm,'success_url': '../../index_page',},name='edit'),
     url(r'^profiles/', include('profiles.urls')),
     url(r'^profile_menu/$','ui.views.profile_menu', name='profile_menu'),
 

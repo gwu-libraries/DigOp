@@ -15,14 +15,14 @@
 
 <div id ="leftcolumn">
     <ul class="vertical_menu">
-        <li><a href="{%url show_projects%}"> Show Projects </a></li>
-        <li><a href="{%url add_project%}"> Open a Project</a></li>
-        <li><a href="{%url close_project%}">Close a Project</a></li>
+        <li><a href="{%url 'show_projects'%}"> Show Projects </a></li>
+        <li><a href="{%url 'add_project'%}"> Open a Project</a></li>
+        <li><a href="{%url 'close_project'%}">Close a Project</a></li>
     </ul>
 </div>
 
 <div id="contentcolumn">
-    <form action="{% url close_project%}" method="post"> {% csrf_token %}
+    <form action="{% url 'close_project'%}" method="post"> {% csrf_token %}
         {{form.as_p}}
         <input type="submit" value="Submit" />
      </form>
