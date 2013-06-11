@@ -197,7 +197,7 @@ def user_json(request, username):
 
 @login_required
 def get_collections(request):
-    raw_data = requests.get("http://gwinventory-test.wrlc.org/api/v1/collection/?format=json&username=digops&api_key=77627e92c352b846e735bb1117758e68af9bac29")
+    raw_data = requests.get("http://gwinventory-test.wrlc.org/api/v1/collection/?format=json&username=digops&api_key=77627e92c352b846e735bb1117758e68af9bac29", verify=False)
     data = json.loads(raw_data.content)
     collections = data['objects']
     col = {}
@@ -853,7 +853,7 @@ def add_project(request):
             if request.POST.get('collection',False):
                 payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
                 headers = {'content-type': 'application/json', 'Authorization': 'ApiKey ' + settings.INV_USER + ':' + settings.INV_API_KEY}
-                status = requests.post(settings.INV_URL, data=json.dumps(payload), headers=headers)
+                status = requests.post(settings.INV_URL, data=json.dumps(payload), headers=headers, verify=False)
             return render(request,'project_menu.html', {
                 })
         else:
