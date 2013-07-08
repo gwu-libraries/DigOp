@@ -25,6 +25,9 @@ ITEMS = (
     ('Book', 'Book'),
     ('Map', 'Map'),
     ('Microfilm', 'Microfilm'),
+    ('Audio', 'Audio'),
+    ('Video', 'Video'),
+    ('Others', 'Others'),
 )
 
 DEPTS = (

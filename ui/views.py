@@ -197,7 +197,7 @@ def user_json(request, username):
 
 @login_required
 def get_collections(request):
-    raw_data = requests.get("http://gwinventory-test.wrlc.org/api/v1/collection/?format=json&username=digops&api_key=77627e92c352b846e735bb1117758e68af9bac29", verify=False)
+    raw_data = requests.get(settings.INV_URL + "?format=json&username=digops&api_key=77627e92c352b846e735bb1117758e68af9bac29", verify=False)
     data = json.loads(raw_data.content)
     collections = data['objects']
     col = {}
@@ -584,6 +584,7 @@ def process_item_form(request):
         return render_to_response('process_item_form.html', {
             'error': error,
             'form': form,
+            'projects': Project.objects.all(),
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
         if request.POST['itemType'] in ['Book', 'Map']:
@@ -670,6 +671,7 @@ def process_item_form(request):
         form = BookForm()  # An unbound form
         return render_to_response('process_item_form.html', {
             'form': form,
+            'projects': Project.objects.all(),
         }, context_instance=RequestContext(request))
 
 
@@ -679,10 +681,11 @@ def process_book_form(request):
         form = BookForm(request.POST)
         return render_to_response('get_barcode.html', {
             'error': error,
+            'projects': Project.objects.all(),
             'form': form,
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
-        if request.POST['itemType'] in ['Book', 'Map']:
+        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
             book = None
             form = BookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
@@ -768,13 +771,14 @@ def process_book_form(request):
         form = BookForm()  # An unbound form
         return render_to_response('get_barcode.html', {
             'form': form,
+            'projects': Project.objects.all(),
         }, context_instance=RequestContext(request))
 
 
 @login_required
 def process_processing_form(request):
     def errorHandle(error):
-        if request.POST['itemType'] in ['Book', 'Map']:
+        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
             form = ProcessingForm(request.POST)
             return render_to_response('processing_form.html', {
                 'error': error,
@@ -818,11 +822,13 @@ def process_processing_form(request):
                 form = BookForm()
                 return render_to_response('process_item_form.html', {
                     'form': form,
+                    'projects': Project.objects.all(),
                 }, context_instance=RequestContext(request))
             else:
                 form = BookForm()
                 return render_to_response('get_barcode.html', {
                     'form': form,
+                    'projects': Project.objects.all(),
                 }, context_instance=RequestContext(request))
         else:
             error = 'form is invalid'
@@ -907,11 +913,13 @@ def item_processing_form(request):
                 messages.add_message(request, messages.SUCCESS, msg)
                 return render_to_response('get_barcode.html', {
                     'form': form,
+                    'projects': Project.objects.all(),
                 }, context_instance=RequestContext(request))
             else:
                 form = BookForm()
                 return render_to_response('process_item_form.html', {
                     'form': form,
+                    'projects': Project.objects.all(),
                 }, context_instance=RequestContext(request))
         else:
             error = 'form is invalid'
