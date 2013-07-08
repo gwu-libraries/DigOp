@@ -22,6 +22,9 @@ from ui.models import ItemProcessingForm
 from ui.models import Item
 from ui.models import LoginForm
 from ui.models import ProcessingForm
+from ui.models import ProcessingAudioForm
+from ui.models import ProcessingVideoForm
+from ui.models import ProcessingOthersForm
 from ui.models import ProcessingSession
 from ui.models import ProfileForm
 from ui.models import ProjectForm
@@ -688,6 +691,28 @@ def process_book_form(request):
         if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
             book = None
             form = BookForm(request.POST)  # A form bound to the POST data
+            f = None
+            item_type = request.POST['itemType']
+            if item_type in ['Book', 'Map']:
+                f = ProcessingForm(initial={'item': book,
+                                            'user': request.user,
+                                            'task': 'Scan',
+                                            })
+            elif item_type == 'Audio':
+                f = ProcessingAudioForm(initial={'item': book,
+                                                 'user': request.user,
+                                                 'task': 'Scan',
+                                                 })
+            elif item_type == 'Video':
+                f = ProcessingVideoForm(initial={'item': book,
+                                                 'user': request.user,
+                                                 'task': 'Scan',
+                                                 })
+            elif item_type == 'Others':
+                f = ProcessingOthersForm(initial={'item': book,
+                                               'user': request.user,
+                                               'task': 'Scan',
+                                               })
             if form.is_valid():  # All validation rules pass
                 bar = request.POST['barcode']
                 try:
@@ -704,21 +729,17 @@ def process_book_form(request):
                     book = Item.objects.create(barcode=bar, totalPages=pages,
                                                itemType=item_type, project=p)
                     book.save()
+                    f = get_correct_form(request, book, item_type)
                     return render_to_response('processing_form.html', {
-                        'form': ProcessingForm(initial={'item': book,
-                                                        'user': request.user,
-                                                        'task': 'Scan',
-                                                        }),
+                        'form': f,
                         'itemType': request.POST['itemType'],
                         'task': 'Scan',
                         'item': book,
                     }, context_instance=RequestContext(request))
                 else:
+                    f = get_correct_form(request, book, item_type)
                     return render_to_response('processing_form.html', {
-                        'form': ProcessingForm(initial={'item': book,
-                                                        'user': request.user,
-                                                        'task': 'Scan',
-                                                        }),
+                        'form': f,
                         'task': 'Scan',
                         'item': book,
                     }, context_instance=RequestContext(request))
@@ -773,6 +794,33 @@ def process_book_form(request):
             'form': form,
             'projects': Project.objects.all(),
         }, context_instance=RequestContext(request))
+
+
+
+@login_required
+def get_correct_form(request, book, item_type):
+    f = None
+    if item_type in ['Book', 'Map']:
+        f = ProcessingForm(initial={'item': book,
+                                    'user': request.user,
+                                    'task': 'Scan',
+                                    })
+    elif item_type == 'Audio':
+        f = ProcessingAudioForm(initial={'item': book,
+                                         'user': request.user,
+                                         'task': 'Scan',
+                                         })
+    elif item_type == 'Video':
+        f = ProcessingVideoForm(initial={'item': book,
+                                         'user': request.user,
+                                         'task': 'Scan',
+                                         })
+    elif item_type == 'Others':
+        f = ProcessingOthersForm(initial={'item': book,
+                                          'user': request.user,
+                                          'task': 'Scan',
+                                          })
+    return f
 
 
 @login_required

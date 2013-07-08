@@ -146,6 +146,27 @@ class ProcessingForm(ModelForm):
                   'operationComplete', 'startTime', 'endTime')
 
 
+class ProcessingAudioForm(ProcessingForm):
+    def __init__(self, *args, **kwargs):
+        super(ProcessingAudioForm, self).__init__(*args, **kwargs)
+        self.fields['pagesDone'].label = "Audio Length"
+    formfield_callback = make_custom_datefield
+
+
+class ProcessingVideoForm(ProcessingForm):
+    def __init__(self, *args, **kwargs):
+        super(ProcessingVideoForm, self).__init__(*args, **kwargs)
+        self.fields['pagesDone'].label = "Video Length"
+    formfield_callback = make_custom_datefield
+
+
+class ProcessingOthersForm(ProcessingForm):
+    def __init__(self, *args, **kwargs):
+        super(ProcessingOthersForm, self).__init__(*args, **kwargs)
+        self.fields['pagesDone'].label = "Materials Length/Items"
+    formfield_callback = make_custom_datefield
+
+
 class ItemProcessingForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemProcessingForm, self).__init__(*args, **kwargs)
@@ -155,6 +176,7 @@ class ItemProcessingForm(ModelForm):
             'Enter a value for Time Finished item field'
         self.fields['identifier'].error_messages['required'] = \
             'Enter a value for Identifier field'
+        self.fields['pagesDone'].label = "Reels Done"
     formfield_callback = make_custom_datefield
     item = forms.CharField(max_length=100)
 
