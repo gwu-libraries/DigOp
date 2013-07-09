@@ -50,6 +50,9 @@ class Project(models.Model):
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        unique_together = ('id', 'name')
+
 
 class Item(models.Model):
     project = models.ForeignKey(Project)
