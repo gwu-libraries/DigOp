@@ -7,6 +7,7 @@
     function confirm_datatable_options(options) {
         options.bJQueryUI = true;
         options.sDom = 'T<"clear">lfrtip';
+        options.aasorting = [[1, 'asc']];
         options.oTableTools = {
              "sSwfPath": "{{STATIC_URL}}TableTools/media/swf/copy_csv_xls_pdf.swf"
          }
