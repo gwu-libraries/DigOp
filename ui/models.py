@@ -15,30 +15,6 @@ from ui.signals import create_profile
 signals.post_save.connect(create_profile, sender=User)
 
 
-TYPES = (
-    ('Scan', 'Scan'),
-    ('QC', 'QC'),
-    ('QA', 'QA'),
-)
-
-ITEMS = (
-    ('Book', 'Book'),
-    ('Map', 'Map'),
-    ('Microfilm', 'Microfilm'),
-    ('Audio', 'Audio'),
-    ('Video', 'Video'),
-    ('Others', 'Others'),
-)
-
-DEPTS = (
-    ('LIT', 'LIT'),
-    ('SPEC', 'SPEC'),
-    ('CIRC', 'CIRC'),
-    ('REF', 'REF'),
-    ('RDG', 'RDG'),
-    ('STG', 'STG'),
-)
-
 class Project(models.Model):
     name = models.CharField(max_length=50)
     #global_id = models.CharField(max_length=settings.ID_MAX_LENGTH, null=True)
@@ -58,7 +34,7 @@ class Item(models.Model):
     project = models.ForeignKey(Project)
     barcode = models.CharField(max_length=50)
     totalPages = models.IntegerField(blank=True)
-    itemType = models.CharField(max_length=10, choices=ITEMS)
+    itemType = models.CharField(max_length=10, choices=settings.ITEMS)
 
     def __unicode__(self):
         return self.barcode
@@ -70,7 +46,7 @@ class ProcessingSession(models.Model):
     identifier = models.CharField(max_length=30, blank=True, default="")
     pagesDone = models.IntegerField()
     comments = models.TextField(blank=True, default="")
-    task = models.CharField(max_length=4, choices=TYPES)
+    task = models.CharField(max_length=4, choices=settings.TYPES)
     operationComplete = models.NullBooleanField()
     startTime = models.DateTimeField('Time started item', default=datetime.now)
     endTime = models.DateTimeField('Time finished item')
@@ -86,7 +62,7 @@ class ProcessingSession(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    department = models.CharField(max_length=10, choices=DEPTS, blank=True)
+    department = models.CharField(max_length=10, choices=settings.DEPTS, blank=True)
 
     def get_absolute_url(self):
         return ('profiles_profile_detail', (), { 'username': self.user.username })
