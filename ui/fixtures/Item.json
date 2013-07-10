@@ -1,0 +1,66 @@
+[
+{
+    "pk": 3, 
+    "model": "ui.project", 
+    "fields": {
+        "startDate": "2013-07-10T13:49:41Z", 
+        "projectComplete": false, 
+        "endDate": null, 
+        "name": "test2", 
+        "description": "More Testing"
+    }
+},
+{
+    "pk": 2, 
+    "model": "ui.project", 
+    "fields": {
+        "startDate": "2013-07-09T15:26:46Z", 
+        "projectComplete": false, 
+        "endDate": null, 
+        "name": "test", 
+        "description": "testing"
+    }
+},
+{
+    "pk": 1, 
+    "model": "ui.project", 
+    "fields": {
+        "startDate": "2013-07-09T15:26:33Z", 
+        "projectComplete": false, 
+        "endDate": null, 
+        "name": "test", 
+        "description": "testing"
+    }
+},
+{
+    "pk": 3, 
+    "model": "ui.item", 
+    "fields": {
+        "project": 3, 
+        "totalPages": 0, 
+        "barcode": "32882019290696", 
+        "itemType": "Book"
+    }
+},
+{
+    "pk": 2, 
+    "model": "ui.item", 
+    "fields": {
+        "project": 2, 
+        "totalPages": 0, 
+        "barcode": "32882019290695", 
+        "itemType": "Video"
+    }
+},
+{
+    "pk": 1, 
+    "model": "ui.item", 
+    "fields": {
+        "project": 1, 
+        "totalPages": 0, 
+        "barcode": "32882019290694", 
+        "itemType": "Audio"
+    }
+}
+]
+

@@ -1,0 +1,144 @@
+[
+{
+    "pk": 3, 
+    "model": "ui.project", 
+    "fields": {
+        "startDate": "2013-07-10T13:49:41Z", 
+        "projectComplete": false, 
+        "endDate": null, 
+        "name": "test2", 
+        "description": "More Testing"
+    }
+},
+{
+    "pk": 2, 
+    "model": "ui.project", 
+    "fields": {
+        "startDate": "2013-07-09T15:26:46Z", 
+        "projectComplete": false, 
+        "endDate": null, 
+        "name": "test", 
+        "description": "testing"
+    }
+},
+{
+    "pk": 1, 
+    "model": "ui.project", 
+    "fields": {
+        "startDate": "2013-07-09T15:26:33Z", 
+        "projectComplete": false, 
+        "endDate": null, 
+        "name": "test", 
+        "description": "testing"
+    }
+},
+{
+    "pk": 3, 
+    "model": "ui.item", 
+    "fields": {
+        "project": 3, 
+        "totalPages": 0, 
+        "barcode": "32882019290696", 
+        "itemType": "Book"
+    }
+},
+{
+    "pk": 2, 
+    "model": "ui.item", 
+    "fields": {
+        "project": 2, 
+        "totalPages": 0, 
+        "barcode": "32882019290695", 
+        "itemType": "Video"
+    }
+},
+{
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+        "username": "admin", 
+        "first_name": "Raza", 
+        "last_name": "Gilani", 
+        "is_active": true, 
+        "is_superuser": true, 
+        "is_staff": true, 
+        "last_login": "2013-07-09T15:26:29Z", 
+        "groups": [], 
+        "user_permissions": [], 
+        "password": "pbkdf2_sha256$10000$IAsqn12ynvOx$+4AL+wPUggeNMd03znJlDxyFifjs222q+t0oFoLFlPw=", 
+        "email": "sgilani@gwmail.gwu.edu", 
+        "date_joined": "2013-07-09T15:26:03Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "ui.item", 
+    "fields": {
+        "project": 1, 
+        "totalPages": 0, 
+        "barcode": "32882019290694", 
+        "itemType": "Audio"
+    }
+},
+{
+    "pk": 4, 
+    "model": "ui.processingsession", 
+    "fields": {
+        "pagesDone": 323, 
+        "task": "QC", 
+        "comments": "Good", 
+        "item": 3, 
+        "operationComplete": true, 
+        "user": 1, 
+        "startTime": "2013-07-10T14:51:45Z", 
+        "identifier": "", 
+        "endTime": "2013-07-10T15:51:57Z"
+    }
+},
+{
+    "pk": 3, 
+    "model": "ui.processingsession", 
+    "fields": {
+        "pagesDone": 323, 
+        "task": "Scan", 
+        "comments": "good", 
+        "item": 3, 
+        "operationComplete": true, 
+        "user": 1, 
+        "startTime": "2013-07-10T13:51:18Z", 
+        "identifier": "", 
+        "endTime": "2013-07-10T14:51:30Z"
+    }
+},
+{
+    "pk": 2, 
+    "model": "ui.processingsession", 
+    "fields": {
+        "pagesDone": 65, 
+        "task": "Scan", 
+        "comments": "good", 
+        "item": 2, 
+        "operationComplete": true, 
+        "user": 1, 
+        "startTime": "2013-07-09T15:28:16Z", 
+        "identifier": "", 
+        "endTime": "2013-07-09T16:28:23Z"
+    }
+},
+{
+    "pk": 1, 
+    "model": "ui.processingsession", 
+    "fields": {
+        "pagesDone": 43, 
+        "task": "Scan", 
+        "comments": "good", 
+        "item": 1, 
+        "operationComplete": true, 
+        "user": 1, 
+        "startTime": "2013-07-09T15:27:46Z", 
+        "identifier": "", 
+        "endTime": "2013-07-09T16:27:55Z"
+    }
+}
+]
+

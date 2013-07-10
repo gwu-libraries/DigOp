@@ -1,6 +1,6 @@
 # Django settings for DigOps project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -137,6 +137,7 @@ INSTALLED_APPS = (
     'ui',
     'south',
     'profiles',
+    'fixture_magic',
 )
 
 # A sample logging configuration. The only tangible logging
