@@ -61,17 +61,7 @@ only been tested on ubuntu 10.04 LTS.
 
         source ENV/bin/activate
 
-7. Install python suds library using following commands
-
-        sudo wget https://fedorahosted.org/releases/s/u/suds/python-suds-0.3.7.tar.gz
-        tar -zxvf python-suds-0.3.7.tar.gz
-        cd python-suds-0.3.7
-        python setup.py install
-        cd ..
-        rm -rf python-suds-0.3.7
-        rm -r python-suds-0.3.7.tar.gz
-
-8. Install the additional required packages
+7. Install the additional required packages
 
         pip install -r requirements.txt
 
@@ -88,9 +78,9 @@ only been tested on ubuntu 10.04 LTS.
         
         create Database Production;
 
-3. Create Database user while changing user1 with a different username and pass1 with a different password
+3. Create Database user while changing user with a different username and pass with a different password
         
-        CREATE USER 'user1'@'localhost' IDENTIFIED BY 'pass1';
+        CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';
 
 4. Assign the privileges to user
 
@@ -119,12 +109,18 @@ only been tested on ubuntu 10.04 LTS.
                     }
                 }
 
-8. Edit wsgi file
+8. Fill in the values for the following fields in local_settings.py:
+
+        INV_API_KEY = ""
+        INV_USER = ""
+        INV_URL = ""
+
+9. Edit wsgi file
 
         cp DigOp/wsgi.py.template DigOp/wsgi.py
         vim DigOp/wsgi.py
 
-9. Update the Path to the Templates folder in the following variable in settings.py 
+10. Update the Path to the Templates folder in the following variable in settings.py 
         
         TEMPLATE_DIRS = (
                 # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -133,43 +129,43 @@ only been tested on ubuntu 10.04 LTS.
                 "C:/templates"
                 )
 
-10. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
+11. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
 
         Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
 
-11. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
+12. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
 
         KABIS_SERVER_URL = ''
 
-12. Use the following command in shell to set the loacale
+13. Use the following command in shell to set the loacale
 
         sudo dpkg-reconfigure locales
         export LC_ALL=en_GB.UTF-8
         export LANG=en_GB.UTF-8
 
-13. Go into the DIGOPS-HOME directory where manage.py is stored and type in the following command
+14. Go into the DIGOPS-HOME directory where manage.py is stored and type in the following command
 
         python manage.py syncdb
     create the admin user and the password when prompted
 
-14. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
+15. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
 
         python manage.py runserver 0.0.0.0:8080
         (visit http://your-server:8080 to test)
 
 
-15. If you want to use apache, add apache config file to sites-enabled and edit it
+16. If you want to use apache, add apache config file to sites-enabled and edit it
 
         sudo cp ../apache/DigOp /etc/apache2/sites-available/DigOp
         vim /etc/apache2/sites-available/DigOp
 
-16. Enable the app in apache and bounce apache2 to start it up
+17. Enable the app in apache and bounce apache2 to start it up
 
         sudo a2ensite DigOp
         sudo /etc/init.d/apache2 restart
 
-17. open a web browser and type in the url of the server running DigOps app. Type in the admin user and password created in step 13 to login.
+18. open a web browser and type in the url of the server running DigOps app. Type in the admin user and password created in step 13 to login.
 
-18. If you get the Access Forbidden error, Make sure that the folder containing DIGOPS-HOME allows read and execute permissions to everyone. Typically, this might require giving 755 with chmod to your home directory if DIGOPS-HOME resides in your home directory.
+19. If you get the Access Forbidden error, Make sure that the folder containing DIGOPS-HOME allows read and execute permissions to everyone. Typically, this might require giving 755 with chmod to your home directory if DIGOPS-HOME resides in your home directory.
 
-19. If you get TemplateDoesNotExist error, check the TEMPLATE_DIRS path in settings.py file and make sure it is correct.
+20. If you get TemplateDoesNotExist error, check the TEMPLATE_DIRS path in settings.py file and make sure it is correct.
