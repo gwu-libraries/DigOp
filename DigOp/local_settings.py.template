@@ -54,3 +54,8 @@ DEPTS = (
     ('STG', 'STG'),
 )
 
+
+TEST_USER = ''
+
+TEST_USER_PWD = ''
+
