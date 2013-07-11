@@ -18,5 +18,3 @@ class ProjectViewsTestCase(TestCase):
         resp = self.client.get('/project_data/4/')
         self.assertEqual(resp.status_code, 404)
 
-    def test_report(self):
-
