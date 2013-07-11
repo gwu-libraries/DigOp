@@ -3,18 +3,16 @@ python:
   - "2.7"
 env:
   - DJANGO_VERSION=1.5
-
 #Command to install dependencies
-install: "pip install -r requirements.txt"
-
+install: "pip install -r requirements.txt --use-mirrors"
+#Command to run tests
 script:
   - cp DigOp/local_settings.py.template DigOp/local_settings.py
-  - python ui/manage.py test ui
-
-branches:
-  only:
-      - master
-
+  - python manage.py test ui
+# Email notifications
 notifications:
-  email:
-    - sgilani@email.gwu.edu
+    email:
+      - sgilani@email.gwu.edu
+      - dchud@email.gwu.edu
+notifications:
+  flowdock: a1dbebd53392964fc6f4b82d7fc1a757
