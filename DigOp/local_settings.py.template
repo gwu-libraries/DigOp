@@ -55,7 +55,7 @@ DEPTS = (
 )
 
 
-TEST_USER = ''
+TEST_USER = 'admin'
 
-TEST_USER_PWD = ''
+TEST_USER_PWD = 'test'
 
