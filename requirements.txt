@@ -6,3 +6,4 @@ south
 git+https://github.com/gwu-libraries/django-profiles
 git+https://github.com/pivotal-energy-solutions/django-datatable-view
 requests
+django-fixture-magic
