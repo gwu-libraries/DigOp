@@ -436,6 +436,7 @@ def show_projects(request):
             num_items = num_items + 1
         data = {}
         data['project'] = p
+        data['pk'] = p.pk
         data['description'] = p.description
         data['start'] = p.startDate 
         data['end'] = p.endDate
