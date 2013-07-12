@@ -76,7 +76,6 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/gilani/DigOp/static',
 )
 
 # List of finder classes that know how to find static files in
@@ -120,7 +119,7 @@ ROOT_URLCONF = 'DigOp.urls'
 WSGI_APPLICATION = 'DigOp.wsgi.application'
 
 TEMPLATE_DIRS = (
-    '/home/gilani/projects/DigOp/templates'
+     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
 )
 
 INSTALLED_APPS = (

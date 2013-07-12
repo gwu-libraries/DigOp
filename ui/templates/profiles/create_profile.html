@@ -1,0 +1,22 @@
+{% extends "base_2col.html" %}
+{% block content%}
+
+<script>
+ $(document).ready(function() {
+   $("#profile").addClass("active");
+ });
+</script>
+
+<div class="description">
+    <h2>Create Profile:</h2>
+</div>
+
+ 
+<h2>{{ user|capfirst }}, before we begin, lets set some of your account preferences. These can be changed at any time.</h2>
+ 
+<form method="POST" action=""> {% csrf_token %}
+
+    <input type="submit" name="submit" class="submit" value="Create Profile">
+</form>
+ 
+{% endblock %}

@@ -1,0 +1,18 @@
+{%extends base_2col.html%}
+{% load i18n %}
+
+{%block content%}
+
+
+<div id="contentcolumn">Edit Profile</div><br />
+
+<p>
+<form enctype="multipart/form-data" action="{% url forum.views.save_profile user.pk %}" method="POST">
+        {% csrf_token %}
+            {% if img %} <p><img border="0" alt="Profile Pic" src="{{ img }}" /></p> {% endif %}
+
+                {{ pf.as_p }}
+                    <input type="submit" value="Submit" id="submit" />
+                </form>
+                </p>
+{%endblock%}

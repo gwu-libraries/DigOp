@@ -1,0 +1,26 @@
+{% extends "base_2col.html" %}
+
+
+{% block title %}Edit Profile{% endblock %}
+ 
+{% block content %}
+
+
+<div id ="leftcolumn">
+    <ul class='vertical_menu'>
+        <li><a href="{%url 'view_profile'%}">View Profile</a></li>
+        <li><a href="{%url 'edit'%}">Edit Profile</a></li>
+        <li><a href="{%url 'password_change'%}">Change Password</a></li>
+    </ul>
+</div>
+
+<div id="contentcolumn">
+<h1>Edit contact info for {{ user }}</h1>
+<form action="" method="POST"> {% csrf_token %}
+    {{ form.as_p }}
+    <div class="submit-row">
+        <input id="submit" type="submit" name="submit" value="Update" />
+    </div>
+</form>
+</div>
+{% endblock content %}

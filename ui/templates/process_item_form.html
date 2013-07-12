@@ -1,0 +1,83 @@
+{% extends "base_2col.html" %}
+
+
+{% load i18n %}
+{% load barcode_tags %}
+
+
+{% block javascript_extra %}
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+<script>
+var data= new Array();
+{%get_all_barcodes%}
+{%for barcode in barcodes%}
+
+data.push( "{{barcode}}");
+
+{%endfor%}
+
+	
+
+$(document).ready(function() {
+
+$("input#autocomplete").autocomplete({
+	source: data
+});
+	});
+</script>
+{%endblock javascript_extra%}
+{% block title %}{% trans "Search Barcode" %}{% endblock %}
+{% block robots %}noindex,nofollow{% endblock %}
+
+{% block content %}
+
+<div id ="leftcolumn">
+    <ul class="vertical_menu">
+        <li><a href="{% url 'admin_session_data' %}">Scan an Item</a></li>
+        <li><a href="{%url 'display_item_processing_form' %}"> Process an Item </a></li>
+    </ul>
+</div>
+
+
+
+<div id="contentcolumn">
+<h1> Process an Item </h1>
+
+<form action="../process_item_form/" method="post"> {% csrf_token %}
+
+    <p><label for="id_project">Project:</label> <select name="project" id="id_project">
+        <option value="" selected="selected">---------</option>
+        {%for p in projects%}
+        <option value="{{p.id}}"> {{p.name}} </option>
+        {%endfor%}
+    </select></p>
+
+<label id="id_taskType"> Task </label>
+<p>
+<select name="taskType">
+<option value="QC">QC</option>
+<option value="QA">QA</option>
+</select>
+</p>
+
+<label for="id_itemType">{% trans "ItemType" %}</label>
+                <p>{{ form.itemType }}
+                        {% if form.item.errors %}
+                                <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
+                        {% endif %}
+                        </p>
+
+<label id="toLabel">Enter Barcode:</label>  
+             
+<p><input type="text" id="autocomplete" name="barcode" maxlength="50" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></p> 
+       
+		<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
+
+             
+</form>		
+</div>
+
+{% endblock %}

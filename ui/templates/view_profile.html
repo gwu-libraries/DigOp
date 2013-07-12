@@ -1,0 +1,35 @@
+{% extends "base_2col.html" %}
+{% load i18n %}
+
+
+{% block title %} {{ user.first_name }} {{ user.last_name }}{% endblock %}
+
+
+
+{% block content %}
+
+
+<div id ="leftcolumn">
+    <ul class='vertical_menu'>
+            <li><a href="{%url 'view_profile'%}">View Profile</a></li>
+            <li><a href="{%url 'edit'%}">Edit Profile</a></li>
+            <li><a href="{%url 'password_change'%}">Change Password</a></li>
+    </ul>
+
+</div>
+<div id="contentcolumn">
+<Table>
+    <tr><td>UserName</td> <td>{{user.username}}</td></tr>
+    <tr><td>First Name</td><td>{{user.first_name}}</td></tr>
+    <tr><td>Last Name</td><td>{{user.last_name}}</td></tr>
+    <tr><td>Email</td><td>{{user.email}}</td></tr>
+    <tr><td>Department</td><td>{{profile.department}}</td></tr>
+</Table>
+
+
+
+</div>
+
+{% endblock content %}
+
+

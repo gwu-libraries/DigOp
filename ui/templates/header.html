@@ -1,0 +1,11 @@
+{% load url from future %}
+
+            <div style="float:right;">
+            {% if user.is_authenticated %}
+            <button onclick="location.href='../logout_user';">logout</button>
+            {%else%}
+            <button onclick="location.href='../login';">login</button>
+            {%endif%}
+            </div>
+            {%include "navigation.html"%}
+        

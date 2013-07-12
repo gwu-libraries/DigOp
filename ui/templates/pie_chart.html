@@ -1,0 +1,75 @@
+{% extends "base_2col.html" %}
+{% load i18n %}
+
+
+
+{%block javascript_extra%}
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script>
+
+            google.load('visualization', '1.0', {'packages':['controls']});
+            google.setOnLoadCallback(function() {
+                drawChart("pie");
+            });
+
+    function drawChart(chart) {
+
+
+            // Create the data table.
+            var rows = []
+            rows.push(['Name', 'Total Pages Done']);
+            {%for u, v in values%}
+                rows.push(['{{u}}',{{v}}]);
+            {%endfor%}
+
+            var data = google.visualization.arrayToDataTable(rows);
+            var donutRangeSlider = new google.visualization.ControlWrapper({
+                'controlType': 'NumberRangeFilter',
+                'containerId': 'filter_div',
+                'options': {
+                    'filterColumnLabel': 'Total Pages Done'
+                }
+            });
+            var chartObj = new google.visualization.ChartWrapper({
+                'chartType': 'PieChart',
+                'containerId': 'chart_div',
+                'options': {
+                    'width': 300,
+                    'height': 300,
+                    'pieSliceText': 'value',
+                    'legend': 'right'
+                }
+            });
+            var dashboard = new google.visualization.Dashboard(document.getElementById('dashboard_div'));
+            dashboard.bind(donutRangeSlider, chartObj);
+            dashboard.draw(data);
+
+    }
+</script>
+
+{%endblock javascript_extra%}
+
+{% block title %}{% trans "Home" %}{% endblock %}
+
+{% block content %}
+
+
+<div id ="leftcolumn">
+    <ul class="vertical_menu">
+        <li><a  href="../../../show_graph/pie/{{project}}">Pie Chart</a></li>
+        <li><a  href="../../../show_graph/bar/{{project}}">Bar Chart</a></li>
+        <li><a  href="../../../display_time_line_graph/{{project}}"> Timeline Chart</a></li>
+        <li><a  href="../../../project_data/{{project_name}}"> Project Report</a></li>
+    </ul>
+</div>
+
+<div id="contentcolumn">
+    <h1>Welcome {{ user.username}} </h1>
+<div id="dashboard_div">
+<div id="filter_div"></div>
+<div id="chart_div"></div>
+
+</div>
+</div>
+
+{% endblock %}
