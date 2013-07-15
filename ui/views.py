@@ -200,7 +200,7 @@ def user_json(request, username):
 
 @login_required
 def get_collections(request):
-    raw_data = requests.get(settings.INV_URL + "?format=json&username="+settings.INV_USER+"&api_key="+INV_API_KEY, verify=False)
+    raw_data = requests.get(settings.INV_URL + "?format=json&username="+settings.INV_USER+"&api_key="+settings.INV_API_KEY, verify=False)
     data = json.loads(raw_data.content)
     collections = data['objects']
     col = {}
