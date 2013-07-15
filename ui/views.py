@@ -200,7 +200,7 @@ def user_json(request, username):
 
 @login_required
 def get_collections(request):
-    raw_data = requests.get(settings.INV_URL + "?format=json&username=digops&api_key=77627e92c352b846e735bb1117758e68af9bac29", verify=False)
+    raw_data = requests.get(settings.INV_URL + "?format=json&username="+settings.INV_USER+"&api_key="+INV_API_KEY, verify=False)
     data = json.loads(raw_data.content)
     collections = data['objects']
     col = {}
