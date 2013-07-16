@@ -125,52 +125,33 @@ only been tested on ubuntu 10.04 LTS.
         cp DigOp/wsgi.py.template DigOp/wsgi.py
         vim DigOp/wsgi.py
 
-11. Update the Path to the Templates folder in the following variable in settings.py 
-        
-        TEMPLATE_DIRS = (
-                # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-                # Always use forward slashes, even on Windows.
-                # Don't forget to use absolute paths, not relative paths.
-                "C:/templates"
-                )
-
-12. Move the templates password_reset_confirm.html, password_reset_complete.html to templates on your django path under regestration folder. 
-
-        Example of path is /home/gilani/DigOp/ENV/lib/python2.6/site-packages/django/contrib/admin/templates/registration/
-
-13. Type in the url of the Barcode_getpages_webservice that interacts with the KILTS Database in the following variable of settings.py file
-
-        KABIS_SERVER_URL = ''
-
-14. Use the following command in shell to set the loacale
+11. Use the following command in shell to set the loacale
 
         sudo dpkg-reconfigure locales
         export LC_ALL=en_GB.UTF-8
         export LANG=en_GB.UTF-8
 
-15. Go into the DIGOPS-HOME directory where manage.py is stored and type in the following command
+12. Go into the DIGOPS-HOME directory where manage.py is stored and type in the following command
 
         python manage.py syncdb
-    create the admin user and the password when prompted
 
-16. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
+13. At this point, you should be able to run the app and view it working, even without apache configured. This might be sufficient for dev/test.
 
         python manage.py runserver 0.0.0.0:8080
         (visit http://your-server:8080 to test)
 
 
-17. If you want to use apache, add apache config file to sites-enabled and edit it
+14. If you want to use apache, add apache config file to sites-enabled and edit it
 
         sudo cp ../apache/DigOp /etc/apache2/sites-available/DigOp
         vim /etc/apache2/sites-available/DigOp
 
-18. Enable the app in apache and bounce apache2 to start it up
+15. Enable the app in apache and bounce apache2 to start it up
 
         sudo a2ensite DigOp
         sudo /etc/init.d/apache2 restart
 
-19. open a web browser and type in the url of the server running DigOps app. Type in the admin user and password created in step 13 to login.
+16. open a web browser and type in the url of the server running DigOps app. Type in the admin user and password created in step 13 to login.
 
-20. If you get the Access Forbidden error, Make sure that the folder containing DIGOPS-HOME allows read and execute permissions to everyone. Typically, this might require giving 755 with chmod to your home directory if DIGOPS-HOME resides in your home directory.
+17. If you get the Access Forbidden error, Make sure that the folder containing DIGOPS-HOME allows read and execute permissions to everyone. Typically, this might require giving 755 with chmod to your home directory if DIGOPS-HOME resides in your home directory.
 
-21. If you get TemplateDoesNotExist error, check the TEMPLATE_DIRS path in settings.py file and make sure it is correct.
