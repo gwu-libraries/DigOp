@@ -200,12 +200,13 @@ def user_json(request, username):
 
 @login_required
 def get_collections(request):
-    raw_data = requests.get(settings.INV_URL + "?format=json&username="+settings.INV_USER+"&api_key="+settings.INV_API_KEY, verify=False)
+    raw_data = requests.get(settings.INV_URL + "collection/?format=json&username=" 
+            + settings.INV_USER + "&api_key=" + settings.INV_API_KEY, verify=False)
     data = json.loads(raw_data.content)
     collections = data['objects']
-    col = {}
     collection_list = []
     for collection in collections:
+        col = {}
         col['name'] = collection['name']
         col['id'] = collection['id']
         collection_list.append(col)
@@ -908,7 +909,7 @@ def add_project(request):
             if request.POST.get('collection',False):
                 payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
                 headers = {'content-type': 'application/json', 'Authorization': 'ApiKey ' + settings.INV_USER + ':' + settings.INV_API_KEY}
-                status = requests.post(settings.INV_URL, data=json.dumps(payload), headers=headers, verify=False)
+                status = requests.post(settings.INV_URL+'project/', data=json.dumps(payload), headers=headers, verify=False)
             return render(request,'project_menu.html', {
                 })
         else:
