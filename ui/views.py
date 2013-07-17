@@ -592,7 +592,7 @@ def process_item_form(request):
             'projects': Project.objects.all(),
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
-        if request.POST['itemType'] in ['Book', 'Map']:
+        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Other']:
             book = None
             form = BookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
