@@ -1,6 +1,6 @@
 django
-MySQL-python
 django-bootstrapped
+psycopg2
 python-dateutil
 south
 git+https://github.com/gwu-libraries/django-profiles
