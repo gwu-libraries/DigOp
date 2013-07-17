@@ -1,5 +1,6 @@
 {% extends "base_2col.html" %}
 {% load i18n %}
+{% load substr %}
 
 
 {% block javascript_extra %}
@@ -42,6 +43,7 @@
       <h2>printing results for user {{user}} {{json_view}}</h2>
       {{ datatable }}
   </div>
+  <button onclick="location.href='../show_graph/combo/{{request.path|substr}}';">Combo Chart</button>
 
 
 {% endblock %}

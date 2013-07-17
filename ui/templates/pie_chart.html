@@ -1,5 +1,6 @@
 {% extends "base_2col.html" %}
 {% load i18n %}
+{%load substr%}
 
 
 
@@ -56,10 +57,11 @@
 
 <div id ="leftcolumn">
     <ul class="vertical_menu">
-        <li><a  href="../../../show_graph/pie/{{project}}">Pie Chart</a></li>
-        <li><a  href="../../../show_graph/bar/{{project}}">Bar Chart</a></li>
-        <li><a  href="../../../display_time_line_graph/{{project}}"> Timeline Chart</a></li>
-        <li><a  href="../../../project_data/{{project_name}}"> Project Report</a></li>
+        <li><a  href="{%url 'show_graph' 'pie' request.path|substr%}">Pie Chart</a></li>
+        <li><a  href="{%url 'show_graph' 'bar' request.path|substr%}">Bar Chart</a></li>
+        <li><a  href="{%url 'show_graph' 'combo' request.path|substr%}"> Combo Chart</a></li>
+        <li><a  href="{%url 'display_time_line_graph' request.path|substr%}"> Timeline Chart</a></li>
+        <li><a  href="{%url 'project_data' request.path|substr%}"> Project Report</a></li>
     </ul>
 </div>
 
