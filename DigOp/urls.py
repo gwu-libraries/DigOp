@@ -68,7 +68,7 @@ urlpatterns = patterns('',
     url(r'^reset/(?P<uidb36>[0-9A-Za-z]+)-(?P<token>.+)/$', 'django.contrib.auth.views.password_reset_confirm', {'template_name': 'password_reset_confirm.html'}),
     url(r'^reset_password/$', 'django.contrib.auth.views.password_reset', {'template_name': 'reset_password.html'}, name='reset_password'),
     
-    url(r'^show_graph/(?P<chartType>[a-z]+)/(?P<project>\w*)/$', 'ui.views.show_graph', name="show_graph"),
+    url(r'^show_graph/(?P<chartType>[a-z]+)/(?P<project>\w+)/$', 'ui.views.show_graph', name="show_graph"),
     url(r'^show_projects/$', 'ui.views.show_projects', name="show_projects"),
     url(r'^show_users/$', 'ui.views.show_users', name="show_users"),
     

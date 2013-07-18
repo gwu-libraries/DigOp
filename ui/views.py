@@ -645,7 +645,8 @@ def process_item_form(request):
                     #if pages is None:
                     pages = 0
                     item_type = request.POST['itemType']
-                    book = Item.objects.create(project=request.POST['project'],barcode=bar, totalPages=pages,
+                    p = Project.objects.get(pk=request.POST['project'])
+                    book = Item.objects.create(project=p ,barcode=bar, totalPages=pages,
                                                itemType=item_type)
                     book.save()
                     task_type = request.POST['taskType']
