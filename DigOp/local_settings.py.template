@@ -24,11 +24,11 @@ else:
     }
 
 
-INV_API_KEY = ""
+INV_API_KEY = ''
 
-INV_USER = ""
+INV_USER = ''
 
-INV_URL = ""
+INV_URL = ''
 
 TYPES = (
     ('Scan', 'Scan'),
