@@ -592,7 +592,7 @@ def process_item_form(request):
             'projects': Project.objects.all(),
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
-        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Other']:
+        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
             book = None
             form = BookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
@@ -609,21 +609,17 @@ def process_item_form(request):
                                                itemType=item_type)
                     book.save()
                     task_type = request.POST['taskType']
+                    f = get_correct_form(request, book, item_type, task_type)
                     return render_to_response('processing_form.html', {
-                        'form': ProcessingForm(initial={'item': book,
-                                                        'user': request.user,
-                                                        'task': task_type,
-                                                        }),
+                        'form': f,
                         'itemType': request.POST['itemType'],
                         'task': request.POST['taskType'],
                     }, context_instance=RequestContext(request))
                 else:
                     task_type = request.POST['taskType']
+                    f = get_correct_form(request, book, request.POST['itemType'], task_type)
                     return render_to_response('processing_form.html', {
-                        'form': ProcessingForm(initial={'item': book,
-                                                        'user': request.user,
-                                                        'task': task_type,
-                                                        }),
+                        'form': f,
                         'itemType': request.POST['itemType'],
                         'task': request.POST['taskType'],
                     }, context_instance=RequestContext(request))
@@ -732,7 +728,7 @@ def process_book_form(request):
                     book = Item.objects.create(barcode=bar, totalPages=pages,
                                                itemType=item_type, project=p)
                     book.save()
-                    f = get_correct_form(request, book, item_type)
+                    f = get_correct_form(request, book, item_type, 'Scan')
                     return render_to_response('processing_form.html', {
                         'form': f,
                         'itemType': request.POST['itemType'],
@@ -740,7 +736,7 @@ def process_book_form(request):
                         'item': book,
                     }, context_instance=RequestContext(request))
                 else:
-                    f = get_correct_form(request, book, item_type)
+                    f = get_correct_form(request, book, item_type, 'Scan')
                     return render_to_response('processing_form.html', {
                         'form': f,
                         'task': 'Scan',
@@ -801,27 +797,27 @@ def process_book_form(request):
 
 
 @login_required
-def get_correct_form(request, book, item_type):
+def get_correct_form(request, book, item_type, task_type):
     f = None
     if item_type in ['Book', 'Map']:
         f = ProcessingForm(initial={'item': book,
                                     'user': request.user,
-                                    'task': 'Scan',
+                                    'task': task_type,
                                     })
     elif item_type == 'Audio':
         f = ProcessingAudioForm(initial={'item': book,
                                          'user': request.user,
-                                         'task': 'Scan',
+                                         'task': task_type,
                                          })
     elif item_type == 'Video':
         f = ProcessingVideoForm(initial={'item': book,
                                          'user': request.user,
-                                         'task': 'Scan',
+                                         'task': task_type,
                                          })
     elif item_type == 'Others':
         f = ProcessingOthersForm(initial={'item': book,
                                           'user': request.user,
-                                          'task': 'Scan',
+                                          'task': task_type,
                                           })
     return f
 
