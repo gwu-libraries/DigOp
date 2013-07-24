@@ -118,6 +118,12 @@ class ProcessingForm(ModelForm):
         obj = Item.objects.get(barcode=data)
         return obj
 
+    def clean_pagesDone(self):
+        val = self.cleaned_data['pagesDone']
+        if val <= 0:
+            raise forms.ValidationError("work done must be a positive number")
+        return val
+
     class Meta:
         model = ProcessingSession
         exclude = ('identifier', 'user')
