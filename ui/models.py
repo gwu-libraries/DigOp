@@ -128,14 +128,14 @@ class ProcessingForm(ModelForm):
 class ProcessingAudioForm(ProcessingForm):
     def __init__(self, *args, **kwargs):
         super(ProcessingAudioForm, self).__init__(*args, **kwargs)
-        self.fields['pagesDone'].label = "Audio Length"
+        self.fields['pagesDone'].label = "Audio Minutes"
     formfield_callback = make_custom_datefield
 
 
 class ProcessingVideoForm(ProcessingForm):
     def __init__(self, *args, **kwargs):
         super(ProcessingVideoForm, self).__init__(*args, **kwargs)
-        self.fields['pagesDone'].label = "Video Length"
+        self.fields['pagesDone'].label = "Video Minutes"
     formfield_callback = make_custom_datefield
 
 
