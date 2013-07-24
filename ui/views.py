@@ -51,7 +51,7 @@ class ReportListView(DatatableView):
             ("Items", 'pagesDone'),
             ("Comments", 'comments'),
             ("Task Completed", 'operationComplete'),
-            ("Pages Per Hour", 'Rate'),
+            ("Work Done per Hour", 'Rate'),
             ("Item Type", 'item__itemType'),
             ("Task Type", 'task'),
             ("Start Date", 'startTime'),
