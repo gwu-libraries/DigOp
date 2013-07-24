@@ -124,6 +124,14 @@ class ProcessingForm(ModelForm):
             raise forms.ValidationError("work done must be a positive number")
         return val
 
+    def clean_endTime(self):
+        cleaned_data = self.cleaned_data
+        end = cleaned_data.get("endTime")
+        start = cleaned_data.get("startTime")
+        if end <= start:
+            raise forms.ValidationError("Finish time must be greater than Start time")
+        return end
+
     class Meta:
         model = ProcessingSession
         exclude = ('identifier', 'user')
