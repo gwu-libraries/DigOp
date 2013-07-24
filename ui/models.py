@@ -102,7 +102,7 @@ class ProcessingForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProcessingForm, self).__init__(*args, **kwargs)
         self.fields['pagesDone'].error_messages['required'] = \
-            'Enter a value for pagesDone field'
+            'Enter a value for work done field'
         self.fields['endTime'].error_messages['required'] = \
             'Enter a value for Time Finished item field'
     formfield_callback = make_custom_datefield
