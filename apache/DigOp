@@ -1,7 +1,7 @@
 <VirtualHost *:80>
 
     ServerName <your.server.name>
-    ServerAdmin sgilani@gwu.edu
+    ServerAdmin you@example.com
     DocumentRoot /DIGOPS-HOME/DigOp/DigOp
 
     # Possible values include: debug, info, notice, warn, error, crit,
