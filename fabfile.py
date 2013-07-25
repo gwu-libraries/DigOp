@@ -63,14 +63,15 @@ def deploy():
     #local('export PGPASSWORD=%s' %password)
     local('sudo -u postgres createuser --createdb --no-superuser  --no-createrole --pwprompt %s' %user)
     local('sudo -u postgres createdb -O %s %s' %(user,  db))
-    local('cd %s' %path)
-    local('sudo mkdir %s' %release)
-    local('sudo chown %s:%s %s' %(getpass.getuser(), getpass.getuser(), release))
-    with lcd('%s' %release):
+    with lcd('%s' %path):
+        local('sudo mkdir %s' %release)
+        local('sudo chown %s:%s %s' %(getpass.getuser(), getpass.getuser(), release))
+    with lcd('%s%s' %(path, release):
         print(green("Pulling master from GitHub..."))
         local("pwd")
-        local("git clone %s" %repo)
-    with lcd ('%s/%s' %(release, repo_name)):
+        local("sudo git clone %s" %repo)
+        local('sudo chown -R %s:%s %s%s/%s' %(getpass.getuser(), getpass.getuser(),path ,release, repo_name))
+    with lcd ('%s%s/%s' %(path, release, repo_name)):
         local("pwd")
         local("git checkout tags/%s" %tag)
         print(green("Creating virtual ENV"))
