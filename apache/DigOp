@@ -2,7 +2,7 @@
 
     ServerName gwdev-gilani.wrlc.org
     ServerAdmin sgilani@gwu.edu
-    DocumentRoot /home/gilani/fab_12/DigOp/DigOp
+    DocumentRoot /DIGOPS-HOME/DigOp/DigOp
 
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
@@ -30,17 +30,17 @@
         </FilesMatch>
     </IfModule>
 
-    AliasMatch ^/static/css/([^/]*\.css) /home/gilani/fab_12/DigOp/ui/static/css/$1
-    AliasMatch ^/static/img/(.*) /DIGOPS_HOME/DigOp/ui/static/images/$1
-    AliasMatch ^/static/(.*) /home/gilani/fab_12/DigOp/ui/static/$1
+    AliasMatch ^/static/css/([^/]*\.css) /DIGOPS-HOME/DigOp/ui/static/css/$1
+    AliasMatch ^/static/img/(.*) /DIGOPS-HOME/DigOp/ui/static/images/$1
+    AliasMatch ^/static/(.*) /DIGOPS-HOME/DigOp/ui/static/$1
 
-    WSGIDaemonProcess gwdev-gilani.wrlc.org processes=2 threads=15 python-path=/home/gilani/fab_12/DigOp/ENV/lib/python2.7/site-packages:/home/gilani/fab_12/DigOp
+    WSGIDaemonProcess gwdev-gilani.wrlc.org processes=2 threads=15 python-path=/DIGOPS-HOME/DigOp/ENV/lib/python2.7/site-packages:/home/gilani/fab_12/DigOp
 
     WSGIProcessGroup gwdev-gilani.wrlc.org
 
-    WSGIScriptAlias / /home/gilani/fab_12/DigOp/DigOp/wsgi.py
+    WSGIScriptAlias / /DIGOPS-HOME/DigOp/DigOp/wsgi.py
 
-    <Directory /DIGOPS_HOME/DigOp/DigOp>
+    <Directory /DIGOPS-HOME/DigOp/DigOp>
         <Files wsgi.py>
             Order deny,allow
             Allow from all
