@@ -6,7 +6,7 @@ import getpass
 import urllib
 
 
-release = user = db = repo = repo_name = path = password = inv_key = inv_user = inv_url = host = email = ''
+release = user = db = repo = repo_name = path = password = inv_key = inv_user = inv_url = host = email = tag = ''
 
 def localhost():
     env.run = lrun
@@ -29,12 +29,13 @@ def install_virtualenv():
     local('sudo easy_install virtualenv')
 
 def setup():
-    global release, user, db, repo, repo_name, path, password, inv_key, inv_user, inv_url, host, email
+    global release, user, db, repo, repo_name, path, password, inv_key, inv_user, inv_url, host, email, tag
     release = prompt("what do you want to "
             "name the new release?: ",
             validate="^[a-zA-Z0-9\\-\\._]+$")
     user = db = release
-    repo = prompt("enter https url of git repo")
+    repo = prompt("Enter https url of git repo")
+    tag = prompt("Enter the tag name to deploy")
     repo_name = prompt("Enter git repo name")
     path = prompt ("Enter the path to the root folder for installation")
     password = prompt ("Enter DB password")
@@ -71,6 +72,7 @@ def deploy():
         local("git clone %s" %repo)
     with lcd ('%s/%s' %(release, repo_name)):
         local("pwd")
+        local("git checkout tags/%s" tag)
         print(green("Creating virtual ENV"))
         local('virtualenv --no-site-packages ENV')
         with prefix('/bin/bash ENV/bin/activate'):
