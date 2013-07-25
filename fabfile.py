@@ -72,7 +72,7 @@ def deploy():
         local("git clone %s" %repo)
     with lcd ('%s/%s' %(release, repo_name)):
         local("pwd")
-        local("git checkout tags/%s" tag)
+        local("git checkout tags/%s" %tag)
         print(green("Creating virtual ENV"))
         local('virtualenv --no-site-packages ENV')
         with prefix('/bin/bash ENV/bin/activate'):
