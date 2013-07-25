@@ -826,7 +826,7 @@ def get_correct_form(request, book, item_type, task_type):
 def process_processing_form(request):
     def errorHandle(error):
         if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
-            form = ProcessingForm(request.POST)
+            form = get_processing_form(request, request.POST['itemType'])
             return render_to_response('processing_form.html', {
                 'error': error,
                 'form': form,
@@ -842,7 +842,7 @@ def process_processing_form(request):
                 'itemType': request.POST['itemType'],
             }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
-        form = ProcessingForm(request.POST)  # A form bound to the POST data
+        form = get_processing_form(request, request.POST['itemType'])  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             complete = False
             bookid = request.POST['item']
@@ -885,6 +885,20 @@ def process_processing_form(request):
         return render_to_response('processing_form.html', {
             'form': form,
         }, context_instance=RequestContext(request))
+
+
+@login_required
+def get_processing_form(request, item):
+    if item == 'Book' or item == 'Map':
+        return ProcessingForm(request.POST)
+    elif item == 'Video':
+        return ProcessingVideoForm(request.POST)
+    elif item == 'Audio':
+        return ProcessingAudioForm(request.POST)
+    elif item == 'Others':
+        return ProcessingOtehrsForm(request.POST)
+    else:
+        return ItemProcessingForm(request.POST)
 
 
 @login_required
