@@ -2,6 +2,7 @@ from fabric.operations import local as lrun
 from fabric.api import *
 from fabric.colors import green, red
 
+import getpass
 import urllib
 
 
@@ -62,7 +63,8 @@ def deploy():
     local('sudo -u postgres createuser --createdb --no-superuser  --no-createrole --pwprompt %s' %user)
     local('sudo -u postgres createdb -O %s %s' %(user,  db))
     local('cd %s' %path)
-    local('mkdir %s' %release)
+    local('sudo mkdir %s' %release)
+    local('sudo chown %s:%s %s' %(getpass.getuser(), getpass.getuser(), release))
     with lcd('%s' %release):
         print(green("Pulling master from GitHub..."))
         local("pwd")
