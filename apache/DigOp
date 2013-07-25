@@ -1,6 +1,6 @@
 <VirtualHost *:80>
 
-    ServerName gwdev-gilani.wrlc.org
+    ServerName <your.server.name>
     ServerAdmin sgilani@gwu.edu
     DocumentRoot /DIGOPS-HOME/DigOp/DigOp
 
@@ -34,9 +34,9 @@
     AliasMatch ^/static/img/(.*) /DIGOPS-HOME/DigOp/ui/static/images/$1
     AliasMatch ^/static/(.*) /DIGOPS-HOME/DigOp/ui/static/$1
 
-    WSGIDaemonProcess gwdev-gilani.wrlc.org processes=2 threads=15 python-path=/DIGOPS-HOME/DigOp/ENV/lib/python2.7/site-packages:/home/gilani/fab_12/DigOp
+    WSGIDaemonProcess <your.server.name> processes=2 threads=15 python-path=/DIGOPS-HOME/DigOp/ENV/lib/python2.7/site-packages:/home/gilani/fab_12/DigOp
 
-    WSGIProcessGroup gwdev-gilani.wrlc.org
+    WSGIProcessGroup <your.server.name>
 
     WSGIScriptAlias / /DIGOPS-HOME/DigOp/DigOp/wsgi.py
 
