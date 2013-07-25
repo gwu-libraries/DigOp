@@ -164,7 +164,7 @@ class ItemProcessingForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ItemProcessingForm, self).__init__(*args, **kwargs)
         self.fields['pagesDone'].error_messages['required'] = \
-            'Enter a value for PagesDone field'
+            'Enter a value for Reels Done field'
         self.fields['endTime'].error_messages['required'] = \
             'Enter a value for Time Finished item field'
         self.fields['identifier'].error_messages['required'] = \
@@ -182,6 +182,20 @@ class ItemProcessingForm(ModelForm):
         data = self.cleaned_data['item']
         obj = Item.objects.get(barcode=data)
         return obj
+    
+    def clean_endTime(self):
+        cleaned_data = self.cleaned_data
+        end = cleaned_data.get("endTime")
+        start = cleaned_data.get("startTime")
+        if end <= start:
+            raise forms.ValidationError("Finish time must be greater than Start time")
+        return end
+    
+    def clean_pagesDone(self):
+        val = self.cleaned_data['pagesDone']
+        if val <= 0:
+            raise forms.ValidationError("Reels done must be a positive number")
+        return val
 
     class Meta:
         model = ProcessingSession
