@@ -32,12 +32,11 @@ def setup():
     release = prompt("what do you want to "
             "name the new release?: ",
             validate="^[a-zA-Z0-9\\-\\._]+$")
-    user = prompt("Database User Name: ")
-    db = prompt ("Database name")
+    user = db = release
     repo = prompt("enter https url of git repo")
     repo_name = prompt("Enter git repo name")
     path = prompt ("Enter the path to the root folder for installation")
-    password = prompt ("Enetr DB password")
+    password = prompt ("Enter DB password")
     inv_key = prompt("Enter inventory API key")
     inv_user = prompt("Enter user name for inventory API")
     inv_url = prompt("Enter inventory url")
