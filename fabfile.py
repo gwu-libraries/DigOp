@@ -113,8 +113,8 @@ def deploy():
             local("mv apache/DigOps apache/DigOp")
             local("sudo sed \"s/python2\.X/python2\.7/g\" apache/DigOp> apache/DigOps")
             local("mv apache/DigOps apache/DigOp")
-            local("sudo cp apache/DigOp /etc/apache2/sites-available/DigOp")
-            local("sudo a2ensite DigOp")
+            local("sudo cp apache/DigOp /etc/apache2/sites-available/%s" %release)
+            local("sudo a2ensite %s" %release)
             local("sudo a2dissite default")
             local("sudo /etc/init.d/apache2 restart")
 
