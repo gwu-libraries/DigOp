@@ -6,7 +6,10 @@ import getpass
 import urllib
 
 
-release = user = db = repo = repo_name = path = password = inv_key = inv_user = inv_url = host = email = tag = ''
+release = user = db  = path = password = inv_key = inv_user = inv_url = host = email = tag = ''
+
+repo = 'https://github.com/gwu-libraries/DigOp.git'
+repo_name= 'DigOp'
 
 def localhost():
     env.run = lrun
@@ -34,9 +37,7 @@ def setup():
             "name the new release?: ",
             validate="^[a-zA-Z0-9\\-\\._]+$")
     user = db = release
-    repo = prompt("Enter https url of git repo")
     tag = prompt("Enter the tag name to deploy")
-    repo_name = prompt("Enter git repo name")
     path = prompt ("Enter the path to the root folder for installation")
     password = prompt ("Enter DB password")
     inv_key = prompt("Enter inventory API key")
