@@ -5,6 +5,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.forms.widgets import NullBooleanSelect
 from django.conf import settings
 from django.db.models import signals
 
@@ -19,13 +20,14 @@ class Project(models.Model):
     name = models.CharField(max_length=50)
     #global_id = models.CharField(max_length=settings.ID_MAX_LENGTH, null=True)
     description = models.TextField()
-    startDate = models.DateTimeField('Project Start Date', default=datetime.now)
+    startDate = models.DateTimeField('Project Start Date',
+                                     default=datetime.now)
     endDate = models.DateTimeField(null=True, blank=True)
     projectComplete = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name
-    
+
     class Meta:
         unique_together = ('id', 'name')
 
@@ -47,7 +49,7 @@ class ProcessingSession(models.Model):
     pagesDone = models.IntegerField()
     comments = models.TextField(blank=True, default="")
     task = models.CharField(max_length=4, choices=settings.TYPES)
-    operationComplete = models.NullBooleanField()
+    operationComplete = models.BooleanField(null=True)
     startTime = models.DateTimeField('Time started item', default=datetime.now)
     endTime = models.DateTimeField('Time finished item')
 
@@ -62,10 +64,12 @@ class ProcessingSession(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    department = models.CharField(max_length=10, choices=settings.DEPTS, blank=True)
+    department = models.CharField(max_length=10,
+                                  choices=settings.DEPTS, blank=True)
 
     def get_absolute_url(self):
-        return ('profiles_profile_detail', (), { 'username': self.user.username })
+        return ('profiles_profile_detail', (), {'username':
+                self.user.username})
     get_absolute_url = models.permalink(get_absolute_url)
 
     def __unicode__(self):
@@ -129,7 +133,8 @@ class ProcessingForm(ModelForm):
         end = cleaned_data.get("endTime")
         start = cleaned_data.get("startTime")
         if end <= start:
-            raise forms.ValidationError("Finish time must be greater than Start time")
+            raise forms.ValidationError("Finish time must be greater than \
+                                        Start time")
         return end
 
     class Meta:
@@ -137,6 +142,7 @@ class ProcessingForm(ModelForm):
         exclude = ('identifier', 'user')
         fields = ('item', 'pagesDone', 'comments', 'task',
                   'operationComplete', 'startTime', 'endTime')
+        widgets = {'operationComplete': NullBooleanSelect()}
 
 
 class ProcessingAudioForm(ProcessingForm):
@@ -182,15 +188,16 @@ class ItemProcessingForm(ModelForm):
         data = self.cleaned_data['item']
         obj = Item.objects.get(barcode=data)
         return obj
-    
+
     def clean_endTime(self):
         cleaned_data = self.cleaned_data
         end = cleaned_data.get("endTime")
         start = cleaned_data.get("startTime")
         if end <= start:
-            raise forms.ValidationError("Finish time must be greater than Start time")
+            raise forms.ValidationError("Finish time must be greater than \
+                    Start time")
         return end
-    
+
     def clean_pagesDone(self):
         val = self.cleaned_data['pagesDone']
         if val <= 0:
@@ -202,6 +209,7 @@ class ItemProcessingForm(ModelForm):
         exclude = ('user')
         fields = ('item', 'identifier', 'pagesDone', 'comments', 'task',
                   'operationComplete', 'startTime', 'endTime')
+        widgets = {'operationComplete': NullBooleanSelect()}
 
 
 class ProfileForm(ModelForm):
@@ -216,7 +224,7 @@ class ProfileForm(ModelForm):
 
     email = forms.EmailField(label='Primary email', help_text='')
     firstname = forms.CharField(max_length=100, label='First Name')
-    lastname= forms.CharField(max_length=100, label='Last Name')
+    lastname = forms.CharField(max_length=100, label='Last Name')
 
     class Meta:
         model = UserProfile
@@ -228,8 +236,9 @@ class ProfileForm(ModelForm):
         u.first_name = self.cleaned_data['firstname']
         u.last_name = self.cleaned_data['lastname']
         u.save()
-        profile = super(ProfileForm, self).save(*args,**kwargs)
+        profile = super(ProfileForm, self).save(*args, **kwargs)
         return profile
+
 
 class BookForm(ModelForm):
     formfield_callback = make_custom_charfield
@@ -243,28 +252,30 @@ class ProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProjectForm, self).__init__(*args, **kwargs)
         self.fields['name'].error_messages['required'] = \
-                'Enter a value for Project Name'
+            'Enter a value for Project Name'
         self.fields['description'].error_messages['required'] = \
-                'Enter a value for Project Description'
+            'Enter a value for Project Description'
         self.fields['startDate'].error_messages['required'] = \
-                'Enter a value for Project start Date'
+            'Enter a value for Project start Date'
     formfield_callback = make_custom_datefield
 
     class Meta:
         model = Project
         exclude = ('endDate', 'projectComplete')
 
+
 class CloseProjectForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(CloseProjectForm, self).__init__(*args, **kwargs)
         self.fields['name'].error_messages['required'] = \
-                'Select a Project Name'
+            'Select a Project Name'
         self.fields['endDate'].error_messages['required'] = \
-                'Please select an end date'
+            'Please select an end date'
         self.fields['projectComplete'].error_messages['required'] = \
-                'Please select an end date'
+            'Please select an end date'
     formfield_callback = make_custom_datefield
-    name = forms.ModelChoiceField(Project.objects.filter(projectComplete=False), initial=0)
+    name = forms.ModelChoiceField(Project.objects.filter(projectComplete=
+                                  False), initial=0)
 
     class Meta:
         model = Project

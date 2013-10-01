@@ -4,10 +4,21 @@
 
 {% block javascript_extra %}
 <script>
+
     function confirm_datatable_options(options) {
         options.bJQueryUI = true;
         options.sDom = 'T<"clear">lfrtip';
         options.aasorting = [[1, 'asc']];
+        options.bServerSide = true;
+        options.sAjaxSource = "{% url 'produce_data' %}",
+        "fnServerData": function( sUrl, aoData, fnCallback ) {
+            $.ajax( {
+                "url": sUrl+'.json',
+                "data": aoData,
+                "success": fnCallback,
+                "dataType": "jsonp"
+            } );
+        };
         options.oTableTools = {
              "sSwfPath": "{{STATIC_URL}}TableTools/media/swf/copy_csv_xls_pdf.swf"
          }

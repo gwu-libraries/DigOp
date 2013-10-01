@@ -44,7 +44,7 @@ register = Library()
 class ReportListView(DatatableView):
     datatable_options = {
         'columns': [
-            ("Project", 'item__project'),
+            ("Project", 'item__project_name'),
             ("Barcode", 'item__barcode'),
             ("User", 'user__username'),
             'Duration',
@@ -61,7 +61,7 @@ class ReportListView(DatatableView):
         'hidden_columns': [
             'endTime',
         ]}
-    
+
     def get_queryset(self):
         if self.request.GET.get('user'):
             self.request.session['user'] = self.request.GET.get('user')
@@ -99,23 +99,29 @@ class ReportListView(DatatableView):
 
     def get_column_Project_data(self, instance, *args, **kwargs):
         return '<a href="{0}">'.format(reverse('project_data',
-            args=[instance.item.project.id]))+"{0}</a>".format(instance.item.project)
+                                       args=[instance.item.project.id])) + \
+            "{0}</a>".format(instance.item.project)
 
     def get_column_Barcode_data(self, instance, *args, **kwargs):
         return '<a href="{0}">'.format(reverse('barcode',
-            args=[instance.item.id]))+"{0}</a>".format(instance.item.barcode)
+                                       args=[instance.item.id])) + \
+            "{0}</a>".format(instance.item.barcode)
 
     def get_column_User_data(self, instance, *args, **kwargs):
         return '<a href="{0}">'.format(reverse('user',
-            args=[instance.user.username]))+"{0}</a>".format(instance.user)
+                                       args=[instance.user.username])) + \
+            "{0}</a>".format(instance.user)
 
     def get_column_Item_Type_data(self, instance, *args, **kwargs):
         return '<a href="{0}">'.format(reverse('item',
-            args=[instance.item.itemType]))+"{0}</a>".format(instance.item.itemType)
+                                       args=[instance.item.itemType])) + \
+            "{0}</a>".format(instance.item.itemType)
 
     def get_column_Task_Type_data(self, instance, *args, **kwargs):
         return '<a href="{0}">'.format(reverse('task',
-            args=[instance.task]))+"{0}</a>".format(instance.task)
+                                       args=[instance.task])) + \
+            "{0}</a>".format(instance.task)
+
 
 class ProjectListView(ReportListView):
     def get_queryset(self):
@@ -136,16 +142,20 @@ class BarcodeListView(ReportListView):
 
 class UserListView(ReportListView):
     def get_queryset(self):
-        return ProcessingSession.objects.filter(user__username=self.kwargs['username'])
-    
-    
+        return ProcessingSession.objects.filter(user__username=self.kwargs
+                                                ['username'])
+
+
 class ItemListView(ReportListView):
     def get_queryset(self):
-        return ProcessingSession.objects.filter(item__itemType__exact=self.kwargs['itemtype'])
+        return ProcessingSession.objects.filter(item__itemType__exact=
+                                                self.kwargs['itemtype'])
+
 
 class TaskListView(ReportListView):
     def get_queryset(self):
-        return ProcessingSession.objects.filter(task__exact=self.kwargs['tasktype'])
+        return ProcessingSession.objects.filter(task__exact=
+                                                self.kwargs['tasktype'])
 
 
 def add_csrf(request, **kwargs):
@@ -200,8 +210,9 @@ def user_json(request, username):
 
 @login_required
 def get_collections(request):
-    raw_data = requests.get(settings.INV_URL + "collection/?format=json&username=" 
-            + settings.INV_USER + "&api_key=" + settings.INV_API_KEY, verify=False)
+    url = settings.INV_URL + "collection/?format=json&username=" + \
+        settings.INV_USER + "&api_key=" + settings.INV_API_KEY
+    raw_data = requests.get(url, verify=False)
     data = json.loads(raw_data.content)
     collections = data['objects']
     collection_list = []
@@ -211,8 +222,8 @@ def get_collections(request):
         col['id'] = collection['id']
         collection_list.append(col)
     return collection_list
-        
-        
+
+
 def _date_handler(obj):
     return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
@@ -240,7 +251,7 @@ def item_menu(request):
 
 @login_required
 def project_form(request):
-    return render(request,'add_project.html')
+    return render(request, 'add_project.html')
 
 
 @login_required
@@ -253,7 +264,8 @@ def close_project(request):
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
         project = Project.objects.get(pk=request.POST['name'])
-        form = CloseProjectForm(request.POST, instance=project)  # A form bound to the POST data
+        form = CloseProjectForm(request.POST,
+                                instance=project)
         if form.is_valid():  # All validation rules pass
             form.save()
             return render(request, 'project_menu.html')
@@ -297,7 +309,7 @@ def admin_session_data(request):
     projects = Project.objects.all()
     open_projects = []
     for p in projects:
-        if p.projectComplete == False:
+        if p.projectComplete is False:
             open_projects.append(p)
     form = BookForm()
     return render_to_response('get_barcode.html', {
@@ -328,7 +340,7 @@ def show_users(request):
 
 
 @login_required
-def show_graph(request,chartType,project):
+def show_graph(request, chartType, project):
     userObjects = User.objects.all()
     p = Project.objects.get(id=project)
     users = []
@@ -342,7 +354,8 @@ def show_graph(request,chartType,project):
     if chartType == 'pie' or chartType == 'bar':
         for u in userObjects:
             users.append(u.username)
-            userrows = ProcessingSession.objects.filter(user=u, item__project=p)
+            userrows = ProcessingSession.objects.filter(user=u,
+                                                        item__project=p)
             pages = 0
             hours = 0
             for row in userrows:
@@ -383,7 +396,7 @@ def show_graph(request,chartType,project):
                 'project_name': p.name,
             }, context_instance=RequestContext(request))
 
-    elif chartType=='combo':
+    elif chartType == 'combo':
         projects = Project.objects.all()
         for p in projects:
             items = Item.objects.filter(project=p)
@@ -407,7 +420,7 @@ def show_graph(request,chartType,project):
 
 
 @login_required
-def display_time_line_graph(request,identifier):
+def display_time_line_graph(request, identifier):
     p = Project.objects.get(pk=identifier)
     items = Item.objects.filter(project=p)
     values = []
@@ -420,7 +433,7 @@ def display_time_line_graph(request,identifier):
             row['task'] = val.task
             values.append(row)
     sorted_values = sorted(values, key=itemgetter('Date'))
-    return render(request, 'time_chart.html' , {
+    return render(request, 'time_chart.html', {
         'values': sorted_values,
         'project': p,
     })
@@ -439,12 +452,12 @@ def show_projects(request):
         data['project'] = p
         data['pk'] = p.pk
         data['description'] = p.description
-        data['start'] = p.startDate 
+        data['start'] = p.startDate
         data['end'] = p.endDate
         data['closed'] = p.projectComplete
         data['items'] = num_items
         rows.append(data)
-    return render(request, 'show_projects.html' , {
+    return render(request, 'show_projects.html', {
         'rows': rows,
     })
 
@@ -572,7 +585,7 @@ def project_data(request, identifier, json_view=False):
     else:
         return render_to_response('project_page.html', {
             'list': values,
-            'project': pid, 
+            'project': pid,
         }, context_instance=RequestContext(request))
 
 
@@ -592,7 +605,8 @@ def process_item_form(request):
             'projects': Project.objects.all(),
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
-        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
+        if request.POST['itemType'] in ['Book',
+                                        'Map', 'Audio', 'Video', 'Others']:
             book = None
             form = BookForm(request.POST)  # A form bound to the POST data
             if form.is_valid():  # All validation rules pass
@@ -605,7 +619,8 @@ def process_item_form(request):
                     pages = 0
                     item_type = request.POST['itemType']
                     proj = Project.objects.get(pk=request.POST['project'])
-                    book = Item.objects.create(project=proj,barcode=bar, totalPages=pages,
+                    book = Item.objects.create(project=proj, barcode=bar,
+                                               totalPages=pages,
                                                itemType=item_type)
                     book.save()
                     task_type = request.POST['taskType']
@@ -617,7 +632,8 @@ def process_item_form(request):
                     }, context_instance=RequestContext(request))
                 else:
                     task_type = request.POST['taskType']
-                    f = get_correct_form(request, book, request.POST['itemType'], task_type)
+                    f = get_correct_form(request, book,
+                                         request.POST['itemType'], task_type)
                     return render_to_response('processing_form.html', {
                         'form': f,
                         'itemType': request.POST['itemType'],
@@ -642,7 +658,8 @@ def process_item_form(request):
                     pages = 0
                     item_type = request.POST['itemType']
                     p = Project.objects.get(pk=request.POST['project'])
-                    book = Item.objects.create(project=p ,barcode=bar, totalPages=pages,
+                    book = Item.objects.create(project=p, barcode=bar,
+                                               totalPages=pages,
                                                itemType=item_type)
                     book.save()
                     task_type = request.POST['taskType']
@@ -687,7 +704,8 @@ def process_book_form(request):
             'form': form,
         }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
-        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
+        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video',
+                                        'Others']:
             book = None
             form = BookForm(request.POST)  # A form bound to the POST data
             f = None
@@ -709,9 +727,9 @@ def process_book_form(request):
                                                  })
             elif item_type == 'Others':
                 f = ProcessingOthersForm(initial={'item': book,
-                                               'user': request.user,
-                                               'task': 'Scan',
-                                               })
+                                                  'user': request.user,
+                                                  'task': 'Scan',
+                                                  })
             if form.is_valid():  # All validation rules pass
                 bar = request.POST['barcode']
                 try:
@@ -795,7 +813,6 @@ def process_book_form(request):
         }, context_instance=RequestContext(request))
 
 
-
 @login_required
 def get_correct_form(request, book, item_type, task_type):
     f = None
@@ -825,7 +842,8 @@ def get_correct_form(request, book, item_type, task_type):
 @login_required
 def process_processing_form(request):
     def errorHandle(error):
-        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video', 'Others']:
+        if request.POST['itemType'] in ['Book', 'Map', 'Audio', 'Video',
+                                        'Others']:
             form = get_processing_form(request, request.POST['itemType'])
             return render_to_response('processing_form.html', {
                 'error': error,
@@ -842,7 +860,7 @@ def process_processing_form(request):
                 'itemType': request.POST['itemType'],
             }, context_instance=RequestContext(request))
     if request.method == 'POST':  # If the form has been submitted...
-        form = get_processing_form(request, request.POST['itemType'])  # A form bound to the POST data
+        form = get_processing_form(request, request.POST['itemType'])
         if form.is_valid():  # All validation rules pass
             complete = False
             bookid = request.POST['item']
@@ -896,7 +914,7 @@ def get_processing_form(request, item):
     elif item == 'Audio':
         return ProcessingAudioForm(request.POST)
     elif item == 'Others':
-        return ProcessingOtehrsForm(request.POST)
+        return ProcessingOthersForm(request.POST)
     else:
         return ItemProcessingForm(request.POST)
 
@@ -908,20 +926,26 @@ def add_project(request):
         return render_to_response('add_project.html', {
             'error': error,
             'form': form,
-        },context_instance=RequestContext(request))
+        }, context_instance=RequestContext(request))
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            project = Project(name=request.POST['name'], 
-                    description=request.POST['description'],
-                    startDate=request.POST['startDate'],
-                    endDate=None, projectComplete=False)
+            project = Project(name=request.POST['name'],
+                              description=request.POST['description'],
+                              startDate=request.POST['startDate'],
+                              endDate=None, projectComplete=False)
             project.save()
-            if request.POST.get('collection',False):
-                payload = {'name': request.POST['name'], 'collection': '/api/v1/collection/%s/' % request.POST['collections']}
-                headers = {'content-type': 'application/json', 'Authorization': 'ApiKey ' + settings.INV_USER + ':' + settings.INV_API_KEY}
-                status = requests.post(settings.INV_URL+'project/', data=json.dumps(payload), headers=headers, verify=False)
-            return render(request,'project_menu.html', {
+            if request.POST.get('collection', False):
+                payload = {'name': request.POST['name'], 'collection':
+                           '/api/v1/collection/%s/' %
+                           request.POST['collections']}
+                headers = {'content-type': 'application/json',
+                           'Authorization': 'ApiKey ' + settings.INV_USER +
+                           ':' + settings.INV_API_KEY}
+                status = requests.post(settings.INV_URL+'project/',
+                                       data=json.dumps(payload),
+                                       headers=headers, verify=False)
+            return render(request, 'project_menu.html', {
                 })
         else:
             error = 'form is invalid'

@@ -1,9 +1,5 @@
 from django.conf.urls.defaults import *
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf.urls import patterns, url
-from django.views.generic import TemplateView
-from django.conf.urls.defaults import *
-from django.contrib.auth.decorators import login_required
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,9 +14,9 @@ from ui.views import TaskListView
 from ui.views import ItemListView
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'project.views.home', name='home'),
-    # url(r'^project/', include('project.foo.urls')),
+                       # Examples:
+                       # url(r'^$', 'project.views.home', name='home'),
+                       # url(r'^project/', include('project.foo.urls')),
     url(r'^$', 'ui.views.login', name="login"),
 
     url(r'^add_project/$', 'ui.views.add_project', name="add_project"),
@@ -72,11 +68,11 @@ urlpatterns = patterns('',
     url(r'^show_projects/$', 'ui.views.show_projects', name="show_projects"),
     url(r'^show_users/$', 'ui.views.show_users', name="show_users"),
     
-    url(r'^task/(?P<tasktype>\S{2,4})$', TaskListView.as_view(template_name='data.html'), name='task'),
     url(r'^task/(?P<tasktype>\S{2,4}).json$', 'ui.views.task_json', name='task_json'),
+    url(r'^task/(?P<tasktype>\S{2,4})$', TaskListView.as_view(template_name='data.html'), name='task'),
     
-    url(r'^user/(?P<username>[\w.@+-]+)/$', UserListView.as_view(template_name='data.html'), name='user'),
     url(r'^user/(?P<username>[\w.@+-]+).json$', 'ui.views.user_json', name='user_json'),
+    url(r'^user/(?P<username>[\w.@+-]+)$', UserListView.as_view(template_name='data.html'), name='user'),
 
     url(r'^view_profile/$','ui.views.view_profile', name='view_profile'),
     
