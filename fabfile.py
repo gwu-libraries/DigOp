@@ -67,7 +67,7 @@ def deploy():
     with lcd('%s' %path):
         local('sudo mkdir %s' %release)
         local('sudo chown %s:%s %s' %(getpass.getuser(), getpass.getuser(), release))
-    with lcd('%s%s' %(path, release):
+    with lcd('%s%s' %(path, release)):
         print(green("Pulling master from GitHub..."))
         local("pwd")
         local("sudo git clone %s" %repo)

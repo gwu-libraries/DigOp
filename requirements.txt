@@ -1,5 +1,4 @@
 django
-django-bootstrapped
 psycopg2
 python-dateutil
 south
