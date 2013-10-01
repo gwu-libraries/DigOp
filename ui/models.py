@@ -49,7 +49,7 @@ class ProcessingSession(models.Model):
     pagesDone = models.IntegerField()
     comments = models.TextField(blank=True, default="")
     task = models.CharField(max_length=4, choices=settings.TYPES)
-    operationComplete = models.BooleanField(null=True)
+    operationComplete = models.BooleanField()
     startTime = models.DateTimeField('Time started item', default=datetime.now)
     endTime = models.DateTimeField('Time finished item')
 
