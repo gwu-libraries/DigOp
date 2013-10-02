@@ -62,7 +62,8 @@ def deploy():
     install_virtualenv()
     print(green("Setting up Database"))
     #local('export PGPASSWORD=%s' %password)
-    local('sudo -u postgres createuser --createdb --no-superuser  --no-createrole --pwprompt %s' %user)
+    local('sudo -u postgres createuser --createdb --no-superuser  --no-createrole %s' %user)
+    local('sudo -u postgres psql -c "ALTER USER %s WITH PASSWORD %s;"' %(user, password))
     local('sudo -u postgres createdb -O %s %s' %(user,  db))
     with lcd('%s' %path):
         local('sudo mkdir %s' %release)
