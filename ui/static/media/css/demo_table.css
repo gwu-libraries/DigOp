@@ -66,11 +66,13 @@
 .dataTables_info {
 	width: 60%;
 	float: left;
+        margin-top: 1.5em;
 }
 
 .dataTables_paginate {
 	float: right;
 	text-align: right;
+        margin-top: 1em;
 }
 
 /* Pagination nested */
@@ -168,7 +170,7 @@ table.display tr.heading2 td {
 }
 
 table.display td {
-	padding: 3px 10px;
+	padding: 6px 10px; /*3px 10px;*/
 }
 
 table.display td.center {
