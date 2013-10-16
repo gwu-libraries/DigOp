@@ -251,7 +251,7 @@ ul.top-level {
 
 #navcontainer A
 {
-    color: #ddd;
+    color: #f9f9f9; /*#ddd;*/
     display: block;
     width: auto;
     text-decoration: none;
@@ -314,7 +314,8 @@ ul.top-level {
 .vertical_menu li a:link, a:visited  {
     font-weight: bold;
     text-decoration: none;
-    color: #919191;
+    /*color: #919191;*/
+    color: #f9f9f9;;
 }
                 
 .vertical_menu li a:hover {
