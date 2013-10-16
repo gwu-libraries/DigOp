@@ -9,7 +9,7 @@
 {% block content %}
 
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class='vertical_menu'>
             <li><a href="{%url 'view_profile'%}">View Profile</a></li>
             <li><a href="{%url 'edit'%}">Edit Profile</a></li>
@@ -17,13 +17,13 @@
     </ul>
 
 </div>
-<div id="contentcolumn">
+<div class="span9">
 <Table>
-    <tr><td>UserName</td> <td>{{user.username}}</td></tr>
-    <tr><td>First Name</td><td>{{user.first_name}}</td></tr>
-    <tr><td>Last Name</td><td>{{user.last_name}}</td></tr>
-    <tr><td>Email</td><td>{{user.email}}</td></tr>
-    <tr><td>Department</td><td>{{profile.department}}</td></tr>
+    <tr><td>User Name:</td> <td>{{user.username}}</td></tr>
+    <tr><td>First Name:</td><td>{{user.first_name}}</td></tr>
+    <tr><td>Last Name:</td><td>{{user.last_name}}</td></tr>
+    <tr><td>Email:</td><td>{{user.email}}</td></tr>
+    <tr><td>Department:</td><td>{{profile.department}}</td></tr>
 </Table>
 
 

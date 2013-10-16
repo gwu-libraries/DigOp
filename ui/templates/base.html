@@ -2,7 +2,8 @@
 <html>
 <head>
 <title>{% block title %}{% endblock title %} - GWU Libraries</title>
-<link rel="icon" href="{{ STATIC_URL}}img/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="{{STATIC_URL}}images/favicon.ico" type="image/x-icon" />
+<link rel="apple-touch-icon" href="{{STATIC_URL}}images/apple-touch-icon-iphone.png"><!-- optional, and this is just the min version -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}anytime.js"></script>
@@ -20,11 +21,10 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/digops.css" type="text/css" media="screen" />
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}anytime.css" />
 
-    <!--[if lt IE 9]>
+<!--[if lt IE 9]>
 <link rel="stylesheet" href="{{ STATIC_URL }}css/libheader7_lite_ie.css" type="text/css" media="screen" />
 <![endif]-->
 
-<style type="text/css"> </style>
 {% endblock styles %}
 
 {% block styles_extra %}
@@ -69,30 +69,25 @@
             <div class="libheader-logo hide-lo" style=""><a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{STATIC_URL}}images/gwheaderlogo.png" alt="logo: The George Washington University" /></a></div>
         <div class="libheader-liblink" style=""><a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a></div>
         <!-- links can go here (note: use short text, test it doesn't bump into the GW logo) -->
-        <!-- this is an optional 'bullet' to place between links -->
+        {%include "header.html"%}
                                                                                                                                                                                       </div>
                                                                                                                                                                                   </div>
                                                                                                                                                                                   </header>
                                                                                                                                                                                   {%endblock header%}
 
-                                                                                                                                                                                  <div id="content-container" style="max-width:940px; margin:60px auto 0;">
-                                                                                                                                                                                      {%include "header.html"%}
-    <div id="content" style="margin: 30px .5em 0;">
-{% block content %}
-        <h2>Example Page</h2>
-        <p>This is just an example of how the header might look in a simple page.  The code for this page (page.html) has comments and examples of how to call the css files or embed the css in the page.</p>
-        <p>The header is responsive (gw logo drops out under 700px)</p>
-        <p>Files you will need:</p>
-        <ul>
-        <li>libheader7_lite.html</li>
-        <li>libfooter7_lite.html</li>
-        <li>libheader7_lite.css (includes the main Libraries site styling for content)</li>
-        <li>libheader7_lite_ie.css (ie fix for responsive: min-width 700px)</li>
-        </ul>
-        <p>If you have to include the css in the &lt;head&gt; or inline as as 'style=' give #libheader and #libfooter a min-width of 700px.</p>
-{% endblock content %}
-    </div>
-</div>
+<article id="content-container" class="libsite-container container">
+  <div id="" class="row-fluid">
+    <!-- <div class="span12"> included in 'include' below -->
+      {%include "navigation.html"%}
+    <!-- </div> -->
+  </div>
+  <div id="content" class="row-fluid">
+    <!-- <div class="span12"> need to include in content -->
+    {% block content %}
+    {% endblock content %}
+    <!--</div>-->
+  </div>
+</article>
 
 
 {% include "footer.html" %}

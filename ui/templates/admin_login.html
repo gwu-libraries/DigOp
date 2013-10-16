@@ -20,16 +20,17 @@
 {% block content %}
 
 
-<div id ="contentcolumn">
+<div class="span12">
 
 
-    <h2> Fill out the following Form</h2>
+    <h2>Fill out the following Form</h2>
     </br>
 
 <form action="../produce_data/" method="get"> {% csrf_token %}
 
-User:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<p>User:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <select name=user>
+</p>
 <p>
 {%for item in users%}
 	 <option value={{item.username}}> {{item.username}}</option>
@@ -39,7 +40,7 @@ User:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </P>
 <br><br>
 <p>
-Item Type: 
+Item Type:&nbsp; 
 <select name="itemtype">
     <option value="Book"> Book </option>
     <option value="Microfilm"> Microfilm </option>
@@ -51,7 +52,7 @@ Item Type:
 </p>
 <br><br>
 <P>	
-	Start Date: <input name="start" type=text class="Any" id="one">
+	Start Date:&nbsp; <input name="start" type=text class="Any" id="one">
 </P>
 
 <br><br>

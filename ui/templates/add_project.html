@@ -18,24 +18,24 @@
 {% block content %}
 
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class="vertical_menu">
         <li><a href="{%url 'show_projects'%}"> Show Projects </a></li>
         <li><a href="{%url 'add_project'%}"> Open a Project</a></li>
         <li><a href="{%url 'close_project'%}">Close a Project</a></li>
     </ul>
 </div>
-<div id="contentcolumn">
+<div class="span9">
     <form action="../add_project/" method="post"> {% csrf_token %}
         {{form.as_p}}
-        <p><input id="collection" type="checkbox" name="collection" value="collection">add project to inventory collection</p>
+        <p><input id="collection" type="checkbox" name="collection" value="collection"> add project to inventory collection</p>
         <p><select id="collections" name="collections" title="Collections" style="display:none">
             {%for collection in collections%}
             <option value="{{collection.id}}"> {{collection.name}}</option>
             {%endfor%}
         </select>
         </p>
-        <input type="submit" value="Submit" />
+        <div class="submit-row"><input type="submit" value="Submit" /></div>
     </form>
 </div>
 {%endblock%}

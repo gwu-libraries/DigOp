@@ -6,7 +6,7 @@
 {% block content %}
 
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class='vertical_menu'>
         <li><a href="{%url 'view_profile'%}">View Profile</a></li>
         <li><a href="{%url 'edit'%}">Edit Profile</a></li>
@@ -14,7 +14,7 @@
     </ul>
 </div>
 
-<div id="contentcolumn">
+<div class="span9">
 <h1>Edit contact info for {{ user }}</h1>
 <form action="" method="POST"> {% csrf_token %}
     {{ form.as_p }}

@@ -34,7 +34,7 @@ $("input#autocomplete").autocomplete({
 
 {% block content %}
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class="vertical_menu">
         <li><a href="{% url 'admin_session_data' %}">Scan an Item</a></li>
         <li><a href="{%url 'display_item_processing_form' %}"> Process an Item </a></li>
@@ -43,19 +43,19 @@ $("input#autocomplete").autocomplete({
 
 
 
-<div id="contentcolumn">
+<div class="span9">
 <h1> Process an Item </h1>
 
 <form action="../process_item_form/" method="post"> {% csrf_token %}
 
-    <p><label for="id_project">Project:</label> <select name="project" id="id_project">
+    <p><label for="id_project">Project:&nbsp;</label> <select name="project" id="id_project">
         <option value="" selected="selected">---------</option>
         {%for p in projects%}
         <option value="{{p.id}}"> {{p.name}} </option>
         {%endfor%}
     </select></p>
 
-<label id="id_taskType"> Task </label>
+<label id="id_taskType">Task:&nbsp;</label>
 <p>
 <select name="taskType">
 <option value="QC">QC</option>
@@ -63,18 +63,18 @@ $("input#autocomplete").autocomplete({
 </select>
 </p>
 
-<label for="id_itemType">{% trans "ItemType" %}</label>
+<label for="id_itemType">{% trans "ItemType:&nbsp;" %}</label>
                 <p>{{ form.itemType }}
                         {% if form.item.errors %}
                                 <span class="quiet red"><br />* {{ form.book.errors|join:"; " }}</span>
                         {% endif %}
                         </p>
 
-<label id="toLabel">Enter Barcode:</label>  
+<label id="toLabel">Enter Barcode:&nbsp;</label>  
              
 <p><input type="text" id="autocomplete" name="barcode" maxlength="50" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></p> 
        
-		<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
+		<input type="submit" value="Submit" style="position:relative; left:30%; top:1em;"/>
 
              
 </form>		
