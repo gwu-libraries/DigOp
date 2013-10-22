@@ -54,7 +54,7 @@
 {% block content %}
 
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class="vertical_menu">
         <li><a  href="{% url 'show_graph' 'pie' request.path|substr%}">Pie Chart</a></li>
         <li><a  href="{%url 'show_graph' 'bar' request.path|substr%}">Bar Chart</a></li>
@@ -64,7 +64,7 @@
     </ul>
 </div>
 
-<div id="contentcolumn">
+<div class="span9">
     <h1>Welcome {{ user.username}} </h1>
 <div id="dashboard_div">
 <div id="filter_div"></div>

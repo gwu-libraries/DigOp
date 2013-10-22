@@ -4,13 +4,13 @@
 {% block content %}
 
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class="vertical_menu">
         <li><a href="{% url 'admin_session_data' %}">Scan an Item</a></li>
         <li><a href="{%url 'display_item_processing_form' %}"> Process an Item </a></li>
     </ul>
 </div>
-<div id="contentcolumn">
+<div class="span9">
     <p>This section lets users enter data for scanning a new item and processing an existing item. 
     </p>
 </div>

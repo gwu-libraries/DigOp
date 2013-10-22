@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class="vertical_menu">
         <li><a  href="../../show_graph/pie">Pie Chart</a></li>
         <li><a  href="../../show_graph/bar">Bar Chart</a></li>
@@ -16,13 +16,9 @@
     </ul>
 </div>
 
+<div class="span9">
 
-
-
-
-  <div id="contentcolumn">
-
-    <h1> Scan New Item </h1>
+<h1> Scan New Item </h1>
 <form action="../../display_time_line_graph/" method="get"> {% csrf_token %}
     <select name="project">
         {%for p in projects%}
@@ -31,6 +27,6 @@
     </select>
 <input type="submit" value="Submit" style="position:relative;left: 30%;"/>
 </form>
-  </div>	
+</div>	
 
 {% endblock %}

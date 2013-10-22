@@ -9,7 +9,7 @@
 {% block content %}
 
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class='vertical_menu'>
         <li><a href="{%url 'view_profile'%}">View Profile</a></li>
         <li><a href="{%url 'edit'%}">Edit Profile</a></li>
@@ -17,7 +17,7 @@
     </ul>
 
 </div>
-<div id="contentcolumn">
+<div class="span9">
     <p> password reset was successful. An email to reset your password is sent. You should recieve it soon. </p>
 </div>
 {%endblock%}

@@ -34,29 +34,25 @@ $("input#autocomplete").autocomplete({
 
 {% block content %}
 
-<div id ="leftcolumn">
+<div class="span3">
     <ul class="vertical_menu">
         <li><a href="{% url 'admin_session_data' %}">Scan an Item</a></li>
         <li><a href="{%url 'display_item_processing_form' %}"> Process an Item </a></li>
     </ul>
 </div>
 
-
-
-
-
-  <div id="contentcolumn">
+<div class="span9">
 
     <h1> Scan New Item </h1>
     <form action="../process_book_form/" method="post"> {% csrf_token %}
-        <p><label for="id_project">Project:</label> <select name="project" id="id_project">
+        <p><label for="id_project">Project:&nbsp;</label> <select name="project" id="id_project">
             <option value="" selected="selected">---------</option>
             {%for p in projects%}
                 <option value="{{p.id}}"> {{p.name}} </option>
             {%endfor%}
         </select></p>
-        <p><label for="autocomplete">Barcode:</label> <input type="text" id="autocomplete" name="barcode" maxlength="50" /></p>
-        <p><label for="autocomplete">ItemType:</label> <select id="autocomplete" name="itemType">
+        <p><label for="autocomplete">Barcode:&nbsp;</label> <input type="text" id="autocomplete" name="barcode" maxlength="50" /></p>
+        <p><label for="autocomplete">ItemType:&nbsp;</label> <select id="autocomplete" name="itemType">
             <option value="" selected="selected">---------</option>
             <option value="Book">Book</option>
             <option value="Map">Map</option>
@@ -65,8 +61,8 @@ $("input#autocomplete").autocomplete({
             <option value="Video">Video</option>
             <option value="Others">Others</option>
         </select></p>
-<input type="submit" value="Submit" style="position:relative;left: 30%;"/>
+<input type="submit" value="Submit" style="position:relative; left:30%; top:1em;"/>
 </form>
-  </div>	
+</div>	
 
 {% endblock %}

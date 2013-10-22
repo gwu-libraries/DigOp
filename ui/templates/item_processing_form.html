@@ -25,14 +25,14 @@
 
 
 {% if error %}
- 
+<div class="span12"> 
 <p class="error">{{ error }}</p>
- 
+</div>
 {% endif %}
 
 
 
-<div id="contentcolumn">
+<div class="span12">
  <h1>  {{task}} an Item </h1>
 <form action="../process_processing_form/" method="post"> {% csrf_token %}
 <label for="id_itemtype">{% trans "Item Type" %}</label>
