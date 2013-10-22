@@ -1,11 +1,17 @@
 {% load url from future %}
 
-            <div id="persistent-login-button">
                 {% if user.is_authenticated %}
                 <div class="libheader-link" style="float:right;">
                     <i class='icon-off icon-white'></i>&nbsp;<a href="{% url 'logout_user' %}">logout</a>
                 </div>
-            {%else%}
-            <button onclick="location.href='../login';">login</button>
-            {%endif%}
-            </div>
+                <div class="libheader-link" style="float:right;">
+                    <i class='icon-user icon-white'></i>&nbsp;{{ request.user.username }}
+                </div>
+                {%else%}
+                <div id="persistent-login-button">
+                    <button onclick="location.href='../login';">login</button>
+                </div>
+                {%endif%}
+                <div class="libheader-logo hide-lo" style=""><a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{STATIC_URL}}images/gwheaderlogo.png" alt="logo: The George Washington University" /></a></div>
+                        <div class="libheader-liblink" style=""><a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a></div>
+
