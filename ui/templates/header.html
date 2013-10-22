@@ -5,6 +5,9 @@
                     <i class='icon-off icon-white'></i>&nbsp;<a href="{% url 'logout_user' %}">logout</a>
                 </div>
                 <div class="libheader-link" style="float:right;">
+                    <i class='icon-wrench icon-white'></i>&nbsp;<a href="{% url 'password_change' %}">change password</a>
+                </div>
+                <div class="libheader-link" style="float:right;">
                     <i class='icon-user icon-white'></i>&nbsp;{{ request.user.username }}
                 </div>
                 {%else%}
