@@ -19,8 +19,10 @@
 {% endblock javascript_extra%}
 {%block styles%}
 <style type="text/css" media="screen">
-    @import "{{STATIC_URL}}css/digops.css";
+    @import "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css";    
     @import "{{STATIC_URL}}css/libheader7_lite.css";
+    @import "{{STATIC_URL}}css/libheader7_lite_bootswatch.css";
+    @import "{{STATIC_URL}}css/digops.css";
     @import "{{STATIC_URL}}media/css/demo_page.css";
     @import "{{STATIC_URL}}media/css/demo_table.css";
     @import "{{STATIC_URL}}media/css/jquery-ui.min.css";
@@ -30,8 +32,7 @@
     .dataTables_paginate { padding-top: 0; }
     .css_right { float: right; }
     #example_wrapper .fg-toolbar { font-size: 0.8em }
-    #theme_links span { float: left; padding: 2px 10px; }
-                                                                                                                                                                            
+    #theme_links span { float: left; padding: 2px 10px; }                                                                                                                                                                        
 </style>
 {%endblock styles%}
 
@@ -39,11 +40,10 @@
 
 
 
-<div>
-
-      <h2>printing results for user {{user}} {{json_view}}</h2>
+<div class="span12">
+  <h2>Printing results for user {{user}} {{json_view}}</h2>
       {{ datatable }}
-  </div>
+</div>
 
 
 {% endblock %}

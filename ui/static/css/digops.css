@@ -57,7 +57,9 @@ table {
     border: None;
 }
 
-table td {padding:1em;}
+table td {padding:.6em;}
+
+table th {padding:.6em;}
 
 label {
     padding-top: 6px;
@@ -313,7 +315,14 @@ ul.top-level {
     padding-bottom:.3em;
 }
             
-.vertical_menu li a:link, a:visited  {
+.vertical_menu li a:link {
+    font-weight: bold;
+    text-decoration: none;
+    /*color: #919191;*/
+    color: #f9f9f9;;
+}
+
+.vertical_menu li a:visited  {
     font-weight: bold;
     text-decoration: none;
     /*color: #919191;*/
@@ -325,9 +334,18 @@ ul.top-level {
     color: #f9f9f9;
 }
 
-.dataTable a:link, a:visited {
+.dataTable td th {padding:.6em;}
+
+.dataTable a:link {
     font-weight: normal;
     text-decoration: none;
     color: #000;
 }
+
+.dataTable a:visited {
+    font-weight: normal;
+    text-decoration: none;
+    color: #000;
+}
+
 .dataTable a:hover {text-decoration:underline;}
