@@ -1,9 +1,20 @@
 {% load url from future %}
 
-            <div id="persistent-login-button">
-            {% if user.is_authenticated %}
-            <button onclick="location.href='../logout_user';">logout</button>
-            {%else%}
-            <button onclick="location.href='../login';">login</button>
-            {%endif%}
-            </div>
+                {% if user.is_authenticated %}
+                <div class="libheader-link" style="float:right;">
+                    <div class='icon-off icon-white'></div>&nbsp;<a href="{% url 'logout_user' %}">logout</a>
+                </div>
+                <div class="libheader-link" style="float:right;">
+                    <div class='icon-wrench icon-white'></div>&nbsp;<a href="{% url 'password_change' %}">change password</a>
+                </div>
+                <div class="libheader-link" style="float:right;">
+                    <div class='icon-user icon-white'></div>&nbsp;{{ request.user.username }}
+                </div>
+                {%else%}
+                <div  id="persistent-login-button">
+                    <button onclick="location.href='../login';">login</button>
+                </div>
+                {%endif%}
+                <div class="libheader-logo hide-lo" style=""><a href="http://www.gwu.edu" target="_blank" title="GWU website"><img src="{{STATIC_URL}}images/gwheaderlogo.png" alt="logo: The George Washington University" /></a></div>
+                        <div class="libheader-liblink" style=""><a href="http://library.gwu.edu" target="_blank" title="GW Libraries website">GW Libraries</a></div>
+

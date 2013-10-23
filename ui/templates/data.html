@@ -18,6 +18,10 @@
 </script>
 {% endblock javascript_extra%}
 {%block styles%}
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/libheader7_lite.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/libheader7_lite_bootswatch.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/static/css/digops.css" type="text/css" media="screen" />
 <style type="text/css" media="screen">
     @import "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css";    
     @import "{{STATIC_URL}}css/libheader7_lite.css";
@@ -40,8 +44,8 @@
 
 
 
-<div class="span12">
-  <h2>Printing results for user {{user}} {{json_view}}</h2>
+<div>
+
       {{ datatable }}
 </div>
 
