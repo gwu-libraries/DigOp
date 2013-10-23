@@ -324,3 +324,10 @@ ul.top-level {
     text-decoration: underline;
     color: #f9f9f9;
 }
+
+.dataTable a:link, a:visited {
+    font-weight: normal;
+    text-decoration: none;
+    color: #000;
+}
+.dataTable a:hover {text-decoration:underline;}
