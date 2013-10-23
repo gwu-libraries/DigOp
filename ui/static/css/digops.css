@@ -339,13 +339,13 @@ ul.top-level {
 .dataTable a:link {
     font-weight: normal;
     text-decoration: none;
-    color: #000;
+    color: #0E0080;
 }
 
 .dataTable a:visited {
     font-weight: normal;
     text-decoration: none;
-    color: #000;
+    color: #0E0080;
 }
 
 .dataTable a:hover {text-decoration:underline;}
