@@ -1,4 +1,4 @@
-django==1.5.4 
+django>=1.5,<1.6
 psycopg2
 python-dateutil
 south
