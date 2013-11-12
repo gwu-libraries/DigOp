@@ -206,7 +206,7 @@ class ItemProcessingForm(ModelForm):
 
     class Meta:
         model = ProcessingSession
-        exclude = ('user')
+        exclude = ('user',)
         fields = ('item', 'identifier', 'pagesDone', 'comments', 'task',
                   'operationComplete', 'startTime', 'endTime')
         widgets = {'operationComplete': NullBooleanSelect()}
@@ -228,7 +228,7 @@ class ProfileForm(ModelForm):
 
     class Meta:
         model = UserProfile
-        exclude = ('user')
+        exclude = ('user',)
 
     def save(self, *args, **kwargs):
         u = self.instance.user
@@ -245,7 +245,7 @@ class BookForm(ModelForm):
 
     class Meta:
         model = Item
-        exclude = ('totalPages')
+        exclude = ('totalPages',)
 
 
 class ProjectForm(ModelForm):
