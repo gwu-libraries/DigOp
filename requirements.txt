@@ -7,4 +7,4 @@ git+https://github.com/pivotal-energy-solutions/django-datatable-view
 requests
 django-fixture-magic
 python_ldap
-dgango_ldap_auth
+django_ldap_auth
