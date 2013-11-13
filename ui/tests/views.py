@@ -44,7 +44,7 @@ class ProjectViewsTestCase(TestCase):
             'name': 'Test_Project',
             'description': 'Testing add project view',
             'startDate': '2013-11-13 10:10:23.792240',
-            'collection': 'collection',
+            'collection': 'False',
             'collections': '38989/c01x7604j831'
             }
         response = self.client.post(reverse('add_project'), data)
