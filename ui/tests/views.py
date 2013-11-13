@@ -136,3 +136,16 @@ class ProjectViewsTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ProcessingSession.objects.count(), session_count+1)
 
+    def test_generate_report(self):
+        self.client.login(username=settings.TEST_USER,
+                          password=settings.TEST_USER_PWD)
+        data = {
+            'itemtype': 'Book',
+            'user': 'all',
+            'start': '2013-01-13 11:34:47.618946',
+            'end': '2013-11-13 12:34:47.618946'
+            }
+        response = self.client.get(reverse('produce_data'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue('processingsession_list' in response.context)
+        self.assertIn(3, [processingsession.pk for processingsession in response.context['processingsession_list']])
