@@ -3,6 +3,8 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from ui.models import Project
+from ui.models import Item
+from ui.models import ProcessingSession
 
 
 class ProjectViewsTestCase(TestCase):
@@ -30,7 +32,6 @@ class ProjectViewsTestCase(TestCase):
             'collection': 'False'
             }
         response = self.client.post(reverse('add_project'), data)
-        print Project.objects.count()
         self.assertEqual(response.status_code, 200)
         self.assertFormError(response, "form", "description",
                              "Enter a value for Project Description")
@@ -38,6 +39,7 @@ class ProjectViewsTestCase(TestCase):
     def test_valid_add_project(self):
         self.client.login(username=settings.TEST_USER,
                           password=settings.TEST_USER_PWD)
+        project_count = Project.objects.count()
         data = {
             'name': 'Test_Project',
             'description': 'Testing add project view',
@@ -47,4 +49,31 @@ class ProjectViewsTestCase(TestCase):
             }
         response = self.client.post(reverse('add_project'), data)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Project.objects.count(), 5)
+        self.assertEqual(Project.objects.count(), project_count+1)
+
+    def test_add_scan_item(self):
+        self.client.login(username=settings.TEST_USER,
+                          password=settings.TEST_USER_PWD)
+        item_count = Item.objects.count()
+        data = {
+            'project': '1',
+            'barcode': '32882017694412',
+            'itemType': 'Book'
+            }
+        response = self.client.post(reverse('process_book_form'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Item.objects.count(), item_count+1)
+        session_count = ProcessingSession.objects.count()
+        data = {
+            'itemType': 'Book',
+            'item': '32882017694412',
+            'task': 'Scan',
+            'operationComplete': '2',
+            'startTime': '2013-11-13 11:34:47.618946',
+            'endTime': '2013-11-13 12:34:47.618946',
+            'pagesDone': '250',
+            'comments': 'Done'
+            }
+        response = self.client.post(reverse('process_processing_form'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ProcessingSession.objects.count(), session_count+1)
