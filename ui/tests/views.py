@@ -77,3 +77,62 @@ class ProjectViewsTestCase(TestCase):
         response = self.client.post(reverse('process_processing_form'), data)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ProcessingSession.objects.count(), session_count+1)
+
+    def test_add_qc_item(self):
+        self.client.login(username=settings.TEST_USER,
+                          password=settings.TEST_USER_PWD)
+        item_count = Item.objects.count()
+        data = {
+            'project': '1',
+            'barcode': '32882017694412',
+            'itemType': 'Book',
+            'taskType': 'QC'
+            }
+        response = self.client.post(
+            reverse('process_item_form'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Item.objects.count(), item_count+1)
+        session_count = ProcessingSession.objects.count()
+        data = {
+            'itemType': 'Book',
+            'item': '32882017694412',
+            'task': 'QC',
+            'operationComplete': '2',
+            'startTime': '2013-11-13 11:34:47.618946',
+            'endTime': '2013-11-13 12:34:47.618946',
+            'pagesDone': '250',
+            'comments': 'Done'
+            }
+        response = self.client.post(reverse('process_processing_form'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ProcessingSession.objects.count(), session_count+1)
+
+    def test_add_qa_item(self):
+        self.client.login(username=settings.TEST_USER,
+                          password=settings.TEST_USER_PWD)
+        item_count = Item.objects.count()
+        data = {
+            'project': '1',
+            'barcode': '32882017694412',
+            'itemType': 'Book',
+            'taskType': 'QA'
+            }
+        response = self.client.post(
+            reverse('process_item_form'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Item.objects.count(), item_count+1)
+        session_count = ProcessingSession.objects.count()
+        data = {
+            'itemType': 'Book',
+            'item': '32882017694412',
+            'task': 'QA',
+            'operationComplete': '2',
+            'startTime': '2013-11-13 11:34:47.618946',
+            'endTime': '2013-11-13 12:34:47.618946',
+            'pagesDone': '250',
+            'comments': 'Done'
+            }
+        response = self.client.post(reverse('process_processing_form'), data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(ProcessingSession.objects.count(), session_count+1)
+
