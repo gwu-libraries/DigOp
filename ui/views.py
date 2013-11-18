@@ -944,9 +944,13 @@ def add_project(request):
                 headers = {'content-type': 'application/json',
                            'Authorization': 'ApiKey ' + settings.INV_USER +
                            ':' + settings.INV_API_KEY}
-                status = requests.post(settings.INV_URL+'project/',
-                                       data=json.dumps(payload),
-                                       headers=headers, verify=False)
+                response = requests.post(settings.INV_URL+'project/',
+                                         data=json.dumps(payload),
+                                         headers=headers, verify=False)
+                if response.status_code != 200:
+                    logger.error("Project %s couldn't be added to %s",
+                                 project, request.POST['collections'])
+
             return render(request, 'project_menu.html', {
                 })
         else:
