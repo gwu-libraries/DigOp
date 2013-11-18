@@ -163,7 +163,7 @@ LOGGING = {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
-            'formatter': 'standard'
+            'formatter': 'standard',
             },
         'mail_admins': {
             'level': 'ERROR',
