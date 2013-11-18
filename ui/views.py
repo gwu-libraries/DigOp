@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 import time
 
@@ -39,6 +40,7 @@ import requests
 
 use = None
 register = Library()
+logger = logging.getLogger(__name__)
 
 
 class ReportListView(DatatableView):
