@@ -285,9 +285,9 @@ def reset_done(request):
 
 @login_required
 def view_profile(request):
-        return render(request, 'view_profile.html', {
-            'profile': UserProfile.objects.get(user=request.user),
-        })
+    return render(request, 'view_profile.html', {
+        'profile': UserProfile.objects.get_or_create(user=request.user),
+    })
 
 
 def reset_password(request, template_name='reset_password.html'):
