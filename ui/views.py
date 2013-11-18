@@ -323,7 +323,7 @@ def display_item_processing_form(request):
     projects = Project.objects.all()
     open_projects = []
     for p in projects:
-        if p.projectComplete == False:
+        if not p.projectComplete:
             open_projects.append(p)
     form = BookForm()
     return render(request, 'process_item_form.html', {
