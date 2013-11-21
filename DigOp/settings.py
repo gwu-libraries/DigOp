@@ -173,8 +173,8 @@ LOGGING = {
         },
     'loggers': {
         'django': {
-            'handlers': ['console'],
-            'level': 'WARN',
+            'handlers': ['null'],
+            'level': 'INFO',
             'propagate': True,
         },
         'django.request': {
@@ -183,12 +183,12 @@ LOGGING = {
             'propagate': True,
         },
         'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
             },
         'ui.views': {
-            'handlers': ['mail_admins', 'logfile'],
+            'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
             },
