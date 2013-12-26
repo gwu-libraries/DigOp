@@ -31,7 +31,6 @@ urlpatterns = patterns('',
     url(r'^display_item_processing_form/$', 'ui.views.display_item_processing_form', name="display_item_processing_form"),
     url(r'^display_time_line_graph/(?P<identifier>\w+)$', 'ui.views.display_time_line_graph', name="display_time_line_graph"),
 
-    url(r'^index_page/$', 'ui.views.index_page', name="index_page"),
     url(r'^item/(?P<itemtype>\Map|Book|Microfilm|Audio|Video|Others).json$', 'ui.views.item_json', name='item_json'),
     url(r'^item/(?P<itemtype>\S{0,9})$', ItemListView.as_view(template_name='data.html'), name='item'),
     url(r'^item_processing_form/$', 'ui.views.item_processing_form', name="item_processing_form"),

@@ -297,16 +297,6 @@ def reset_password(request, template_name='reset_password.html'):
 
 
 @login_required
-def index_page(request):
-    if request.user.is_superuser:
-        return render_to_response('admin_page.html', {
-        }, context_instance=RequestContext(request))
-    else:
-        return render_to_response('user_page.html', {
-        }, context_instance=RequestContext(request))
-
-
-@login_required
 def admin_session_data(request):
     projects = Project.objects.all()
     open_projects = []
