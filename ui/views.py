@@ -177,7 +177,7 @@ def login(request):
     c = {}
     c.update(csrf(request))
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/index_page/')
+        return HttpResponseRedirect('/show_projects/')
     if request.method == 'POST':  # If the form has been submitted...
         form = LoginForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
@@ -187,7 +187,7 @@ def login(request):
             request.session['user_id'] = use
             if use is not None:
                 auth_login(request, use)
-                return HttpResponseRedirect('/index_page/')
+                return HttpResponseRedirect('/show_projects/')
             else:  # Return a 'disabled account' error message
                 error = 'account disabled'
                 return errorHandle(error)
