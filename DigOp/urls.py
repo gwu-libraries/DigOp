@@ -34,7 +34,6 @@ urlpatterns = patterns('',
     url(r'^item/(?P<itemtype>\Map|Book|Microfilm|Audio|Video|Others).json$', 'ui.views.item_json', name='item_json'),
     url(r'^item/(?P<itemtype>\S{0,9})$', ItemListView.as_view(template_name='data.html'), name='item'),
     url(r'^item_processing_form/$', 'ui.views.item_processing_form', name="item_processing_form"),
-    url(r'^item_menu/$', 'ui.views.item_menu', name="item_menu"),
 
     url(r'^login/$', 'ui.views.login', name="login"),
     url(r'^logout_user/$', 'ui.views.logout_user', name="logout_user"),

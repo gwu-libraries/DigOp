@@ -1,7 +1,7 @@
 <div id="navcontainer" class="span12">
     <ul id="navlist">
         <li><a href="{% url 'show_projects' %}">Project</a></li>
-        <li><a href="{% url 'item_menu' %}">Item</a></li>
+        <li><a href="{% url 'admin_session_data' %}">Item</a></li>
         <li><a href="{% url 'show_users' %}">Generate Report</a></li>
         {%if user.is_authenticated%}
             <li><a href="{% url 'profile_menu' %}">Edit profile</a></li>

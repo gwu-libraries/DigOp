@@ -247,11 +247,6 @@ def profile_menu(request):
 
 
 @login_required
-def item_menu(request):
-    return render(request, 'item_menu.html')
-
-
-@login_required
 def project_form(request):
     return render(request, 'add_project.html')
 
