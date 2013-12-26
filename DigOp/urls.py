@@ -40,7 +40,6 @@ urlpatterns = patterns('',
 
     url(r'^profiles/edit/$', 'profiles.views.edit_profile', {'form_class': ProfileForm,'success_url': '../../view_profile',},name='edit'),
     url(r'^profiles/', include('profiles.urls')),
-    url(r'^profile_menu/$','ui.views.profile_menu', name='profile_menu'),
 
     url(r'^password_change/$','django.contrib.auth.views.password_change', {'template_name': 'accounts/password_change_form.html'},name='password_change'),
     url(r'^password_change_done/$','django.contrib.auth.views.password_change_done', {'template_name': 'accounts/my_password_change_done.html'}),

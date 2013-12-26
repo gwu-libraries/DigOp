@@ -242,11 +242,6 @@ def password_change_done(request,
 
 
 @login_required
-def profile_menu(request):
-    return render(request, 'profile_menu.html')
-
-
-@login_required
 def project_form(request):
     return render(request, 'add_project.html')
 
